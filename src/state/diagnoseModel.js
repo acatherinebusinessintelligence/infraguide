@@ -137,7 +137,8 @@ function overlayFromPriorWork(item, { metricsDoc, criticalRows, spofRecords, met
     return { interpretation: metricsDoc.storage.interpretation || item.interpretation };
   }
   if (['ev-wms', 'ev-mes', 'ev-ecom'].includes(item.id) && criticalRows.length) {
-    const name = item.id === 'ev-wms' ? 'WMS' : item.id === 'ev-mes' ? 'MES' : 'E-commerce';
+    const name =
+      item.id === 'ev-wms' ? 'ERP' : item.id === 'ev-mes' ? 'Producción' : 'Ventas';
     const row = criticalRows.find((entry) => (entry.name || '').toLowerCase().includes(name.toLowerCase()));
     if (row?.justification) {
       return { interpretation: `Servicio crítico documentado: ${row.justification}` };

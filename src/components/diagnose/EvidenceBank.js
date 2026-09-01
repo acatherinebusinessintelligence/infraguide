@@ -1,5 +1,9 @@
 import { escapeHtml } from '../../utils/escape.js';
 import { evidenceFilters } from '../../data/methodology/diagnose.js';
+import { EvidenceLink } from '../evidence/EvidenceLink.js';
+import { CalculatedSources } from '../evidence/CalculatedSources.js';
+import { getSelectedCaseData } from '../../state/appState.js';
+import { diagnoseFieldKeys, diagnoseCalculatedMap } from '../../data/evidence/calculated.js';
 
 export function EvidenceBank({ bank = [], filter = 'all', selectedIds = [], showSelect = false }) {
   const filtered = filter === 'all' ? bank : bank.filter((item) => item.filters.includes(filter));
@@ -34,6 +38,9 @@ export function EvidenceBank({ bank = [], filter = 'all', selectedIds = [], show
 }
 
 export function EvidenceCard({ item, selected = false, showSelect = false }) {
+  const caseData = getSelectedCaseData();
+  const fieldKey = diagnoseFieldKeys[item.id];
+  const calcId = diagnoseCalculatedMap[item.id];
   return `
     <article class="evidence-card${selected ? ' is-selected' : ''}" role="listitem">
       <p class="evidence-card__kicker">EVIDENCIA</p>
@@ -41,6 +48,13 @@ export function EvidenceCard({ item, selected = false, showSelect = false }) {
       <p><strong>Interpretación previa:</strong> ${escapeHtml(item.interpretation)}</p>
       <p><strong>Fuente:</strong> ${escapeHtml(item.source)}</p>
       <p><strong>Sección del caso:</strong> ${escapeHtml(item.sourceSectionId)}</p>
+      ${
+        calcId
+          ? CalculatedSources({ caseData, metricId: calcId, resultLabel: item.datum.split('—')[0], resultValue: '' })
+          : fieldKey
+            ? EvidenceLink({ caseData, fieldKey, sourceSectionId: item.sourceSectionId, component: 'diagnose-bank' })
+            : EvidenceLink({ caseData, sourceSectionId: item.sourceSectionId, extraLabel: item.datum, component: 'diagnose-bank' })
+      }
       <p><strong>Generada en:</strong> ${escapeHtml(item.stage)}</p>
       <p><strong>Se puede utilizar en:</strong> ${escapeHtml(item.usableIn)}</p>
       ${item.missing ? '<p class="consultant-tip">Ausencia de información — también es evidencia utilizable.</p>' : ''}

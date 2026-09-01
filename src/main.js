@@ -12,6 +12,9 @@ import './styles/govern.css';
 import './styles/decide.css';
 import './styles/build.css';
 import './styles/export.css';
+import './styles/progress.css';
+import './styles/evidence.css';
+import './styles/pedagogy.css';
 import { bootstrap } from './app.js';
 
 bootstrap();

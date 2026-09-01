@@ -3,12 +3,43 @@
   "name": "Helados Boreal S.A.S.",
   "kind": "model",
   "kindLabel": "Caso modelo",
-  "sector": "Producción y comercialización de alimentos congelados",
-  "organizationType": "Empresa nacional de helados y productos congelados",
+  "sector": "Fabricación y comercialización de helados y postres congelados",
+  "organizationType": "Empresa colombiana mediana de helados y productos de temporada",
   "useButtonLabel": "USAR CASO MODELO",
-  "summary": "Empresa nacional que produce, distribuye y comercializa helados y productos congelados, con planta, centro de distribución, tiendas, e-commerce y cadena de frío.",
-  "pedagogicalNote": "Caso ficticio de uso pedagógico. No corresponde a ninguno de los casos oficiales del curso.",
+  "summary": "Empresa colombiana mediana de helados y postres congelados, con planta y centro de datos en Bogotá, centros de distribución en Medellín y Cali, y operación remota de ventas.",
+  "pedagogicalNote": "Caso académico ficticio. La empresa, las personas y las cifras son ficticias. El PDF original es la fuente académica.",
   "readOnly": true,
+  "sourceDocuments": [
+    {
+      "id": "caso-helados-boreal",
+      "title": "Caso Helados Boreal S.A.S.",
+      "file": "cases/helados-boreal/caso-helados-boreal.pdf",
+      "type": "application/pdf",
+      "pages": 10,
+      "version": "1.0",
+      "linked": true,
+      "placeholder": false,
+      "status": "LINKED",
+      "note": "PDF original contrastado página por página el 2026-09-01. Solo se marcan verificadas las evidencias con página y fragmento localizado.",
+      "sections": [
+        { "id": "cover", "sourceSectionId": "cover", "title": "Portada y propósito", "page": 1, "verified": true },
+        { "id": "context", "sourceSectionId": "context", "title": "1. Contexto empresarial y operativo", "page": 2, "verified": true },
+        { "id": "services", "sourceSectionId": "services", "title": "2. Servicios tecnológicos y criticidad", "page": 3, "verified": true },
+        { "id": "infrastructure", "sourceSectionId": "infrastructure", "title": "3. Infraestructura tecnológica actual", "page": 4, "verified": true },
+        { "id": "network", "sourceSectionId": "network", "title": "4. Red, conectividad y seguridad", "page": 5, "verified": true },
+        { "id": "security", "sourceSectionId": "security", "title": "4. Red, conectividad y seguridad", "page": 5, "verified": true },
+        { "id": "storage", "sourceSectionId": "storage", "title": "5. Almacenamiento, respaldo y recuperación", "page": 6, "verified": true },
+        { "id": "backup", "sourceSectionId": "backup", "title": "5. Almacenamiento, respaldo y recuperación", "page": 6, "verified": true },
+        { "id": "operational-data", "sourceSectionId": "operational-data", "title": "6. Rendimiento, capacidad y monitoreo", "page": 7, "verified": true },
+        { "id": "incidents", "sourceSectionId": "incidents", "title": "7. Registro de incidentes y cambios", "page": 8, "verified": true },
+        { "id": "it-team", "sourceSectionId": "it-team", "title": "8. Gobierno de TI, restricciones y costos", "page": 9, "verified": true },
+        { "id": "operations", "sourceSectionId": "operations", "title": "7-8. Registro de incidentes y gobierno", "page": 8, "verified": true },
+        { "id": "governance", "sourceSectionId": "governance", "title": "8. Gobierno de TI, restricciones y costos", "page": 9, "verified": true },
+        { "id": "constraints", "sourceSectionId": "constraints", "title": "8. Gobierno de TI, restricciones y costos", "page": 9, "verified": true }
+      ]
+    }
+  ],
+  "evidenceRegistry": [],
   "sections": [
     {
       "sectionId": "context",
@@ -25,72 +56,189 @@
               "label": "Empresa",
               "value": "Helados Boreal S.A.S.",
               "unit": "",
-              "usable": false
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 2,
+                "section": "1. Contexto empresarial y operativo",
+                "sourceSectionId": "context",
+                "quote": "Helados Boreal S.A.S. es una empresa colombiana mediana dedicada a la fabricación y comercialización de helados, postres congelados y productos de temporada.",
+                "anchorId": "hb-p2-empresa",
+                "verified": true
+              }
             },
             {
               "key": "activity",
               "label": "Actividad",
-              "value": "Produce, distribuye y comercializa helados y productos congelados.",
+              "value": "Fabricación y comercialización de helados, postres congelados y productos de temporada.",
               "unit": "",
-              "usable": false
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 2,
+                "section": "1. Contexto empresarial y operativo",
+                "sourceSectionId": "context",
+                "quote": "dedicada a la fabricación y comercialización de helados, postres congelados y productos de temporada",
+                "anchorId": "hb-p2-actividad",
+                "verified": true
+              }
             },
             {
-              "key": "sector",
-              "label": "Sector",
-              "value": "Producción y comercialización de alimentos congelados",
+              "key": "headquarters",
+              "label": "Operación principal",
+              "value": "Bogotá (planta, oficinas y centro de datos)",
               "unit": "",
-              "usable": false
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 2,
+                "section": "1. Contexto empresarial y operativo",
+                "sourceSectionId": "context",
+                "quote": "Su operación principal se encuentra en Bogotá",
+                "anchorId": "hb-p2-bogota",
+                "verified": true
+              }
             },
             {
               "key": "plantCount",
-              "label": "Planta principal",
+              "label": "Planta",
               "value": 1,
               "unit": "",
-              "usable": false
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 2,
+                "section": "Cobertura y organización",
+                "sourceSectionId": "context",
+                "quote": "Bogotá Planta, oficinas y centro de datos",
+                "anchorId": "hb-p2-planta",
+                "verified": true
+              }
             },
             {
               "key": "distributionCenterCount",
-              "label": "Centro de distribución",
-              "value": 1,
+              "label": "Centros de distribución",
+              "value": 2,
               "unit": "",
-              "usable": false
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 2,
+                "section": "Cobertura y organización",
+                "sourceSectionId": "context",
+                "quote": "Medellín Centro de distribución 28; Cali Centro de distribución 24",
+                "anchorId": "hb-p2-cd",
+                "verified": true
+              }
             },
             {
-              "key": "storeCount",
-              "label": "Tiendas",
-              "value": 46,
+              "key": "bogotaUsers",
+              "label": "Usuarios habituales en Bogotá",
+              "value": 145,
               "unit": "",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 2,
+                "section": "Cobertura y organización",
+                "sourceSectionId": "context",
+                "quote": "Bogotá Planta, oficinas y centro de datos 145",
+                "anchorId": "hb-p2-usuarios-bogota",
+                "verified": true
+              }
             },
             {
-              "key": "employeeCount",
-              "label": "Empleados",
-              "value": 980,
+              "key": "medellinUsers",
+              "label": "Usuarios habituales en Medellín",
+              "value": 28,
               "unit": "",
-              "qualifier": "aproximadamente",
-              "displayValue": "aproximadamente 980",
-              "usable": true
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 2,
+                "section": "Cobertura y organización",
+                "sourceSectionId": "context",
+                "quote": "Medellín Centro de distribución 28",
+                "anchorId": "hb-p2-usuarios-medellin",
+                "verified": true
+              }
+            },
+            {
+              "key": "caliUsers",
+              "label": "Usuarios habituales en Cali",
+              "value": 24,
+              "unit": "",
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 2,
+                "section": "Cobertura y organización",
+                "sourceSectionId": "context",
+                "quote": "Cali Centro de distribución 24",
+                "anchorId": "hb-p2-usuarios-cali",
+                "verified": true
+              }
+            },
+            {
+              "key": "remoteUsers",
+              "label": "Usuarios remotos",
+              "value": 38,
+              "unit": "",
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 2,
+                "section": "Cobertura y organización",
+                "sourceSectionId": "context",
+                "quote": "Remotos Ventas y supervisión regional 38",
+                "anchorId": "hb-p2-usuarios-remotos",
+                "verified": true
+              }
             },
             {
               "key": "systemUsers",
-              "label": "Usuarios directos de sistemas",
-              "value": 420,
+              "label": "Usuarios con acceso a servicios tecnológicos",
+              "value": 235,
+              "unit": "",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 2,
+                "section": "1. Contexto empresarial y operativo",
+                "sourceSectionId": "context",
+                "quote": "La compañía tiene 235 usuarios con acceso a servicios tecnológicos corporativos.",
+                "anchorId": "hb-p2-usuarios-ti",
+                "verified": true
+              }
+            },
+            {
+              "key": "concurrentUsersHighSeason",
+              "label": "Usuarios concurrentes en temporada alta",
+              "value": 185,
               "unit": "",
               "qualifier": "aproximadamente",
-              "displayValue": "aproximadamente 420",
-              "usable": true
+              "displayValue": "aproximadamente 185",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 2,
+                "section": "1. Contexto empresarial y operativo",
+                "sourceSectionId": "context",
+                "quote": "aproximadamente 185 usuarios concurrentes utilizan el ERP, las aplicaciones de ventas, los archivos compartidos y los tableros de operación",
+                "anchorId": "hb-p2-concurrentes",
+                "verified": true
+              }
             }
           ]
         },
         {
           "type": "list",
-          "title": "Operación de canales",
+          "title": "Canales abastecidos",
           "items": [
-            "Producción: 20 horas al día, 6 días por semana.",
-            "Tiendas: todos los días.",
-            "E-commerce: 24/7.",
-            "Logística refrigerada: operación extendida.",
-            "Cadena de frío en producción, distribución y puntos de venta."
+            "Tiendas propias.",
+            "Distribuidores.",
+            "Supermercados.",
+            "Clientes institucionales."
           ]
         }
       ]
@@ -100,182 +248,266 @@
       "sectionTitle": "Servicios tecnológicos",
       "index": 2,
       "groupId": "services",
-      "summary": "Servicios que soportan venta, inventario, producción y distribución.",
+      "summary": "Cinco servicios reconocidos por el negocio. No hay catálogo formal ni SLA aprobados.",
       "blocks": [
         {
           "type": "records",
-          "title": "Catálogo de servicios",
+          "title": "Servicios principales",
           "records": [
             {
-              "title": "POS de tiendas",
-              "fields": [
-                {
-                  "key": "servicePos",
-                  "label": "Descripción",
-                  "value": "Registro de ventas en tiendas.",
-                  "unit": "",
-                  "usable": false
-                },
-                {
-                  "key": "servicePosCriticality",
-                  "label": "Criticidad",
-                  "value": "Alta",
-                  "unit": "",
-                  "usable": true
-                }
-              ]
-            },
-            {
-              "title": "ERP",
+              "title": "ERP Boreal",
               "fields": [
                 {
                   "key": "serviceErp",
-                  "label": "Descripción",
-                  "value": "Finanzas, compras, inventario y operación administrativa.",
+                  "label": "Componentes principales",
+                  "value": "ERP-APP01, ERP-DB01, AD/DNS, NAS",
                   "unit": "",
-                  "usable": false
+                  "usable": false,
+                  "source": {
+                    "documentId": "caso-helados-boreal",
+                    "page": 3,
+                    "section": "2. Servicios tecnológicos y criticidad",
+                    "sourceSectionId": "services",
+                    "quote": "ERP Boreal ERP-APP01, ERP-DB01, AD/DNS, NAS 24/6; cierres mensuales Crítica",
+                    "anchorId": "hb-p3-erp",
+                    "verified": true
+                  }
                 },
                 {
                   "key": "serviceErpCriticality",
-                  "label": "Criticidad",
-                  "value": "Alta",
-                  "unit": "",
-                  "usable": true
-                }
-              ]
-            },
-            {
-              "title": "WMS",
-              "fields": [
-                {
-                  "key": "serviceWms",
-                  "label": "Descripción",
-                  "value": "Gestión de inventarios y despachos del centro de distribución.",
-                  "unit": "",
-                  "usable": false
-                },
-                {
-                  "key": "serviceWmsCriticality",
-                  "label": "Criticidad",
+                  "label": "Criticidad declarada",
                   "value": "Crítica",
                   "unit": "",
-                  "usable": true
+                  "usable": true,
+                  "source": {
+                    "documentId": "caso-helados-boreal",
+                    "page": 3,
+                    "section": "2. Servicios tecnológicos y criticidad",
+                    "sourceSectionId": "services",
+                    "quote": "ERP Boreal ... Crítica",
+                    "anchorId": "hb-p3-erp-crit",
+                    "verified": true
+                  }
                 }
               ]
             },
             {
-              "title": "MES",
+              "title": "Producción y lotes",
               "fields": [
                 {
-                  "key": "serviceMes",
-                  "label": "Descripción",
-                  "value": "Control de producción.",
+                  "key": "serviceProduction",
+                  "label": "Componentes principales",
+                  "value": "PROD-APP01, ERP-DB01, red planta",
                   "unit": "",
-                  "usable": false
+                  "usable": false,
+                  "source": {
+                    "documentId": "caso-helados-boreal",
+                    "page": 3,
+                    "section": "2. Servicios tecnológicos y criticidad",
+                    "sourceSectionId": "services",
+                    "quote": "Producción y lotes PROD-APP01, ERP-DB01, red planta 24/6 Crítica",
+                    "anchorId": "hb-p3-prod",
+                    "verified": true
+                  }
                 },
                 {
-                  "key": "serviceMesCriticality",
-                  "label": "Criticidad",
-                  "value": "Crítica durante operación de planta",
+                  "key": "serviceProductionCriticality",
+                  "label": "Criticidad declarada",
+                  "value": "Crítica",
                   "unit": "",
-                  "usable": true
+                  "usable": true,
+                  "source": {
+                    "documentId": "caso-helados-boreal",
+                    "page": 3,
+                    "section": "2. Servicios tecnológicos y criticidad",
+                    "sourceSectionId": "services",
+                    "quote": "Producción y lotes ... Crítica",
+                    "anchorId": "hb-p3-prod-crit",
+                    "verified": true
+                  }
                 }
               ]
             },
             {
-              "title": "E-commerce",
-              "fields": [
-                {
-                  "key": "serviceEcommerce",
-                  "label": "Descripción",
-                  "value": "Ventas online.",
-                  "unit": "",
-                  "usable": false
-                },
-                {
-                  "key": "serviceEcommerceCriticality",
-                  "label": "Criticidad",
-                  "value": "Alta",
-                  "unit": "",
-                  "usable": true
-                }
-              ]
-            },
-            {
-              "title": "Integración de cadena de frío",
+              "title": "Cadena de frío",
               "fields": [
                 {
                   "key": "serviceColdChain",
-                  "label": "Descripción",
-                  "value": "Recepción de datos de temperatura y monitoreo de transporte.",
+                  "label": "Componentes principales",
+                  "value": "IOT-GW01, COLD-APP01, red planta",
                   "unit": "",
-                  "usable": false
+                  "usable": false,
+                  "source": {
+                    "documentId": "caso-helados-boreal",
+                    "page": 3,
+                    "section": "2. Servicios tecnológicos y criticidad",
+                    "sourceSectionId": "services",
+                    "quote": "Cadena de frío IOT-GW01, COLD-APP01, red planta 24/7 Crítica",
+                    "anchorId": "hb-p3-frio",
+                    "verified": true
+                  }
                 },
                 {
                   "key": "serviceColdChainCriticality",
-                  "label": "Criticidad",
-                  "value": "Alta",
-                  "unit": "",
-                  "usable": true
-                }
-              ]
-            },
-            {
-              "title": "Active Directory",
-              "fields": [
-                {
-                  "key": "serviceAd",
-                  "label": "Descripción",
-                  "value": "Identidad y acceso de usuarios y equipos.",
-                  "unit": "",
-                  "usable": false
-                },
-                {
-                  "key": "serviceAdCriticality",
-                  "label": "Criticidad",
+                  "label": "Criticidad declarada",
                   "value": "Crítica",
                   "unit": "",
-                  "usable": true
-                }
-              ]
-            },
-            {
-              "title": "Correo",
-              "fields": [
-                {
-                  "key": "serviceMail",
-                  "label": "Descripción",
-                  "value": "Comunicación institucional.",
-                  "unit": "",
-                  "usable": false
+                  "usable": true,
+                  "source": {
+                    "documentId": "caso-helados-boreal",
+                    "page": 3,
+                    "section": "2. Servicios tecnológicos y criticidad",
+                    "sourceSectionId": "services",
+                    "quote": "Cadena de frío ... 24/7 Crítica",
+                    "anchorId": "hb-p3-frio-crit",
+                    "verified": true
+                  }
                 },
                 {
-                  "key": "serviceMailCriticality",
-                  "label": "Criticidad",
-                  "value": "Media",
+                  "key": "coldChainSensors",
+                  "label": "Sensores de cadena de frío",
+                  "value": 96,
                   "unit": "",
-                  "usable": false
+                  "usable": true,
+                  "source": {
+                    "documentId": "caso-helados-boreal",
+                    "page": 3,
+                    "section": "Flujo operativo simplificado",
+                    "sourceSectionId": "services",
+                    "quote": "lecturas de 96 sensores instalados en cuartos fríos, planta y vehículos seleccionados",
+                    "anchorId": "hb-p3-sensores",
+                    "verified": true
+                  }
                 }
               ]
             },
             {
-              "title": "Archivos compartidos",
+              "title": "Ventas y pedidos",
+              "fields": [
+                {
+                  "key": "serviceSales",
+                  "label": "Componentes principales",
+                  "value": "WEB-APP01, ERP-APP01, Internet",
+                  "unit": "",
+                  "usable": false,
+                  "source": {
+                    "documentId": "caso-helados-boreal",
+                    "page": 3,
+                    "section": "2. Servicios tecnológicos y criticidad",
+                    "sourceSectionId": "services",
+                    "quote": "Ventas y pedidos WEB-APP01, ERP-APP01, Internet 06:00-22:00 Alta",
+                    "anchorId": "hb-p3-ventas",
+                    "verified": true
+                  }
+                },
+                {
+                  "key": "serviceSalesCriticality",
+                  "label": "Criticidad declarada",
+                  "value": "Alta",
+                  "unit": "",
+                  "usable": true,
+                  "source": {
+                    "documentId": "caso-helados-boreal",
+                    "page": 3,
+                    "section": "2. Servicios tecnológicos y criticidad",
+                    "sourceSectionId": "services",
+                    "quote": "Ventas y pedidos ... Alta",
+                    "anchorId": "hb-p3-ventas-crit",
+                    "verified": true
+                  }
+                }
+              ]
+            },
+            {
+              "title": "Archivos corporativos",
               "fields": [
                 {
                   "key": "serviceFiles",
-                  "label": "Descripción",
-                  "value": "Repositorio de documentos y archivos administrativos.",
+                  "label": "Componentes principales",
+                  "value": "FILE-SRV01, NAS, AD",
                   "unit": "",
-                  "usable": false
+                  "usable": false,
+                  "source": {
+                    "documentId": "caso-helados-boreal",
+                    "page": 3,
+                    "section": "2. Servicios tecnológicos y criticidad",
+                    "sourceSectionId": "services",
+                    "quote": "Archivos corporativos FILE-SRV01, NAS, AD 07:00-20:00 Media",
+                    "anchorId": "hb-p3-archivos",
+                    "verified": true
+                  }
                 },
                 {
                   "key": "serviceFilesCriticality",
-                  "label": "Criticidad",
+                  "label": "Criticidad declarada",
                   "value": "Media",
                   "unit": "",
-                  "usable": false
+                  "usable": true,
+                  "source": {
+                    "documentId": "caso-helados-boreal",
+                    "page": 3,
+                    "section": "2. Servicios tecnológicos y criticidad",
+                    "sourceSectionId": "services",
+                    "quote": "Archivos corporativos ... Media",
+                    "anchorId": "hb-p3-archivos-crit",
+                    "verified": true
+                  }
                 }
               ]
+            }
+          ]
+        },
+        {
+          "type": "fields",
+          "title": "Expectativas no formalizadas",
+          "fields": [
+            {
+              "key": "expectedErpRecovery",
+              "label": "Recuperación esperada del ERP",
+              "value": "menos de dos horas",
+              "unit": "",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 3,
+                "section": "Expectativas no formalizadas",
+                "sourceSectionId": "services",
+                "quote": "Los líderes esperan recuperar el ERP en menos de dos horas",
+                "anchorId": "hb-p3-rto-erp",
+                "verified": true
+              }
+            },
+            {
+              "key": "expectedColdRecovery",
+              "label": "Recuperación esperada de cadena de frío",
+              "value": "menos de una hora",
+              "unit": "",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 3,
+                "section": "Expectativas no formalizadas",
+                "sourceSectionId": "services",
+                "quote": "el monitoreo de cadena de frío en menos de una hora",
+                "anchorId": "hb-p3-rto-frio",
+                "verified": true
+              }
+            },
+            {
+              "key": "slaCompleteness",
+              "label": "SLA / RTO / RPO",
+              "value": "No documentados como RTO; no hay RPO aprobado ni pruebas integrales de recuperación en los últimos doce meses",
+              "unit": "",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 3,
+                "section": "Expectativas no formalizadas",
+                "sourceSectionId": "services",
+                "quote": "estas metas no están documentadas como RTO, no existe un RPO aprobado por servicio y tampoco se han realizado pruebas integrales de recuperación durante los últimos doce meses",
+                "anchorId": "hb-p3-sla",
+                "verified": true
+              }
             }
           ]
         }
@@ -286,85 +518,94 @@
       "sectionTitle": "Infraestructura",
       "index": 3,
       "groupId": "architecture",
-      "summary": "Servidores de aplicación, datos e identidad que sostienen la operación.",
+      "summary": "Cuarto técnico en Bogotá: tres hosts, NAS y equipos de red. No hay segundo centro de datos.",
       "blocks": [
         {
           "type": "fields",
           "fields": [
             {
-              "key": "serverCount",
-              "label": "Servidores descritos en el inventario",
-              "value": 7,
+              "key": "virtualizationHosts",
+              "label": "Hosts de virtualización",
+              "value": 3,
               "unit": "",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 4,
+                "section": "3. Infraestructura tecnológica actual",
+                "sourceSectionId": "infrastructure",
+                "quote": "La sede Bogotá aloja un cuarto técnico con tres hosts de virtualización, una cabina NAS y equipos de red. No existe un segundo centro de datos.",
+                "anchorId": "hb-p4-hosts",
+                "verified": true
+              }
             }
           ]
         },
         {
           "type": "records",
-          "title": "Inventario de servidores",
+          "title": "Inventario declarado",
           "records": [
             {
-              "title": "APP-SRV01",
+              "title": "HV-01 / HV-02",
               "fields": [
-                { "key": "appSrv01Vcpu", "label": "vCPU", "value": 8, "unit": "vCPU", "usable": false },
-                { "key": "appSrv01Ram", "label": "RAM", "value": 24, "unit": "GB", "usable": false },
-                { "key": "appSrv01Os", "label": "Sistema operativo", "value": "Linux", "unit": "", "usable": false },
-                { "key": "appSrv01Role", "label": "Rol", "value": "Aplicación de integración tiendas / POS", "unit": "", "usable": false }
+                { "key": "hvMainCores", "label": "Núcleos (c/u)", "value": 16, "unit": "", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "HV-01 / HV-02 Hosts principales 16 núcleos, 128 GB RAM c/u", "anchorId": "hb-p4-hv01", "verified": true } },
+                { "key": "hvMainRam", "label": "RAM (c/u)", "value": 128, "unit": "GB", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "16 núcleos, 128 GB RAM c/u", "anchorId": "hb-p4-hv01-ram", "verified": true } }
               ]
             },
             {
-              "title": "ERP-SRV01",
+              "title": "HV-03",
               "fields": [
-                { "key": "erpSrv01Vcpu", "label": "vCPU", "value": 16, "unit": "vCPU", "usable": false },
-                { "key": "erpSrv01Ram", "label": "RAM", "value": 64, "unit": "GB", "usable": false },
-                { "key": "erpSrv01Os", "label": "Sistema operativo", "value": "Windows", "unit": "", "usable": false },
-                { "key": "erpSrv01Role", "label": "Rol", "value": "ERP", "unit": "", "usable": false }
+                { "key": "hv03Cores", "label": "Núcleos", "value": 12, "unit": "", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "HV-03 Host auxiliar 12 núcleos, 64 GB RAM Sin capacidad para asumir toda la carga", "anchorId": "hb-p4-hv03", "verified": true } },
+                { "key": "hv03Ram", "label": "RAM", "value": 64, "unit": "GB", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "HV-03 Host auxiliar 12 núcleos, 64 GB RAM", "anchorId": "hb-p4-hv03-ram", "verified": true } }
               ]
             },
             {
-              "title": "WMS-SRV01",
+              "title": "ERP-APP01",
               "fields": [
-                { "key": "wmsSrv01Vcpu", "label": "vCPU", "value": 16, "unit": "vCPU", "usable": false },
-                { "key": "wmsSrv01Ram", "label": "RAM", "value": 32, "unit": "GB", "usable": false },
-                { "key": "wmsSrv01Os", "label": "Sistema operativo", "value": "Linux", "unit": "", "usable": false },
-                { "key": "wmsSrv01Role", "label": "Rol", "value": "WMS", "unit": "", "usable": false }
+                { "key": "erpApp01Vcpu", "label": "vCPU", "value": 8, "unit": "vCPU", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "ERP-APP01 Aplicación ERP 8 vCPU, 24 GB RAM Instancia única", "anchorId": "hb-p4-erp-app", "verified": true } },
+                { "key": "erpApp01Ram", "label": "RAM", "value": 24, "unit": "GB", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "ERP-APP01 Aplicación ERP 8 vCPU, 24 GB RAM Instancia única", "anchorId": "hb-p4-erp-app-ram", "verified": true } }
               ]
             },
             {
-              "title": "MES-SRV01",
+              "title": "ERP-DB01",
               "fields": [
-                { "key": "mesSrv01Vcpu", "label": "vCPU", "value": 16, "unit": "vCPU", "usable": false },
-                { "key": "mesSrv01Ram", "label": "RAM", "value": 32, "unit": "GB", "usable": false },
-                { "key": "mesSrv01Os", "label": "Sistema operativo", "value": "Windows", "unit": "", "usable": false },
-                { "key": "mesSrv01Role", "label": "Rol", "value": "MES", "unit": "", "usable": false }
+                { "key": "erpDb01Vcpu", "label": "vCPU", "value": 12, "unit": "vCPU", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "ERP-DB01 Base de datos SQL 12 vCPU, 48 GB RAM Instancia única; dependencia crítica", "anchorId": "hb-p4-erp-db", "verified": true } },
+                { "key": "erpDb01Ram", "label": "RAM", "value": 48, "unit": "GB", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "ERP-DB01 Base de datos SQL 12 vCPU, 48 GB RAM Instancia única", "anchorId": "hb-p4-erp-db-ram", "verified": true } }
               ]
             },
             {
-              "title": "DB-SRV01",
+              "title": "PROD-APP01",
               "fields": [
-                { "key": "dbSrv01Vcpu", "label": "vCPU", "value": 24, "unit": "vCPU", "usable": false },
-                { "key": "dbSrv01Ram", "label": "RAM", "value": 96, "unit": "GB", "usable": false },
-                { "key": "dbSrv01Os", "label": "Motor", "value": "PostgreSQL", "unit": "", "usable": false },
-                { "key": "dbSrv01Role", "label": "Rol", "value": "Base de datos principal", "unit": "", "usable": false }
+                { "key": "prodApp01Vcpu", "label": "vCPU", "value": 6, "unit": "vCPU", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "PROD-APP01 Producción y lotes 6 vCPU, 16 GB RAM Comparte ERP-DB01", "anchorId": "hb-p4-prod", "verified": true } },
+                { "key": "prodApp01Ram", "label": "RAM", "value": 16, "unit": "GB", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "PROD-APP01 Producción y lotes 6 vCPU, 16 GB RAM", "anchorId": "hb-p4-prod-ram", "verified": true } }
+              ]
+            },
+            {
+              "title": "COLD-APP01",
+              "fields": [
+                { "key": "coldApp01Vcpu", "label": "vCPU", "value": 4, "unit": "vCPU", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "COLD-APP01 Cadena de frío 4 vCPU, 12 GB RAM Recibe datos de IOT-GW01", "anchorId": "hb-p4-cold", "verified": true } },
+                { "key": "coldApp01Ram", "label": "RAM", "value": 12, "unit": "GB", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "COLD-APP01 Cadena de frío 4 vCPU, 12 GB RAM", "anchorId": "hb-p4-cold-ram", "verified": true } }
+              ]
+            },
+            {
+              "title": "WEB-APP01",
+              "fields": [
+                { "key": "webApp01Vcpu", "label": "vCPU", "value": 4, "unit": "vCPU", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "WEB-APP01 Portal de pedidos 4 vCPU, 8 GB RAM Publicado a Internet", "anchorId": "hb-p4-web", "verified": true } },
+                { "key": "webApp01Ram", "label": "RAM", "value": 8, "unit": "GB", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "WEB-APP01 Portal de pedidos 4 vCPU, 8 GB RAM", "anchorId": "hb-p4-web-ram", "verified": true } }
               ]
             },
             {
               "title": "AD-SRV01",
               "fields": [
-                { "key": "adSrv01Vcpu", "label": "vCPU", "value": 4, "unit": "vCPU", "usable": false },
-                { "key": "adSrv01Ram", "label": "RAM", "value": 16, "unit": "GB", "usable": false },
-                { "key": "adSrv01Os", "label": "Sistema operativo", "value": "Windows Server", "unit": "", "usable": false },
-                { "key": "adSrv01Role", "label": "Rol", "value": "Active Directory", "unit": "", "usable": false }
+                { "key": "adSrv01Vcpu", "label": "vCPU", "value": 4, "unit": "vCPU", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "AD-SRV01 Active Directory y DNS 4 vCPU, 12 GB RAM Controlador principal único", "anchorId": "hb-p4-ad", "verified": true } },
+                { "key": "adSrv01Ram", "label": "RAM", "value": 12, "unit": "GB", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "AD-SRV01 Active Directory y DNS 4 vCPU, 12 GB RAM Controlador principal único", "anchorId": "hb-p4-ad-ram", "verified": true } }
               ]
             },
             {
               "title": "FILE-SRV01",
               "fields": [
-                { "key": "fileSrv01Vcpu", "label": "vCPU", "value": 8, "unit": "vCPU", "usable": false },
-                { "key": "fileSrv01Ram", "label": "RAM", "value": 24, "unit": "GB", "usable": false },
-                { "key": "fileSrv01Os", "label": "Sistema operativo", "value": "Windows Server", "unit": "", "usable": false },
-                { "key": "fileSrv01Role", "label": "Rol", "value": "Archivos", "unit": "", "usable": false }
+                { "key": "fileSrv01Vcpu", "label": "vCPU", "value": 4, "unit": "vCPU", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "FILE-SRV01 Archivos 4 vCPU, 12 GB RAM Datos alojados en NAS", "anchorId": "hb-p4-file", "verified": true } },
+                { "key": "fileSrv01Ram", "label": "RAM", "value": 12, "unit": "GB", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 4, "section": "3. Infraestructura tecnológica actual", "sourceSectionId": "infrastructure", "quote": "FILE-SRV01 Archivos 4 vCPU, 12 GB RAM Datos alojados en NAS", "anchorId": "hb-p4-file-ram", "verified": true } }
               ]
             }
           ]
@@ -376,45 +617,93 @@
       "sectionTitle": "Almacenamiento",
       "index": 4,
       "groupId": "capacity",
-      "summary": "Capacidad, uso actual y ritmo de crecimiento del almacenamiento.",
+      "summary": "Cabina NAS-01: capacidad, ocupación al 31 de agosto de 2026 y crecimiento.",
       "blocks": [
         {
           "type": "fields",
           "fields": [
             {
               "key": "storageCapacity",
-              "label": "Capacidad total",
-              "value": 20,
+              "label": "Capacidad útil NAS-01",
+              "value": 24,
               "unit": "TB",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 6,
+                "section": "5. Almacenamiento, respaldo y recuperación",
+                "sourceSectionId": "storage",
+                "quote": "La cabina NAS-01 ofrece 24 TB útiles.",
+                "anchorId": "hb-p6-capacidad",
+                "verified": true
+              }
             },
             {
               "key": "storageUsed",
               "label": "Capacidad utilizada",
-              "value": 16.8,
+              "value": 19.2,
               "unit": "TB",
-              "displayValue": "16,8 TB",
-              "usable": true
+              "displayValue": "19,2 TB",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 6,
+                "section": "5. Almacenamiento, respaldo y recuperación",
+                "sourceSectionId": "storage",
+                "quote": "Al corte del 31 de agosto de 2026, 19,2 TB estaban ocupados.",
+                "anchorId": "hb-p6-usado",
+                "verified": true
+              }
+            },
+            {
+              "key": "storageUsedPercent",
+              "label": "Ocupación declarada",
+              "value": 80,
+              "unit": "%",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 6,
+                "section": "5. Almacenamiento, respaldo y recuperación",
+                "sourceSectionId": "storage",
+                "quote": "Total utilizado 19,2 TB de 24 TB 80 % de ocupación",
+                "anchorId": "hb-p6-ocupacion",
+                "verified": true
+              }
             },
             {
               "key": "storageGrowth",
-              "label": "Crecimiento",
-              "value": 420,
+              "label": "Crecimiento promedio",
+              "value": 650,
               "unit": "GB/mes",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 6,
+                "section": "5. Almacenamiento, respaldo y recuperación",
+                "sourceSectionId": "storage",
+                "quote": "El crecimiento promedio de los últimos seis meses fue de 650 GB mensuales",
+                "anchorId": "hb-p6-crecimiento",
+                "verified": true
+              }
+            },
+            {
+              "key": "storageFree",
+              "label": "Capacidad libre declarada para el ejercicio",
+              "value": 4.8,
+              "unit": "TB",
+              "displayValue": "4,8 TB",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 6,
+                "section": "Datos para calcular",
+                "sourceSectionId": "storage",
+                "quote": "Con 4,8 TB libres y un crecimiento promedio de 650 GB por mes, estime el horizonte de capacidad.",
+                "anchorId": "hb-p6-libre",
+                "verified": true
+              }
             }
-          ]
-        },
-        {
-          "type": "list",
-          "title": "Uso principal",
-          "items": [
-            "Bases de datos.",
-            "Documentos.",
-            "Archivos administrativos.",
-            "Exportaciones.",
-            "Históricos.",
-            "Respaldos locales."
           ]
         }
       ]
@@ -424,36 +713,53 @@
       "sectionTitle": "Backup",
       "index": 5,
       "groupId": "governance",
-      "summary": "Política de copias, destino y evidencias de fallos no detectados.",
+      "summary": "Esquema de respaldo, falla de copia externa y ausencia de prueba completa del ERP.",
       "blocks": [
         {
           "type": "list",
-          "title": "Configuración observada",
+          "title": "Esquema de respaldo",
           "items": [
-            "Backup diario.",
-            "Incrementales cada 6 horas.",
-            "Almacenamiento principal en NAS.",
-            "Copia externa semanal.",
-            "Pruebas de restauración irregulares.",
-            "No existe tablero consolidado."
+            "ERP-DB01: respaldo completo nocturno e incremental cada cuatro horas.",
+            "Máquinas virtuales críticas: copia diaria en NAS-01.",
+            "Archivos: copia incremental diaria.",
+            "Copia externa cifrada: ejecución semanal.",
+            "La consola no alerta automáticamente cuando falla la copia externa."
           ]
         },
         {
           "type": "fields",
           "fields": [
             {
-              "key": "backupRestoreTests",
-              "label": "Pruebas de restauración",
-              "value": "Irregulares",
-              "unit": "",
-              "usable": true
+              "key": "backupExternalGapDays",
+              "label": "Días sin copia externa advertida (agosto 2026)",
+              "value": 9,
+              "unit": "días",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 6,
+                "section": "Hallazgo de auditoría",
+                "sourceSectionId": "backup",
+                "quote": "la copia externa más reciente correspondía al 9 de agosto. La tarea había fallado por credenciales vencidas y permaneció nueve días sin ser advertida",
+                "anchorId": "hb-p6-backup-falla",
+                "verified": true
+              }
             },
             {
-              "key": "undetectedBackupFailures",
-              "label": "Fallos de backup no detectados oportunamente",
-              "value": 2,
+              "key": "backupRestoreTests",
+              "label": "Última restauración parcial documentada",
+              "value": "noviembre de 2025; no hay evidencia de una prueba completa del ERP",
               "unit": "",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 6,
+                "section": "Hallazgo de auditoría",
+                "sourceSectionId": "backup",
+                "quote": "La última restauración parcial documentada fue realizada en noviembre de 2025; no existe evidencia de una prueba completa del ERP.",
+                "anchorId": "hb-p6-restore",
+                "verified": true
+              }
             }
           ]
         }
@@ -464,38 +770,76 @@
       "sectionTitle": "Red",
       "index": 6,
       "groupId": "architecture",
-      "summary": "Enlaces, perímetro, VPN y segmentación observada.",
+      "summary": "Dos enlaces a Internet y un único firewall físico en Bogotá.",
       "blocks": [
         {
           "type": "fields",
           "fields": [
             {
               "key": "mainInternetLinks",
-              "label": "Enlaces de Internet en sede principal",
+              "label": "Enlaces de Internet en Bogotá",
               "value": 2,
               "unit": "",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 5,
+                "section": "4. Red, conectividad y seguridad",
+                "sourceSectionId": "network",
+                "quote": "Bogotá cuenta con dos enlaces a Internet de proveedores diferentes.",
+                "anchorId": "hb-p5-enlaces",
+                "verified": true
+              }
+            },
+            {
+              "key": "primaryLinkMbps",
+              "label": "Enlace principal",
+              "value": 500,
+              "unit": "Mbps",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 5,
+                "section": "4. Red, conectividad y seguridad",
+                "sourceSectionId": "network",
+                "quote": "El enlace principal es de 500 Mbps y el secundario de 200 Mbps.",
+                "anchorId": "hb-p5-500",
+                "verified": true
+              }
+            },
+            {
+              "key": "secondaryLinkMbps",
+              "label": "Enlace secundario",
+              "value": 200,
+              "unit": "Mbps",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 5,
+                "section": "4. Red, conectividad y seguridad",
+                "sourceSectionId": "network",
+                "quote": "el secundario de 200 Mbps",
+                "anchorId": "hb-p5-200",
+                "verified": true
+              }
             },
             {
               "key": "mainFirewallCount",
-              "label": "Firewall principal",
+              "label": "Firewall físico",
               "value": 1,
               "unit": "",
-              "usable": true
+              "displayValue": "FW-01, único",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 5,
+                "section": "4. Red, conectividad y seguridad",
+                "sourceSectionId": "network",
+                "quote": "Ambos terminan en un único firewall físico FW-01",
+                "anchorId": "hb-p5-fw",
+                "verified": true
+              }
             }
-          ]
-        },
-        {
-          "type": "list",
-          "title": "Topología y acceso",
-          "items": [
-            "VPN hacia tiendas.",
-            "Tiendas con diferentes proveedores.",
-            "Algunas tiendas con un único enlace.",
-            "Red corporativa.",
-            "Red de producción.",
-            "Conectividad Wi-Fi.",
-            "Segmentación parcial."
           ]
         }
       ]
@@ -505,56 +849,107 @@
       "sectionTitle": "Seguridad",
       "index": 7,
       "groupId": "security",
-      "summary": "Controles existentes y brechas de identidad, registros y parches.",
+      "summary": "Identidades, MFA, parches y registros observados en agosto.",
       "blocks": [
-        {
-          "type": "list",
-          "title": "Controles presentes",
-          "items": [
-            "Firewall.",
-            "Antivirus/EDR.",
-            "Active Directory.",
-            "VPN.",
-            "Cuentas de servicio."
-          ]
-        },
         {
           "type": "fields",
           "fields": [
             {
               "key": "mfaCoverage",
-              "label": "MFA",
-              "value": "Parcial",
+              "label": "MFA en cuentas privilegiadas",
+              "value": "9 de 17",
               "unit": "",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 5,
+                "section": "Gestión de identidades y accesos",
+                "sourceSectionId": "security",
+                "quote": "MFA solo está habilitado para 9 de 17 cuentas con privilegios",
+                "anchorId": "hb-p5-mfa",
+                "verified": true
+              }
             },
             {
-              "key": "privilegedAccessReview",
-              "label": "Accesos privilegiados",
-              "value": "Algunos sin revisión periódica",
+              "key": "staleAccounts",
+              "label": "Cuentas de exempleados (revisión de agosto)",
+              "value": 4,
               "unit": "",
-              "usable": true
+              "displayValue": "cuatro cuentas deshabilitadas entre 12 y 27 días después del retiro",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 5,
+                "section": "Gestión de identidades y accesos",
+                "sourceSectionId": "security",
+                "quote": "cuatro cuentas de exempleados que fueron deshabilitadas entre 12 y 27 días después de su retiro",
+                "anchorId": "hb-p5-cuentas",
+                "verified": true
+              }
+            },
+            {
+              "key": "genericAccounts",
+              "label": "Cuentas genéricas en producción",
+              "value": 3,
+              "unit": "",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 5,
+                "section": "Gestión de identidades y accesos",
+                "sourceSectionId": "security",
+                "quote": "Existen tres cuentas genéricas utilizadas en equipos compartidos de producción.",
+                "anchorId": "hb-p5-genericas",
+                "verified": true
+              }
+            },
+            {
+              "key": "pendingPatches",
+              "label": "Servidores con parches pendientes > 60 días",
+              "value": 7,
+              "unit": "",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 5,
+                "section": "Parches y registros",
+                "sourceSectionId": "security",
+                "quote": "siete servidores con actualizaciones pendientes de más de 60 días",
+                "anchorId": "hb-p5-parches",
+                "verified": true
+              }
             },
             {
               "key": "logManagement",
               "label": "Registros",
-              "value": "Logs distribuidos",
+              "value": "Se conservan en cada plataforma; no hay consola central de eventos",
               "unit": "",
-              "usable": false
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 5,
+                "section": "Parches y registros",
+                "sourceSectionId": "security",
+                "quote": "Los registros se conservan en cada plataforma y no existe una consola central de eventos.",
+                "anchorId": "hb-p5-logs",
+                "verified": true
+              }
             },
             {
-              "key": "patchCoordination",
-              "label": "Actualizaciones",
-              "value": "No siempre coordinadas",
+              "key": "privilegedAccessReview",
+              "label": "Revisión periódica de accesos privilegiados",
+              "value": "No existe una revisión periódica aprobada",
               "unit": "",
-              "usable": false
-            },
-            {
-              "key": "staleAccounts",
-              "label": "Cuentas de exempleados",
-              "value": "Varias deshabilitadas tardíamente",
-              "unit": "",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 5,
+                "section": "Condición de control",
+                "sourceSectionId": "security",
+                "quote": "No existe una revisión periódica aprobada de accesos privilegiados, reglas del firewall, cuentas inactivas o cobertura de MFA.",
+                "anchorId": "hb-p5-revision",
+                "verified": true
+              }
             }
           ]
         }
@@ -565,28 +960,16 @@
       "sectionTitle": "Equipo TI",
       "index": 8,
       "groupId": "context",
-      "summary": "Composición del equipo y roles que no existen de forma exclusiva.",
+      "summary": "Composición del equipo interno y proveedor externo del ERP.",
       "blocks": [
         {
           "type": "fields",
           "title": "Dotación",
           "fields": [
-            { "key": "roleCio", "label": "Director TI", "value": 1, "unit": "", "usable": false },
-            { "key": "roleInfra", "label": "Infraestructura", "value": 2, "unit": "", "usable": false },
-            { "key": "roleNetwork", "label": "Redes", "value": 2, "unit": "", "usable": false },
-            { "key": "roleApps", "label": "Aplicaciones", "value": 4, "unit": "", "usable": false },
-            { "key": "roleSupport", "label": "Soporte", "value": 5, "unit": "", "usable": false },
-            { "key": "roleSecurity", "label": "Seguridad", "value": 2, "unit": "", "usable": false },
-            { "key": "itHeadcount", "label": "Total de personas en TI", "value": 16, "unit": "", "usable": true }
-          ]
-        },
-        {
-          "type": "list",
-          "title": "No existe rol exclusivo de",
-          "items": [
-            "Capacidad.",
-            "Arquitectura empresarial.",
-            "Continuidad."
+            { "key": "roleCoordinator", "label": "Coordinador", "value": 1, "unit": "", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 9, "section": "8. Gobierno de TI, restricciones y costos", "sourceSectionId": "it-team", "quote": "El equipo de TI está compuesto por un coordinador, dos administradores de infraestructura, un analista de soporte y un proveedor externo para el ERP.", "anchorId": "hb-p9-equipo", "verified": true } },
+            { "key": "roleInfra", "label": "Administradores de infraestructura", "value": 2, "unit": "", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 9, "section": "8. Gobierno de TI, restricciones y costos", "sourceSectionId": "it-team", "quote": "dos administradores de infraestructura", "anchorId": "hb-p9-infra", "verified": true } },
+            { "key": "roleSupport", "label": "Analista de soporte", "value": 1, "unit": "", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 9, "section": "8. Gobierno de TI, restricciones y costos", "sourceSectionId": "it-team", "quote": "un analista de soporte", "anchorId": "hb-p9-soporte", "verified": true } },
+            { "key": "itHeadcount", "label": "Personas internas de TI", "value": 4, "unit": "", "usable": true, "source": { "documentId": "caso-helados-boreal", "page": 9, "section": "8. Gobierno de TI, restricciones y costos", "sourceSectionId": "it-team", "quote": "un coordinador, dos administradores de infraestructura, un analista de soporte", "anchorId": "hb-p9-dotacion", "verified": true } }
           ]
         }
       ]
@@ -596,42 +979,58 @@
       "sectionTitle": "Operación",
       "index": 9,
       "groupId": "governance",
-      "summary": "Canales de soporte, registro de incidentes y consolidación de reportes.",
+      "summary": "Canales de registro de incidentes y monitoreo.",
       "blocks": [
-        {
-          "type": "list",
-          "title": "Canales de atención",
-          "items": [
-            "Mesa de ayuda.",
-            "Correo.",
-            "Llamadas.",
-            "Mensajería.",
-            "Solicitudes directas a técnicos."
-          ]
-        },
         {
           "type": "fields",
           "fields": [
             {
               "key": "incidentRegistrationCoverage",
               "label": "Registro de incidentes",
-              "value": "No todos los incidentes quedan registrados",
+              "value": "Correos, Teams y una hoja de cálculo; varios tickets carecen de causa, categoría o tiempo de recuperación",
               "unit": "",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 5,
+                "section": "Parches y registros",
+                "sourceSectionId": "operations",
+                "quote": "Los incidentes se registran en correos, mensajes de Teams y una hoja de cálculo",
+                "anchorId": "hb-p5-registro",
+                "verified": true
+              }
             },
             {
               "key": "monitoringTools",
               "label": "Monitoreo",
-              "value": "Existen varias herramientas de monitoreo",
+              "value": "Alertas básicas de disponibilidad y espacio; CPU, memoria, latencia, backups y seguridad en herramientas separadas",
               "unit": "",
-              "usable": false
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 7,
+                "section": "Monitoreo",
+                "sourceSectionId": "operations",
+                "quote": "CPU, memoria, latencia de aplicación, backups, eventos de seguridad y experiencia de usuario se revisan en herramientas separadas.",
+                "anchorId": "hb-p7-monitoreo",
+                "verified": true
+              }
             },
             {
-              "key": "executiveReporting",
-              "label": "Reportes ejecutivos",
-              "value": "Se consolidan manualmente",
+              "key": "capacityDecisions",
+              "label": "Decisiones de capacidad",
+              "value": "Se solicitan principalmente cuando aparece una alerta o degradación",
               "unit": "",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 7,
+                "section": "Gestión de capacidad",
+                "sourceSectionId": "operations",
+                "quote": "La adquisición de infraestructura se solicita principalmente cuando aparece una alerta o degradación.",
+                "anchorId": "hb-p7-capacidad",
+                "verified": true
+              }
             }
           ]
         }
@@ -642,7 +1041,7 @@
       "sectionTitle": "Información operacional disponible",
       "index": 10,
       "groupId": "availability",
-      "summary": "Periodo observado, indisponibilidad, incidentes y señales de capacidad.",
+      "summary": "Periodo de 90 días, incidentes contabilizados y señales de rendimiento del 28 de agosto.",
       "blocks": [
         {
           "type": "fields",
@@ -650,157 +1049,194 @@
           "fields": [
             {
               "key": "periodHours",
-              "label": "Periodo observado",
-              "value": 720,
+              "label": "Periodo de observación",
+              "value": 2160,
               "unit": "h",
+              "displayValue": "90 días (2.160 h)",
               "usable": true,
-              "sourceLabel": "Periodo observado"
-            },
-            {
-              "key": "downtimeHours",
-              "label": "Tiempo total de indisponibilidad",
-              "value": 12,
-              "unit": "h",
-              "usable": true,
-              "sourceLabel": "Tiempo total de indisponibilidad"
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 8,
+                "section": "Datos de periodo",
+                "sourceSectionId": "operational-data",
+                "quote": "use un periodo de observación de 90 días calendario (2.160 horas)",
+                "anchorId": "hb-p8-periodo",
+                "verified": true
+              }
             },
             {
               "key": "incidentCount",
-              "label": "Incidentes",
-              "value": 10,
+              "label": "Incidentes contabilizados",
+              "value": 5,
               "unit": "",
               "usable": true,
-              "sourceLabel": "Número de incidentes"
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 8,
+                "section": "Datos de periodo",
+                "sourceSectionId": "operational-data",
+                "quote": "El registro anterior contiene cinco incidentes contabilizados.",
+                "anchorId": "hb-p8-incidentes",
+                "verified": true
+              }
+            },
+            {
+              "key": "downtimeHours",
+              "label": "Tiempo total de afectación",
+              "value": 10.6667,
+              "unit": "h",
+              "displayValue": "10 h 40 min",
+              "usable": true,
+              "origin": "CALCULATED",
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 8,
+                "section": "7. Registro de incidentes y cambios",
+                "sourceSectionId": "incidents",
+                "quote": "",
+                "verified": false,
+                "context": "Suma de duraciones del registro (2 h 20 min + 1 h 35 min + 3 h 10 min + 55 min + 2 h 40 min = 640 min). El PDF pide calcular este total; no lo imprime como cifra única."
+              }
             },
             {
               "key": "totalRecoveryHours",
               "label": "Tiempo total de recuperación",
-              "value": 31,
+              "value": 10.6667,
               "unit": "h",
+              "displayValue": "10 h 40 min",
               "usable": true,
-              "sourceLabel": "Tiempo total de recuperación"
+              "origin": "CALCULATED",
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 8,
+                "section": "7. Registro de incidentes y cambios",
+                "sourceSectionId": "incidents",
+                "quote": "Los tiempos corresponden a la duración registrada desde el aviso hasta la restauración.",
+                "verified": false,
+                "context": "En este registro, duración y recuperación coinciden. El total no aparece como cifra única en el PDF."
+              }
             }
           ]
         },
         {
           "type": "fields",
-          "title": "APP-SRV01",
+          "title": "ERP-APP01 y demanda (28 ago.)",
           "fields": [
             {
               "key": "appCpuAverage",
-              "label": "CPU promedio",
-              "value": 78,
+              "label": "CPU habitual ERP-APP01",
+              "value": 45,
               "unit": "%",
-              "usable": false
+              "displayValue": "45-60 %",
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 7,
+                "section": "6. Rendimiento, capacidad y monitoreo",
+                "sourceSectionId": "operational-data",
+                "quote": "ERP-APP01 CPU 45-60 % 92 % Cierre comercial, 28 ago.",
+                "anchorId": "hb-p7-cpu-hab",
+                "verified": true
+              }
             },
             {
               "key": "appCpuPeak",
-              "label": "CPU pico",
-              "value": 96,
+              "label": "CPU pico ERP-APP01",
+              "value": 92,
               "unit": "%",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 7,
+                "section": "6. Rendimiento, capacidad y monitoreo",
+                "sourceSectionId": "operational-data",
+                "quote": "ERP-APP01 CPU 45-60 % 92 % Cierre comercial, 28 ago.",
+                "anchorId": "hb-p7-cpu-pico",
+                "verified": true
+              }
             },
             {
               "key": "appRamUsage",
-              "label": "Uso de RAM",
+              "label": "RAM pico ERP-APP01",
               "value": 88,
               "unit": "%",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 7,
+                "section": "6. Rendimiento, capacidad y monitoreo",
+                "sourceSectionId": "operational-data",
+                "quote": "ERP-APP01 RAM 68 % 88 % Cierre comercial, 28 ago.",
+                "anchorId": "hb-p7-ram",
+                "verified": true
+              }
             },
             {
               "key": "appLatencyNormal",
-              "label": "Latencia normal",
-              "value": 180,
-              "unit": "ms",
-              "usable": false
+              "label": "Tiempo de respuesta habitual ERP",
+              "value": 1.4,
+              "unit": "s",
+              "displayValue": "1,4 s",
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 7,
+                "section": "6. Rendimiento, capacidad y monitoreo",
+                "sourceSectionId": "operational-data",
+                "quote": "Tiempo de respuesta ERP 1,4 s 4,8 s Consultas y facturación",
+                "anchorId": "hb-p7-lat-hab",
+                "verified": true
+              }
             },
             {
               "key": "appLatencyPeak",
-              "label": "Latencia pico",
-              "value": 900,
-              "unit": "ms",
-              "usable": true
+              "label": "Tiempo de respuesta pico ERP",
+              "value": 4.8,
+              "unit": "s",
+              "displayValue": "4,8 s",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 7,
+                "section": "6. Rendimiento, capacidad y monitoreo",
+                "sourceSectionId": "operational-data",
+                "quote": "Tiempo de respuesta ERP 1,4 s 4,8 s Consultas y facturación",
+                "anchorId": "hb-p7-lat-pico",
+                "verified": true
+              }
             },
             {
               "key": "appDemandNormal",
-              "label": "Demanda normal",
-              "value": 14000,
-              "unit": "pedidos",
-              "displayValue": "14 000 pedidos",
-              "usable": false
+              "label": "Usuarios concurrentes habituales ERP",
+              "value": 110,
+              "unit": "",
+              "displayValue": "110-135",
+              "usable": false,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 7,
+                "section": "6. Rendimiento, capacidad y monitoreo",
+                "sourceSectionId": "operational-data",
+                "quote": "Usuarios concurrentes ERP 110-135 181 14:20-15:05",
+                "anchorId": "hb-p7-conc-hab",
+                "verified": true
+              }
             },
             {
               "key": "appDemandPeak",
-              "label": "Demanda pico",
-              "value": 31000,
-              "unit": "pedidos",
-              "displayValue": "31 000 pedidos",
-              "usable": true
-            }
-          ]
-        },
-        {
-          "type": "fields",
-          "title": "DB-SRV01",
-          "fields": [
-            {
-              "key": "dbStorageUsage",
-              "label": "Uso de almacenamiento",
-              "value": 84,
-              "unit": "%",
-              "usable": true
-            },
-            {
-              "key": "dbMonthlyGrowth",
-              "label": "Crecimiento mensual",
-              "value": 4.2,
-              "unit": "%",
-              "displayValue": "4,2 %",
-              "usable": true
-            },
-            {
-              "key": "dbConnectionsAverage",
-              "label": "Conexiones promedio",
-              "value": 1800,
+              "label": "Usuarios concurrentes pico ERP",
+              "value": 181,
               "unit": "",
-              "displayValue": "1 800",
-              "usable": false
-            },
-            {
-              "key": "dbConnectionsPeak",
-              "label": "Conexiones pico",
-              "value": 5200,
-              "unit": "",
-              "displayValue": "5 200",
-              "usable": true
-            }
-          ]
-        },
-        {
-          "type": "fields",
-          "title": "NAS",
-          "fields": [
-            {
-              "key": "storageCapacity",
-              "label": "Capacidad NAS",
-              "value": 20,
-              "unit": "TB",
-              "usable": true
-            },
-            {
-              "key": "storageUsed",
-              "label": "NAS utilizado",
-              "value": 16.8,
-              "unit": "TB",
-              "displayValue": "16,8 TB",
-              "usable": true
-            },
-            {
-              "key": "storageGrowth",
-              "label": "Crecimiento NAS",
-              "value": 420,
-              "unit": "GB/mes",
-              "usable": true
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 7,
+                "section": "6. Rendimiento, capacidad y monitoreo",
+                "sourceSectionId": "operational-data",
+                "quote": "Usuarios concurrentes ERP 110-135 181 14:20-15:05",
+                "anchorId": "hb-p7-conc-pico",
+                "verified": true
+              }
             }
           ]
         }
@@ -811,48 +1247,45 @@
       "sectionTitle": "Incidentes",
       "index": 11,
       "groupId": "recovery",
-      "summary": "Eventos recientes con impacto en venta, conectividad, almacenamiento y cambios.",
+      "summary": "Cinco incidentes de los últimos 90 días, con duración desde el aviso hasta la restauración.",
       "blocks": [
         {
           "type": "records",
           "title": "Registro de incidentes",
           "records": [
             {
-              "title": "Incidente A — Alta demanda de e-commerce",
+              "title": "12 jun. — ERP, falla de almacenamiento",
               "fields": [
-                { "key": "incidentACpu", "label": "CPU", "value": 96, "unit": "%", "usable": false },
-                { "key": "incidentALatency", "label": "Latencia", "value": 900, "unit": "ms", "usable": false },
-                { "key": "incidentADuration", "label": "Duración", "value": 2.5, "unit": "h", "displayValue": "2 h 30 min", "usable": false },
-                { "key": "incidentAImpact", "label": "Impacto", "value": "Lentitud y abandono de compras.", "unit": "", "usable": false }
+                { "key": "incidentADuration", "label": "Duración", "value": 2.333, "unit": "h", "displayValue": "2 h 20 min", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 8, "section": "7. Registro de incidentes y cambios", "sourceSectionId": "incidents", "quote": "12 jun. ERP Falla de almacenamiento dejó la base de datos sin respuesta 2 h 20 min", "anchorId": "hb-p8-inc-a", "verified": true } },
+                { "key": "incidentAImpact", "label": "Descripción", "value": "Falla de almacenamiento dejó la base de datos sin respuesta.", "unit": "", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 8, "section": "7. Registro de incidentes y cambios", "sourceSectionId": "incidents", "quote": "Falla de almacenamiento dejó la base de datos sin respuesta", "anchorId": "hb-p8-inc-a-imp", "verified": true } }
               ]
             },
             {
-              "title": "Incidente B — Falla del firewall principal",
+              "title": "3 jul. — VPN sedes, reinicio de FW-01",
               "fields": [
-                { "key": "incidentBDuration", "label": "Duración", "value": 4, "unit": "h", "displayValue": "4 horas", "usable": false },
-                { "key": "incidentBImpact", "label": "Impacto", "value": "Varias tiendas pierden conectividad con sistemas centrales.", "unit": "", "usable": false }
+                { "key": "incidentBDuration", "label": "Duración", "value": 1.583, "unit": "h", "displayValue": "1 h 35 min", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 8, "section": "7. Registro de incidentes y cambios", "sourceSectionId": "incidents", "quote": "3 jul. VPN sedes Reinicio no planeado de FW-01 1 h 35 min Confirmada", "anchorId": "hb-p8-inc-b", "verified": true } },
+                { "key": "incidentBImpact", "label": "Descripción", "value": "Reinicio no planeado de FW-01.", "unit": "", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 8, "section": "7. Registro de incidentes y cambios", "sourceSectionId": "incidents", "quote": "Reinicio no planeado de FW-01", "anchorId": "hb-p8-inc-b-imp", "verified": true } }
               ]
             },
             {
-              "title": "Incidente C — NAS alcanza 94 %",
+              "title": "19 jul. — Cadena de frío, IOT-GW01",
               "fields": [
-                { "key": "incidentCNas", "label": "Uso NAS", "value": 94, "unit": "%", "usable": false },
-                { "key": "incidentCImpact", "label": "Impacto", "value": "Se requiere eliminación manual urgente de archivos.", "unit": "", "usable": false }
+                { "key": "incidentCDuration", "label": "Duración", "value": 3.167, "unit": "h", "displayValue": "3 h 10 min", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 8, "section": "7. Registro de incidentes y cambios", "sourceSectionId": "incidents", "quote": "19 jul. Cadena de frío IOT-GW01 dejó de recibir sensores 3 h 10 min No confirmada", "anchorId": "hb-p8-inc-c", "verified": true } },
+                { "key": "incidentCImpact", "label": "Descripción", "value": "IOT-GW01 dejó de recibir sensores.", "unit": "", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 8, "section": "7. Registro de incidentes y cambios", "sourceSectionId": "incidents", "quote": "IOT-GW01 dejó de recibir sensores", "anchorId": "hb-p8-inc-c-imp", "verified": true } }
               ]
             },
             {
-              "title": "Incidente D — Falla de backup sin alerta",
+              "title": "7 ago. — ERP, conector incompatible",
               "fields": [
-                { "key": "incidentDDuration", "label": "Duración", "value": 2, "unit": "días", "displayValue": "dos días", "usable": false },
-                { "key": "incidentDImpact", "label": "Impacto", "value": "Backup falla durante dos días sin generar alerta.", "unit": "", "usable": false }
+                { "key": "incidentDDuration", "label": "Duración", "value": 0.917, "unit": "h", "displayValue": "55 min", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 8, "section": "7. Registro de incidentes y cambios", "sourceSectionId": "incidents", "quote": "7 ago. ERP Actualización de conector incompatible 55 min Confirmada", "anchorId": "hb-p8-inc-d", "verified": true } },
+                { "key": "incidentERollback", "label": "Cambio y reversa", "value": "La solicitud no incluía evaluación de riesgo, evidencia de pruebas ni plan de reversa.", "unit": "", "usable": true, "source": { "documentId": "caso-helados-boreal", "page": 8, "section": "Cambio del 7 de agosto", "sourceSectionId": "incidents", "quote": "no incluía evaluación de riesgo, evidencia de pruebas ni plan de reversa", "anchorId": "hb-p8-rollback", "verified": true } }
               ]
             },
             {
-              "title": "Incidente E — Actualización del sistema de integración POS",
+              "title": "28 ago. — ERP, degradación en cierre comercial",
               "fields": [
-                { "key": "incidentEDuration", "label": "Duración", "value": 1.333, "unit": "h", "displayValue": "1 h 20 min", "usable": false },
-                { "key": "incidentERollback", "label": "Rollback", "value": "No existía plan formal de rollback.", "unit": "", "usable": true },
-                { "key": "incidentEImpact", "label": "Impacto", "value": "Interrupción asociada a un cambio en integración POS.", "unit": "", "usable": false }
+                { "key": "incidentEDuration", "label": "Duración", "value": 2.667, "unit": "h", "displayValue": "2 h 40 min", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 8, "section": "7. Registro de incidentes y cambios", "sourceSectionId": "incidents", "quote": "28 ago. ERP Degradación severa durante cierre comercial 2 h 40 min En análisis", "anchorId": "hb-p8-inc-e", "verified": true } },
+                { "key": "incidentEImpact", "label": "Impacto", "value": "Lentitud en facturación y despacho; operaciones de más de cuatro segundos y dos lotes de facturas reprocesados.", "unit": "", "usable": false, "source": { "documentId": "caso-helados-boreal", "page": 7, "section": "Observación de negocio", "sourceSectionId": "incidents", "quote": "varias operaciones tardaron más de cuatro segundos y dos lotes de facturas debieron reprocesarse", "anchorId": "hb-p7-inc-e-imp", "verified": true } }
               ]
             }
           ]
@@ -864,38 +1297,17 @@
       "sectionTitle": "Gobierno TI",
       "index": 12,
       "groupId": "governance",
-      "summary": "Madurez de procedimientos, SLA, cambios, métricas e inversión.",
+      "summary": "Prácticas de incidentes, cambios, catálogo e indicadores.",
       "blocks": [
         {
           "type": "list",
-          "title": "Prácticas observadas",
+          "title": "Situación de gestión",
           "items": [
-            "Algunos procedimientos documentados.",
-            "SLA incompletos.",
-            "Gestión de cambios parcialmente formal.",
-            "Incidentes no siempre consolidados.",
-            "Métricas ejecutivas manuales.",
-            "Decisiones de capacidad principalmente reactivas.",
-            "Inversiones de infraestructura suelen aprobarse ante urgencias."
-          ]
-        },
-        {
-          "type": "fields",
-          "fields": [
-            {
-              "key": "slaCompleteness",
-              "label": "SLA",
-              "value": "Incompletos",
-              "unit": "",
-              "usable": true
-            },
-            {
-              "key": "capacityDecisions",
-              "label": "Decisiones de capacidad",
-              "value": "Principalmente reactivas",
-              "unit": "",
-              "usable": true
-            }
+            "Incidentes con correo, Teams y hoja de cálculo.",
+            "Cambios de mayor impacto se autorizan, pero riesgo y rollback no son obligatorios.",
+            "No existe un catálogo aprobado de servicios ni propietarios formalmente asignados.",
+            "Prioridades de inversión por urgencia y presupuesto.",
+            "Indicadores tecnológicos no están conectados con impacto financiero, producción detenida o pedidos retrasados."
           ]
         }
       ]
@@ -905,31 +1317,123 @@
       "sectionTitle": "Restricciones",
       "index": 13,
       "groupId": "governance",
-      "summary": "Límites de negocio, operación y tecnología que condicionan las decisiones.",
+      "summary": "Límites de presupuesto, operación, ERP, compras y personal.",
       "blocks": [
-        {
-          "type": "list",
-          "title": "Restricciones declaradas",
-          "items": [
-            "Presupuesto limitado.",
-            "No detener producción por periodos largos.",
-            "No reemplazar ERP a corto plazo.",
-            "Mantener operación de tiendas.",
-            "Cloud permitido si se justifica.",
-            "Preocupación por costos variables.",
-            "Mantener trazabilidad de cadena de frío."
-          ]
-        },
         {
           "type": "fields",
           "fields": [
             {
-              "key": "ecommerceGrowthExpected",
-              "label": "Crecimiento esperado de e-commerce",
-              "value": 35,
-              "unit": "%",
-              "usable": true
+              "key": "budgetLimit",
+              "label": "Presupuesto primera etapa (12 meses)",
+              "value": 180,
+              "unit": "millones COP",
+              "displayValue": "COP 180 millones",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 9,
+                "section": "Restricciones para la propuesta",
+                "sourceSectionId": "constraints",
+                "quote": "Hasta COP 180 millones para la primera etapa de doce meses",
+                "anchorId": "hb-p9-presupuesto",
+                "verified": true
+              }
+            },
+            {
+              "key": "committeeThreshold",
+              "label": "Umbral de comité de compras",
+              "value": 60,
+              "unit": "millones COP",
+              "displayValue": "COP 60 millones",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 9,
+                "section": "Restricciones para la propuesta",
+                "sourceSectionId": "constraints",
+                "quote": "Adquisiciones superiores a COP 60 millones requieren comité",
+                "anchorId": "hb-p9-comite",
+                "verified": true
+              }
+            },
+            {
+              "key": "erpReplacementMonths",
+              "label": "Reemplazo de ERP",
+              "value": 18,
+              "unit": "meses",
+              "displayValue": "no puede reemplazarse durante los próximos 18 meses",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 9,
+                "section": "Restricciones para la propuesta",
+                "sourceSectionId": "constraints",
+                "quote": "No puede reemplazarse durante los próximos 18 meses",
+                "anchorId": "hb-p9-erp",
+                "verified": true
+              }
+            },
+            {
+              "key": "nasExpansionCost",
+              "label": "Expansión NAS 8 TB",
+              "value": 42,
+              "unit": "millones COP",
+              "displayValue": "COP 42 millones; entrega 6 semanas",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 9,
+                "section": "Valores de referencia para comparar alternativas",
+                "sourceSectionId": "constraints",
+                "quote": "Expansión NAS 8 TB COP 42 millones Compra; entrega estimada 6 semanas",
+                "anchorId": "hb-p9-nas-costo",
+                "verified": true
+              }
+            },
+            {
+              "key": "secondFirewallCost",
+              "label": "Segundo firewall + licencias",
+              "value": 68,
+              "unit": "millones COP",
+              "displayValue": "COP 68 millones",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 9,
+                "section": "Valores de referencia para comparar alternativas",
+                "sourceSectionId": "constraints",
+                "quote": "Segundo firewall + licencias COP 68 millones Compra y soporte primer año",
+                "anchorId": "hb-p9-fw-costo",
+                "verified": true
+              }
+            },
+            {
+              "key": "monitoringMonthlyCost",
+              "label": "Monitoreo central",
+              "value": 3.8,
+              "unit": "millones COP/mes",
+              "displayValue": "COP 3,8 millones/mes",
+              "usable": true,
+              "source": {
+                "documentId": "caso-helados-boreal",
+                "page": 9,
+                "section": "Valores de referencia para comparar alternativas",
+                "sourceSectionId": "constraints",
+                "quote": "Monitoreo central COP 3,8 millones/mes Suscripción",
+                "anchorId": "hb-p9-monitoreo-costo",
+                "verified": true
+              }
             }
+          ]
+        },
+        {
+          "type": "list",
+          "title": "Otras restricciones declaradas",
+          "items": [
+            "No se puede detener producción de lunes 05:00 a sábado 22:00 salvo emergencia.",
+            "Se permite evaluar nube, pero Finanzas exige previsibilidad de costos.",
+            "No se autoriza aumentar la planta de TI durante 2026.",
+            "Debe conservarse trazabilidad de lotes y documentos comerciales."
           ]
         }
       ]

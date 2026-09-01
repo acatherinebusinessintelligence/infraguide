@@ -95,10 +95,10 @@ export const buildMethodValues = {
     write: 'Sección 14. Conclusiones.',
   },
   5: {
-    search: 'Portada, índice y 14 secciones.',
-    extract: 'Modo académico muestra fuentes y cálculos.',
-    process: 'Modo documento muestra el informe limpio.',
-    interpret: 'Editar vuelve al builder original.',
+    search: 'Portada ejecutiva, dictamen y hallazgos de ingeniería.',
+    extract: 'El informe completo incluye anexos y vínculos al PDF.',
+    process: 'El informe compacto reduce el detalle de marcos de control.',
+    interpret: 'Editar vuelve al builder original del hallazgo, la métrica o la decisión.',
     write: 'Vista previa no exporta.',
   },
   6: {

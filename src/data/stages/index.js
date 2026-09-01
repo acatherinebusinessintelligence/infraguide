@@ -39,7 +39,7 @@ export const stages = [
     id: 4,
     number: '04',
     name: 'MEDIR',
-    description: 'Disponibilidad, MTTR, MTBF y capacidad.',
+    description: 'Cálculo guiado: disponibilidad, MTTR, MTBF y capacidad, con glosario e interpretación.',
     documentTargets: [6],
   },
   {

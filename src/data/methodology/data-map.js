@@ -115,8 +115,8 @@ export const dataMap = {
     laterUses: ['proyección de almacenamiento'],
     documentSectionId: 6,
   },
-  employeeCount: {
-    key: 'employeeCount',
+  bogotaUsers: {
+    key: 'bogotaUsers',
     sourceSectionId: 'context',
     usedIn: ['context'],
     laterUses: ['dimensionamiento de usuarios'],
@@ -129,15 +129,15 @@ export const dataMap = {
     laterUses: ['capacidad de identidad'],
     documentSectionId: 1,
   },
-  storeCount: {
-    key: 'storeCount',
+  concurrentUsersHighSeason: {
+    key: 'concurrentUsersHighSeason',
     sourceSectionId: 'context',
     usedIn: ['context'],
-    laterUses: ['arquitectura de sucursales'],
+    laterUses: ['capacidad concurrente'],
     documentSectionId: 1,
   },
-  serverCount: {
-    key: 'serverCount',
+  virtualizationHosts: {
+    key: 'virtualizationHosts',
     sourceSectionId: 'infrastructure',
     usedIn: ['architecture'],
     laterUses: ['inventario AS-IS'],
@@ -185,8 +185,8 @@ export const dataMap = {
     laterUses: ['ITIL', 'continuidad'],
     documentSectionId: 8,
   },
-  undetectedBackupFailures: {
-    key: 'undetectedBackupFailures',
+  backupExternalGapDays: {
+    key: 'backupExternalGapDays',
     sourceSectionId: 'backup',
     usedIn: ['governance', 'continuity'],
     laterUses: ['hallazgos', 'ITIL'],
@@ -220,13 +220,6 @@ export const dataMap = {
     laterUses: ['decisión de inversión'],
     documentSectionId: 11,
   },
-  ecommerceGrowthExpected: {
-    key: 'ecommerceGrowthExpected',
-    sourceSectionId: 'constraints',
-    usedIn: ['capacity'],
-    laterUses: ['estrategia tecnológica'],
-    documentSectionId: 11,
-  },
   itHeadcount: {
     key: 'itHeadcount',
     sourceSectionId: 'it-team',
@@ -241,34 +234,6 @@ export const dataMap = {
     laterUses: ['gestión de cambios'],
     documentSectionId: 7,
   },
-  serviceWmsCriticality: {
-    key: 'serviceWmsCriticality',
-    sourceSectionId: 'services',
-    usedIn: ['services'],
-    laterUses: ['servicios críticos'],
-    documentSectionId: 2,
-  },
-  serviceMesCriticality: {
-    key: 'serviceMesCriticality',
-    sourceSectionId: 'services',
-    usedIn: ['services'],
-    laterUses: ['servicios críticos'],
-    documentSectionId: 2,
-  },
-  serviceAdCriticality: {
-    key: 'serviceAdCriticality',
-    sourceSectionId: 'services',
-    usedIn: ['services'],
-    laterUses: ['servicios críticos'],
-    documentSectionId: 2,
-  },
-  servicePosCriticality: {
-    key: 'servicePosCriticality',
-    sourceSectionId: 'services',
-    usedIn: ['services'],
-    laterUses: ['servicios críticos'],
-    documentSectionId: 2,
-  },
   serviceErpCriticality: {
     key: 'serviceErpCriticality',
     sourceSectionId: 'services',
@@ -276,8 +241,22 @@ export const dataMap = {
     laterUses: ['servicios críticos'],
     documentSectionId: 2,
   },
-  serviceEcommerceCriticality: {
-    key: 'serviceEcommerceCriticality',
+  serviceProductionCriticality: {
+    key: 'serviceProductionCriticality',
+    sourceSectionId: 'services',
+    usedIn: ['services'],
+    laterUses: ['servicios críticos'],
+    documentSectionId: 2,
+  },
+  serviceSalesCriticality: {
+    key: 'serviceSalesCriticality',
+    sourceSectionId: 'services',
+    usedIn: ['services'],
+    laterUses: ['servicios críticos'],
+    documentSectionId: 2,
+  },
+  serviceFilesCriticality: {
+    key: 'serviceFilesCriticality',
     sourceSectionId: 'services',
     usedIn: ['services'],
     laterUses: ['servicios críticos'],
@@ -345,21 +324,21 @@ export const analysisCatalog = {
   context: {
     id: 'context',
     label: 'Contexto organizacional',
-    requiredKeys: ['employeeCount', 'storeCount'],
+    requiredKeys: ['systemUsers', 'bogotaUsers'],
     documentSectionId: 1,
     documentLabel: 'Sección 1 - Contexto de la organización',
   },
   services: {
     id: 'services',
     label: 'Servicios críticos',
-    requiredKeys: ['serviceWmsCriticality', 'serviceAdCriticality'],
+    requiredKeys: ['serviceErpCriticality', 'serviceColdChainCriticality'],
     documentSectionId: 2,
     documentLabel: 'Sección 2 - Servicios críticos',
   },
   architecture: {
     id: 'architecture',
     label: 'Arquitectura',
-    requiredKeys: ['serverCount'],
+    requiredKeys: ['virtualizationHosts'],
     documentSectionId: 3,
     documentLabel: 'Sección 3 - Arquitectura AS-IS',
   },
@@ -373,28 +352,26 @@ export const analysisCatalog = {
   governance: {
     id: 'governance',
     label: 'Gobierno TI',
-    requiredKeys: ['slaCompleteness', 'undetectedBackupFailures'],
+    requiredKeys: ['slaCompleteness', 'backupExternalGapDays'],
     documentSectionId: 8,
     documentLabel: 'Sección 8 - ITIL',
   },
 };
 
 export const dataGroups = [
-  { id: 'context', label: 'CONTEXTO', keys: ['employeeCount', 'systemUsers', 'storeCount', 'itHeadcount'] },
+  { id: 'context', label: 'CONTEXTO', keys: ['systemUsers', 'bogotaUsers', 'concurrentUsersHighSeason', 'itHeadcount'] },
   {
     id: 'services',
     label: 'SERVICIOS',
     keys: [
-      'servicePosCriticality',
       'serviceErpCriticality',
-      'serviceWmsCriticality',
-      'serviceMesCriticality',
-      'serviceEcommerceCriticality',
+      'serviceProductionCriticality',
       'serviceColdChainCriticality',
-      'serviceAdCriticality',
+      'serviceSalesCriticality',
+      'serviceFilesCriticality',
     ],
   },
-  { id: 'architecture', label: 'ARQUITECTURA', keys: ['serverCount', 'mainInternetLinks', 'mainFirewallCount'] },
+  { id: 'architecture', label: 'ARQUITECTURA', keys: ['virtualizationHosts', 'mainInternetLinks', 'mainFirewallCount'] },
   { id: 'availability', label: 'DISPONIBILIDAD', keys: ['periodHours', 'downtimeHours'] },
   { id: 'recovery', label: 'RECUPERACIÓN', keys: ['incidentCount', 'totalRecoveryHours'] },
   {
@@ -407,10 +384,6 @@ export const dataGroups = [
       'appCpuPeak',
       'appRamUsage',
       'appDemandPeak',
-      'dbStorageUsage',
-      'dbMonthlyGrowth',
-      'dbConnectionsPeak',
-      'ecommerceGrowthExpected',
     ],
   },
   { id: 'security', label: 'SEGURIDAD', keys: ['mfaCoverage', 'privilegedAccessReview', 'staleAccounts'] },
@@ -419,9 +392,8 @@ export const dataGroups = [
     label: 'GOBIERNO',
     keys: [
       'backupRestoreTests',
-      'undetectedBackupFailures',
+      'backupExternalGapDays',
       'incidentRegistrationCoverage',
-      'executiveReporting',
       'slaCompleteness',
       'capacityDecisions',
       'incidentERollback',

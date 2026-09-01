@@ -1,10 +1,15 @@
 import { appCopy } from '../data/copy.js';
+import { CaseSourceBar } from './evidence/CaseDocumentIntro.js';
 import { APP_VERSION } from '../config.js';
 import { Navigation, NavMenu } from './Navigation.js';
 import { BrandLockup } from './Header.js';
 import { DocumentPanel } from './DocumentPanel.js';
 import { CollectedDataPanel } from './CollectedDataPanel.js';
 import { escapeHtml } from '../utils/escape.js';
+import { getCaseById } from '../data/cases/index.js';
+import { SaveIndicator } from './progress/SaveIndicator.js';
+import { ProgressOverlays } from './progress/ProgressOverlays.js';
+import { GlossaryDrawer } from './pedagogy/ContextualGlossary.js';
 
 export function SkipLink() {
   return `<a class="skip-link" href="#contenido">${escapeHtml(appCopy.skipLink)}</a>`;
@@ -69,9 +74,12 @@ export function LandingHeader({ state }) {
           collectedPanelOpen: state.collectedPanelOpen,
           mobileNavOpen: state.mobileNavOpen,
           selectedCase: state.selectedCase,
+          progressMenuOpen: state.persistence?.progressMenuOpen,
         })}
       </div>
     </header>
+    ${ProgressOverlays({ state })}
+    ${GlossaryDrawer({ termId: state.glossaryTerm })}
   `;
 }
 
@@ -85,11 +93,20 @@ export function AppHeader({ state }) {
       collectedPanelOpen: state.collectedPanelOpen,
       mobileNavOpen: state.mobileNavOpen,
       selectedCase: state.selectedCase,
+      progressMenuOpen: state.persistence?.progressMenuOpen,
       showBrand: true,
+      persistence: state.persistence,
     })}
     ${
       returning
         ? `<p class="consultant-tip return-banner">Estás editando una sección del informe. <button class="btn btn--small" type="button" data-action="return-to-preview">Volver a la vista previa</button></p>`
+        : ''
+    }
+    ${ProgressOverlays({ state })}
+    ${GlossaryDrawer({ termId: state.glossaryTerm })}
+    ${
+      state.selectedCase && !['home', 'intro', 'caseIntro'].includes(state.currentView)
+        ? `<div class="source-bar-wrap">${CaseSourceBar({ caseData: getCaseById(state.selectedCase.id) })}</div>`
         : ''
     }
   `;

@@ -22,6 +22,8 @@ export const appCopy = {
     document: 'TU DOCUMENTO',
     collected: 'MIS DATOS',
     help: 'AYUDA',
+    learn: 'APRENDIZAJE',
+    progress: 'PROGRESO',
     menu: 'Abrir menú',
     closeMenu: 'Cerrar menú',
   },
@@ -63,9 +65,11 @@ export const appCopy = {
     aboutBody:
       'InfraGuide es una herramienta educativa para acompañar el análisis metodológico de casos de infraestructura TI.',
     progressTitle: 'Tu progreso',
-    progressIntro: 'El avance se guarda en este navegador. Puedes descargarlo o recuperarlo desde un archivo JSON.',
-    exportProgress: 'Descargar progreso',
-    importProgress: 'Importar progreso',
+    progressIntro:
+      'Tu progreso se guarda en este navegador. Usa Guardar mi progreso para descargar una copia y continuar en otro computador. Exportar documento (HTML, Word o PDF) no es lo mismo que guardar el progreso.',
+    exportProgress: 'Guardar mi progreso',
+    importProgress: 'Cargar progreso',
+    openProgress: 'Abrir panel de progreso',
     demoLoad: 'Cargar demostración completa',
   },
   caseWork: {

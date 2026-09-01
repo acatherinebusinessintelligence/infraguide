@@ -36,6 +36,7 @@ import {
   PedagogicalNotes,
 } from '../components/decide/DecisionBuilders.js';
 import { escapeHtml } from '../utils/escape.js';
+import { TermLink } from '../data/pedagogy/glossary.js';
 
 export function DecidePage(state) {
   if (!state.selectedCase) {
@@ -186,6 +187,7 @@ function renderSubstage(id, decide, findings, constraints, documents, completion
   if (id === 7) {
     return `
       <section class="stack">
+        <p>${TermLink({ termId: 'capex' })} y ${TermLink({ termId: 'opex' })} se clasifican con montos de referencia del caso, no como cotización.</p>
         ${ClassifyBoard({ items: capexOpexItems, answers: decide.classifications })}
         ${CapexOpexAnalyzer({ draft: decide.draft })}
         ${navRow(6, 8)}

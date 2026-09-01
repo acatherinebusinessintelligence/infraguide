@@ -40,6 +40,8 @@ import {
   CriticalServicesTableBuilder,
 } from '../components/understand/ServiceTools.js';
 import { RestrictionClassifier, RestrictionBuilder } from '../components/understand/RestrictionTools.js';
+import { EvidenceLink } from '../components/evidence/EvidenceLink.js';
+import { getSelectedCaseData } from '../state/appState.js';
 import { escapeHtml } from '../utils/escape.js';
 
 export function UnderstandPage(state) {
@@ -125,21 +127,21 @@ function navRow(prev, next) {
 
 function renderOrganization(understand, error) {
   const selected = relevantContextEvidence(understand.context.selectedIds);
+  const caseData = getSelectedCaseData();
   return `
     <section class="stack">
       <h2>¿Qué hace la organización?</h2>
       ${SourceFinder({ finder: understandFinders.organization })}
       <section class="panel case-facts">
         <h3>Contexto de la organización</h3>
-        <p>Helados Boreal S.A.S. produce, distribuye y comercializa helados y productos congelados.</p>
+        <p>Helados Boreal S.A.S. es una empresa colombiana mediana dedicada a la fabricación y comercialización de helados, postres congelados y productos de temporada. ${EvidenceLink({ caseData, fieldKey: 'activity', component: 'understand', activity: 'organization' })}</p>
         <ul>
-          <li>Planta principal</li>
-          <li>Centro de distribución</li>
-          <li>46 tiendas</li>
-          <li>E-commerce</li>
-          <li>Logística refrigerada</li>
+          <li>Bogotá: planta, oficinas y centro de datos ${EvidenceLink({ caseData, fieldKey: 'plantCount', component: 'understand' })}</li>
+          <li>Medellín y Cali: centros de distribución ${EvidenceLink({ caseData, fieldKey: 'distributionCenterCount', component: 'understand' })}</li>
+          <li>Usuarios remotos de ventas y supervisión</li>
+          <li>Tiendas propias, distribuidores, supermercados y clientes institucionales</li>
         </ul>
-        <p>Empleados: aproximadamente 980. Usuarios directos de sistemas: aproximadamente 420.</p>
+        <p>Usuarios con acceso a servicios tecnológicos: 235. ${EvidenceLink({ caseData, fieldKey: 'systemUsers', component: 'understand' })} En temporada alta, aproximadamente 185 usuarios concurrentes. ${EvidenceLink({ caseData, fieldKey: 'concurrentUsersHighSeason', component: 'understand' })}</p>
       </section>
       <h3>Selecciona la evidencia de contexto</h3>
       ${EvidencePicker({
@@ -263,7 +265,7 @@ function renderCriticality(understand, error) {
         <ul>${criticalityCriteria.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
       </section>
       <section class="panel pedagogy">
-        <h3>Ejemplo pedagógico — WMS</h3>
+        <h3>Ejemplo pedagógico — ${escapeHtml(wmsPedagogy.service)}</h3>
         <p><strong>Servicio:</strong> ${escapeHtml(wmsPedagogy.service)}</p>
         <p><strong>Dato:</strong> ${escapeHtml(wmsPedagogy.datum)}</p>
         <p><strong>Impacto:</strong> ${escapeHtml(wmsPedagogy.impact)}</p>
@@ -279,7 +281,7 @@ function renderCriticality(understand, error) {
           { label: 'DOCUMENTO', value: wmsPedagogy.trace.write },
         ],
         kicker: 'Trazabilidad de criticidad',
-        title: 'WMS',
+        title: wmsPedagogy.service,
       })}
       ${CriticalityBuilder({ service, record, error })}
       ${CriticalServiceCompare({

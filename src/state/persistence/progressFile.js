@@ -71,10 +71,13 @@ export function parseProgressFile(text, options = {}) {
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
     return invalidFile();
   }
-  if (parsed.format && parsed.format !== PROGRESS_FORMAT && parsed.kind && parsed.kind !== 'infraguide-progress') {
+  if (parsed.format && parsed.format !== PROGRESS_FORMAT) {
     return invalidFile();
   }
-  if (parsed.format && parsed.format !== PROGRESS_FORMAT && parsed.kind !== 'infraguide-progress') {
+  if (parsed.kind && parsed.kind !== 'infraguide-progress' && parsed.format !== PROGRESS_FORMAT) {
+    return invalidFile();
+  }
+  if (!parsed.format && !parsed.kind && !parsed.payload && !parsed.state && !parsed.analysis && !parsed.collectedData && parsed.selectedCaseId == null) {
     return invalidFile();
   }
 

@@ -110,6 +110,11 @@
   min-height: var(--header-h);
 }
 
+.topbar__save {
+  flex: 1;
+  min-width: 0;
+}
+
 .nav {
   display: flex;
   align-items: center;
@@ -288,6 +293,16 @@
   border: 1px solid var(--border);
   color: var(--navy-800);
   border-radius: 6px;
+}
+
+.btn--danger {
+  background: #8a2b2b;
+  color: var(--white);
+  border-color: #6d1f1f;
+}
+
+.btn--danger:hover {
+  background: #6d1f1f;
 }
 
 .stack {

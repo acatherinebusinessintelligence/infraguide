@@ -50,7 +50,12 @@ export function ExportPage(state, route = {}) {
       <main id="contenido" class="page export-page">
         <header class="section-heading">
           <h1>Centro de exportación</h1>
-          <p>Exporta el documento ya construido. No se reconstruye el análisis.</p>
+          <p>Exporta el informe técnico de consultoría ya construido. HTML, Word y PDF consumen el mismo modelo.</p>
+          <p class="export-vs-progress">
+            <strong>Exportar documento</strong> genera HTML, Word o PDF.
+            <strong>Guardar mi progreso</strong> descarga un archivo JSON para continuar el análisis en otro computador.
+            <a href="#/progreso" data-nav="/progreso">Abrir panel de progreso</a>
+          </p>
         </header>
         ${ExportCenter({ state, summary, exp, academic, live, cards, history })}
         ${preview}
@@ -88,8 +93,8 @@ function ExportCenter({ state, summary, exp, academic, live, cards, history }) {
       }
       <fieldset class="export-mode">
         <legend>Modo de documento</legend>
-        <label><input type="radio" name="export-mode" data-action="export-mode" data-mode="clean" ${academic ? '' : 'checked'} /> Documento limpio</label>
-        <label><input type="radio" name="export-mode" data-action="export-mode" data-mode="academic" ${academic ? 'checked' : ''} /> Documento académico</label>
+        <label><input type="radio" name="export-mode" data-action="export-mode" data-mode="clean" ${academic ? '' : 'checked'} /> Informe compacto</label>
+        <label><input type="radio" name="export-mode" data-action="export-mode" data-mode="academic" ${academic ? 'checked' : ''} /> Informe completo (anexos y vínculos al PDF)</label>
       </fieldset>
       ${
         academic

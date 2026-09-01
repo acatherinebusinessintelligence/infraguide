@@ -30,7 +30,7 @@ export function createUnderstandState() {
       reviewedIds: [],
     },
     criticality: {
-      activeServiceId: 'wms',
+      activeServiceId: 'erp',
       records: {},
       compareIds: [],
       tableIds: [],

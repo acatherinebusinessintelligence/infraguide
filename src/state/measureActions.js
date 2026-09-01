@@ -6,12 +6,13 @@ import {
   metricDefinitions,
   templates,
 } from '../data/methodology/measure.js';
-import { validateMetricInput } from '../utils/numbers.js';
+import { validateMetricInput, formatEsNumber } from '../utils/numbers.js';
 import {
   createMeasureState,
   resolveCaseFacts,
   expectedFromFacts,
   getMeasureCompletion,
+  getFact,
 } from './measureModel.js';
 import { nowIso } from './understandModel.js';
 import { computeProgress, getState, patchState, setState, getSelectedCaseData } from './appState.js';
@@ -22,6 +23,10 @@ function measureFrom(state = getState()) {
 
 function documentsFrom(state = getState()) {
   return state.documentSections ?? {};
+}
+
+function es(value, decimals = 2) {
+  return formatEsNumber(Number(value), decimals);
 }
 
 function factsNow() {
@@ -389,19 +394,22 @@ export function addAvailabilityToDocument() {
     return failDoc();
   }
   const expected = expectedFromFacts(factsNow());
+  const facts = factsNow();
+  const period = getFact(facts, 'periodHours');
+  const down = getFact(facts, 'downtimeHours');
   return saveMetricsSubsection('availability', {
     title: '9.1 Disponibilidad',
     text,
     source: 'Información operacional disponible',
     sourceKeys: sourceKeysOf('availability'),
-    data: '720 h / 12 h',
+    data: `${period?.displayValue ?? period?.value} / ${down?.displayValue ?? down?.value}`,
     formula: '(Tiempo total − tiempo fuera de servicio) / Tiempo total × 100',
-    substitution: '(720 − 12) / 720 × 100',
-    result: `${expected.availabilityPercent.toFixed(2).replace('.', ',')} %`,
+    substitution: `(${es(period?.value, 0)} − ${es(down?.value, 2)}) / ${es(period?.value, 0)} × 100`,
+    result: `${es(expected.availabilityPercent, 2)} %`,
     interpretation: 'Disponibilidad observada del periodo analizado.',
-    limitation: 'No afirma SLA, suficiencia, causa ni solución.',
+    limitation: 'No afirma SLA, suficiencia, causa ni solución. El total de indisponibilidad es una suma; el PDF no lo imprime como cifra única.',
     sources: ['Información operacional disponible'],
-    evidences: ['Periodo 720 h', 'Indisponibilidad 12 h'],
+    evidences: [`Periodo ${period?.displayValue ?? period?.value}`, `Indisponibilidad ${down?.displayValue ?? down?.value} (calculada)`],
   });
 }
 
@@ -411,19 +419,23 @@ export function addMttrToDocument() {
   if (!measure.mttr.inputs.resultOk || !text || measure.activities['m-mttr-mean'] !== 'b') {
     return failDoc();
   }
+  const expected = expectedFromFacts(factsNow());
+  const facts = factsNow();
+  const incidents = getFact(facts, 'incidentCount');
+  const recovery = getFact(facts, 'totalRecoveryHours');
   return saveMetricsSubsection('mttr', {
     title: '9.2 MTTR',
     text,
     source: 'Información operacional disponible',
     sourceKeys: sourceKeysOf('mttr'),
-    data: '10 incidentes / 31 h',
+    data: `${incidents?.value} incidentes / ${recovery?.displayValue ?? recovery?.value}`,
     formula: 'Tiempo total de recuperación / Número de incidentes',
-    substitution: '31 / 10',
-    result: '3,1 h',
+    substitution: `${es(recovery?.value, 2)} / ${es(incidents?.value, 0)}`,
+    result: `${es(expected.mttrHours, 2)} h`,
     interpretation: 'Tiempo promedio para restaurar el servicio.',
     limitation: 'No es la duración de cada incidente ni un SLA.',
     sources: ['Información operacional disponible'],
-    evidences: ['10 incidentes', '31 h de recuperación'],
+    evidences: [`${incidents?.value} incidentes`, `${recovery?.displayValue ?? recovery?.value} de recuperación (calculado)`],
   });
 }
 
@@ -433,20 +445,26 @@ export function addMtbfToDocument() {
   if (!measure.mtbf.inputs.resultOk || !text || measure.activities['m-mtbf-present'] !== 'b') {
     return failDoc();
   }
+  const expected = expectedFromFacts(factsNow());
+  const facts = factsNow();
   return saveMetricsSubsection('mtbf', {
     title: '9.3 MTBF estimado',
     text,
     source: 'Información operacional disponible',
     sourceKeys: sourceKeysOf('mtbf'),
-    data: '708 h operativos estimados / 10 incidentes',
+    data: `${es(expected.uptimeHours, 2)} h operativos estimados / ${getFact(facts, 'incidentCount')?.value} incidentes`,
     formula: 'Tiempo operativo estimado / Número de incidentes',
-    substitution: '708 / 10',
-    result: '≈ 70,8 h',
+    substitution: `${es(expected.uptimeHours, 2)} / ${es(getFact(facts, 'incidentCount')?.value, 0)}`,
+    result: `≈ ${es(expected.mtbfHours, 2)} h`,
     interpretation: 'Estimación con limitaciones de información.',
     limitation: 'No hay marca temporal completa ni definición uniforme de fallo por servicio.',
     method: 'Tiempo operativo = periodo − indisponibilidad.',
     sources: ['Información operacional disponible'],
-    evidences: ['720 h', '12 h', '10 incidentes'],
+    evidences: [
+      getFact(facts, 'periodHours')?.displayValue ?? 'Periodo',
+      getFact(facts, 'downtimeHours')?.displayValue ?? 'Indisponibilidad',
+      `${getFact(facts, 'incidentCount')?.value} incidentes`,
+    ],
   });
 }
 
@@ -465,19 +483,25 @@ export function addCapacityToDocument() {
       sourceKeys: sourceKeysOf('capacity'),
     },
   }));
+  const facts = factsNow();
   return saveMetricsSubsection('capacity', {
     title: '9.4 Capacidad y rendimiento',
     text,
-    source: 'Información operacional — APP-SRV01',
+    source: 'Información operacional — ERP-APP01',
     sourceKeys: sourceKeysOf('capacity'),
-    data: 'CPU 78 % / 96 %, RAM 88 %, demanda 14 000 → 31 000, latencia 180 → 900 ms',
+    data: `CPU ${getFact(facts, 'appCpuAverage')?.displayValue} / ${getFact(facts, 'appCpuPeak')?.value} %, RAM ${getFact(facts, 'appRamUsage')?.value} %, concurrentes ${getFact(facts, 'appDemandNormal')?.displayValue} → ${getFact(facts, 'appDemandPeak')?.value}, respuesta ${getFact(facts, 'appLatencyNormal')?.displayValue} → ${getFact(facts, 'appLatencyPeak')?.displayValue}`,
     formula: 'Relación cualitativa de variables observadas. No es una única fórmula.',
-    substitution: 'Demanda ↑ · CPU ↑ · Latencia ↑',
+    substitution: 'Demanda ↑ · CPU ↑ · Tiempo de respuesta ↑',
     result: 'Patrón de degradación bajo alta demanda',
     interpretation: 'Evidencia de degradación asociada a alta demanda, sin causa única demostrada.',
-    limitation: 'No autoriza compra ni migración. Promedio ≠ pico.',
+    limitation: 'No autoriza compra ni migración. Habitual ≠ pico.',
     sources: ['Información operacional disponible'],
-    evidences: ['CPU pico 96 %', 'RAM 88 %', 'Latencia 900 ms', 'Demanda 31 000'],
+    evidences: [
+      `CPU pico ${getFact(facts, 'appCpuPeak')?.value} %`,
+      `RAM ${getFact(facts, 'appRamUsage')?.value} %`,
+      `Respuesta ${getFact(facts, 'appLatencyPeak')?.displayValue}`,
+      `Concurrentes ${getFact(facts, 'appDemandPeak')?.value}`,
+    ],
   });
 }
 
@@ -488,19 +512,23 @@ export function addStorageToDocument() {
     return failDoc();
   }
   const expected = expectedFromFacts(factsNow());
+  const facts = factsNow();
+  const cap = getFact(facts, 'storageCapacity');
+  const used = getFact(facts, 'storageUsed');
+  const growth = getFact(facts, 'storageGrowth');
   return saveMetricsSubsection('storage', {
     title: '9.5 Almacenamiento y crecimiento',
     text,
     source: 'Almacenamiento / NAS',
     sourceKeys: sourceKeysOf('storage'),
-    data: '20 TB / 16,8 TB / 420 GB/mes',
+    data: `${cap?.value} TB / ${used?.value} TB / ${growth?.value} GB/mes`,
     formula: 'Libre = capacidad − usado; % = usado/capacidad × 100; meses ≈ (libre en GB) / crecimiento',
-    substitution: '20 − 16,8 = 3,2 TB; 16,8/20 × 100 = 84 %; 3 200 / 420 ≈ 7,62',
-    result: `${expected.storageUsedPercent.toFixed(0)} % usado · ≈ ${expected.storageMonths.toFixed(1).replace('.', ',')} meses de margen teórico`,
-    interpretation: 'Si el crecimiento continúa a un ritmo similar, el margen teórico es de aproximadamente 7,6 meses.',
+    substitution: `${es(cap?.value, 1)} − ${es(used?.value, 1)} = ${es(expected.storageFreeTb, 1)} TB; ${es(used?.value, 1)}/${es(cap?.value, 1)} × 100 = ${es(expected.storageUsedPercent, 0)} %; ${es(expected.storageFreeTb * 1000, 0)} / ${es(growth?.value, 0)} ≈ ${es(expected.storageMonths, 2)}`,
+    result: `${es(expected.storageUsedPercent, 0)} % usado · ≈ ${es(expected.storageMonths, 1)} meses de margen teórico`,
+    interpretation: `Si el crecimiento continúa a un ritmo similar, el margen teórico es de aproximadamente ${es(expected.storageMonths, 1)} meses.`,
     limitation: 'Supone crecimiento constante. No es una fecha exacta de agotamiento.',
     sources: ['Almacenamiento'],
-    evidences: ['20 TB', '16,8 TB', '420 GB/mes'],
+    evidences: [`${cap?.value} TB`, `${used?.value} TB`, `${growth?.value} GB/mes`],
   });
 }
 
@@ -510,19 +538,28 @@ export function addPerformanceToDocument() {
   if (!measure.performance.inputs.ratioOk || !text || measure.activities['m-perf-avail'] !== 'yes') {
     return failDoc();
   }
+  const expected = expectedFromFacts(factsNow());
+  const facts = factsNow();
+  const latN = getFact(facts, 'appLatencyNormal');
+  const latP = getFact(facts, 'appLatencyPeak');
+  const demN = getFact(facts, 'appDemandNormal');
+  const demP = getFact(facts, 'appDemandPeak');
   return saveMetricsSubsection('performance', {
     title: '9.4 Capacidad y rendimiento — latencia',
     text,
-    source: 'Información operacional — APP-SRV01',
+    source: 'Información operacional — ERP-APP01',
     sourceKeys: sourceKeysOf('performance'),
-    data: '180 ms / 900 ms; 14 000 / 31 000 pedidos',
-    formula: '900 / 180; (31 000 − 14 000) / 14 000 × 100',
-    substitution: '5 veces; ≈ 121,43 %',
-    result: 'Latencia pico ≈ 5× la normal; demanda pico ≈ 121 % superior a la de referencia',
+    data: `${latN?.displayValue} / ${latP?.displayValue}; concurrentes ${demN?.displayValue} / ${demP?.value}`,
+    formula: `${es(latP?.value, 1)} / ${es(latN?.value, 1)}; (${es(demP?.value, 0)} − ${es(demN?.value, 0)}) / ${es(demN?.value, 0)} × 100`,
+    substitution: `${es(expected.latencyRatio, 2)} veces; ≈ ${es(expected.demandIncreasePercent, 2)} %`,
+    result: `Tiempo de respuesta pico ≈ ${es(expected.latencyRatio, 2)}× el habitual; concurrentes pico ≈ ${es(expected.demandIncreasePercent, 0)} % superiores al de referencia`,
     interpretation: 'Degradación de rendimiento aunque el servicio pueda permanecer disponible.',
-    limitation: 'El 121 % no es crecimiento empresarial; compara niveles observados.',
+    limitation: 'El incremento relativo no es crecimiento empresarial; compara niveles observados.',
     sources: ['Información operacional disponible'],
-    evidences: ['Latencia 180→900 ms', 'Demanda 14 000→31 000'],
+    evidences: [
+      `Respuesta ${latN?.displayValue}→${latP?.displayValue}`,
+      `Concurrentes ${demN?.displayValue}→${demP?.value}`,
+    ],
   });
 }
 

@@ -4,7 +4,7 @@ Constructor guiado de análisis de infraestructura TI para la asignatura **Gesti
 
 Aplicación web estática: se ejecuta por completo en el navegador. No requiere backend, base de datos, API keys ni servicios externos.
 
-Versión: **1.0.0**
+Versión: **1.1.0**
 
 ## Objetivo
 
@@ -29,6 +29,15 @@ Argumentación de hallazgos y decisiones:
 - Persistencia en `localStorage`
 - Exportación Word con [`docx`](https://www.npmjs.com/package/docx) 9.7.1 (se carga al entrar a Exportar)
 - Hash routing (compatible con GitHub Pages)
+- Visor PDF con [PDF.js](https://mozilla.github.io/pdf.js/) (`pdfjs-dist`)
+
+## Documento fuente
+
+El caso Helados Boreal debe leerse desde el PDF original:
+
+`public/cases/helados-boreal/caso-helados-boreal.pdf`
+
+Si ese archivo es un marcador de posición, reemplace por el PDF académico y no marque evidencias como verificadas hasta contrastar cada página.
 
 ## Instalación
 
@@ -92,13 +101,15 @@ docs/                    Casos, esquema, QA, Pages
 
 ## Persistencia
 
-Clave principal: `infraguide:v1:state`.
+El progreso se guarda en este navegador (`infraguide_state`) con copia anterior (`infraguide_state_backup`) y hasta 3 puntos de recuperación.
 
-Copia por caso (preparada para varios casos): `infraguide:v1:modelo-helados-boreal`.
+No hay backend, cuentas ni sincronización en la nube. Puedes **guardar tu progreso** como JSON (`InfraGuide_Helados_Boreal_Progreso.json`) y cargarlo en otro computador.
 
-Se migra automáticamente la clave antigua `infraguide:v1`.
+Eso no es lo mismo que **exportar el documento** (HTML, Word o PDF).
 
-En **Ayuda** puedes descargar o importar un JSON de progreso (FileReader + Blob, sin backend).
+Detalle del formato: [docs/STATE-SCHEMA.md](docs/STATE-SCHEMA.md).
+
+En **Progreso** puedes ver el estado, descargar o cargar una copia, restaurar el backup y reiniciar el trabajo local.
 
 ## Exportación
 
@@ -127,6 +138,7 @@ Hoy solo está registrado el caso modelo **Helados Boreal S.A.S.** No se cargan 
 ## Pruebas
 
 - Recorrido de etapas: `docs/QA-CHECKLIST.md`
+- Persistencia y portabilidad: `node scripts/simulate-fase11.mjs`
 - Simulación de construcción: `node scripts/simulate-fase9.mjs`
 - Simulación de exportación: `node scripts/simulate-fase10.mjs`
 - Simulación de publicación: `node scripts/simulate-fase12.mjs`

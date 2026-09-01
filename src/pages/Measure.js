@@ -25,6 +25,10 @@ import {
   PerformanceAnalyzer,
   MetricEvidencePanel,
 } from '../components/measure/Calculators.js';
+import { GuidedCalculator, HowObtainedPanel } from '../components/pedagogy/GuidedCalculator.js';
+import { GlossaryIndex } from '../components/pedagogy/ContextualGlossary.js';
+import { InsufficientMetricsPanel } from '../components/pedagogy/InsufficientMetrics.js';
+import { TermLink } from '../data/pedagogy/glossary.js';
 import { escapeHtml } from '../utils/escape.js';
 
 export function MeasurePage(state) {
@@ -47,7 +51,7 @@ export function MeasurePage(state) {
       ${AppHeader({ state })}
       <main id="contenido" class="page measure-page">
         ${renderProgress(measure.currentSubstage, substage)}
-        <p class="principle">Calcular no es diagnosticar.</p>
+        <p class="principle">Calcular no es diagnosticar. Primero se comprende el indicador, luego se aplica, después se interpreta.</p>
         <aside class="panel warning-panel">
           <p>Una métrica se convierte en evidencia cuando puedes explicar: de dónde salió, cómo se calculó y qué significa.</p>
           <p class="consultant-tip">Un resultado sin fuente es solo un número.</p>
@@ -57,7 +61,7 @@ export function MeasurePage(state) {
           values: measureMethodValues[substage.id],
           topic: substage.title,
         })}
-        ${renderSubstage(substage.id, measure, facts, expected, documents, evidence, completion, error)}
+        ${renderSubstage(substage.id, measure, facts, expected, documents, evidence, completion, error, state)}
       </main>
       ${DocumentOverlay({ state, variant: 'overlay' })}
       ${CollectedOverlay({ state })}
@@ -106,12 +110,14 @@ function navRow(prev, next) {
   `;
 }
 
-function renderSubstage(id, measure, facts, expected, documents, evidence, completion, error) {
+function renderSubstage(id, measure, facts, expected, documents, evidence, completion, error, state) {
+  const how = state.howObtainedMetric;
   if (id === 1) {
     return `
       <section class="stack">
         <h2>Preparar datos</h2>
         ${SourceFinder({ finder: measureFinders.prepare })}
+        ${GlossaryIndex()}
         ${CaseFactsBoard({ facts, usedKeys: measure.usedKeys })}
         ${DataReadiness({ facts, usedKeys: measure.usedKeys, measure })}
         ${navRow(null, 2)}
@@ -119,76 +125,113 @@ function renderSubstage(id, measure, facts, expected, documents, evidence, compl
     `;
   }
   if (id === 2) {
-    return `
-      <section class="stack">
-        <h2>Disponibilidad</h2>
-        ${SourceFinder({ finder: measureFinders.availability })}
-        ${AvailabilityCalculator({ facts, slot: measure.availability, activities: measure.activities, error })}
-        ${navRow(1, 3)}
-      </section>
-    `;
+    return metricStage({
+      title: 'Disponibilidad',
+      finder: measureFinders.availability,
+      metricId: 'availability',
+      facts,
+      slot: measure.availability,
+      error,
+      how,
+      prev: 1,
+      next: 3,
+      calculator: AvailabilityCalculator({ facts, slot: measure.availability, activities: measure.activities, error }),
+    });
   }
   if (id === 3) {
-    return `
-      <section class="stack">
-        <h2>MTTR</h2>
-        ${SourceFinder({ finder: measureFinders.mttr })}
-        ${MTTRCalculator({ facts, slot: measure.mttr, activities: measure.activities, error })}
-        ${navRow(2, 4)}
-      </section>
-    `;
+    return metricStage({
+      title: 'MTTR',
+      finder: measureFinders.mttr,
+      metricId: 'mttr',
+      facts,
+      slot: measure.mttr,
+      error,
+      how,
+      prev: 2,
+      next: 4,
+      calculator: MTTRCalculator({ facts, slot: measure.mttr, activities: measure.activities, error }),
+    });
   }
   if (id === 4) {
-    return `
-      <section class="stack">
-        <h2>MTBF estimado</h2>
-        ${SourceFinder({ finder: measureFinders.mtbf })}
-        ${MTBFEstimator({ facts, slot: measure.mtbf, activities: measure.activities, error })}
-        ${navRow(3, 5)}
-      </section>
-    `;
+    return metricStage({
+      title: 'MTBF estimado',
+      finder: measureFinders.mtbf,
+      metricId: 'mtbf',
+      facts,
+      slot: measure.mtbf,
+      error,
+      how,
+      prev: 3,
+      next: 5,
+      calculator: MTBFEstimator({ facts, slot: measure.mtbf, activities: measure.activities, error }),
+    });
   }
   if (id === 5) {
-    return `
-      <section class="stack">
-        <h2>Capacidad</h2>
-        ${SourceFinder({ finder: measureFinders.capacity })}
-        ${CapacityAnalyzer({ facts, slot: measure.capacity, activities: measure.activities, error })}
-        ${navRow(4, 6)}
-      </section>
-    `;
+    return metricStage({
+      title: 'Capacidad',
+      finder: measureFinders.capacity,
+      metricId: 'capacity',
+      facts,
+      slot: measure.capacity,
+      error,
+      how,
+      prev: 4,
+      next: 6,
+      calculator: CapacityAnalyzer({ facts, slot: measure.capacity, activities: measure.activities, error }),
+    });
   }
   if (id === 6) {
-    return `
-      <section class="stack">
-        <h2>Almacenamiento y crecimiento</h2>
-        ${SourceFinder({ finder: measureFinders.storage })}
-        ${StorageCapacityCalculator({ facts, slot: measure.storage, activities: measure.activities, error })}
-        ${navRow(5, 7)}
-      </section>
-    `;
+    return metricStage({
+      title: 'Almacenamiento y crecimiento',
+      finder: measureFinders.storage,
+      metricId: 'storage',
+      facts,
+      slot: measure.storage,
+      error,
+      how,
+      prev: 5,
+      next: 7,
+      calculator: StorageCapacityCalculator({ facts, slot: measure.storage, activities: measure.activities, error }),
+    });
   }
   if (id === 7) {
-    return `
-      <section class="stack">
-        <h2>Rendimiento y latencia</h2>
-        ${SourceFinder({ finder: measureFinders.performance })}
-        ${PerformanceAnalyzer({ facts, slot: measure.performance, activities: measure.activities, error })}
-        ${navRow(6, 8)}
-      </section>
-    `;
+    return metricStage({
+      title: 'Rendimiento y latencia',
+      finder: measureFinders.performance,
+      metricId: 'performance',
+      facts,
+      slot: measure.performance,
+      error,
+      how,
+      prev: 6,
+      next: 8,
+      calculator: PerformanceAnalyzer({ facts, slot: measure.performance, activities: measure.activities, error }),
+    });
   }
   if (id === 8) {
     return `
       <section class="stack">
         <h2>Integrar métricas</h2>
-        ${MetricEvidencePanel({ expected, evidence })}
+        ${MetricEvidencePanel({ expected, evidence, facts })}
         ${FindTheData({ activities: [measureActivities.integrate], answers: measure.activities })}
+        ${InsufficientMetricsPanel({ notice: state.pedagogyNotice, measure })}
         ${navRow(7, 9)}
       </section>
     `;
   }
   return renderReview(measure, documents, completion, evidence);
+}
+
+function metricStage({ title, finder, metricId, facts, slot, error, how, prev, next, calculator }) {
+  return `
+    <section class="stack">
+      <h2>${title}</h2>
+      ${SourceFinder({ finder })}
+      ${GuidedCalculator({ metricId, facts, slot, error, calculatorHtml: calculator, howOpen: how === metricId })}
+      ${HowObtainedPanel({ metricId, trace: slot.trace, open: how === metricId })}
+      ${navRow(prev, next)}
+    </section>
+  `;
 }
 
 function renderReview(measure, documents, completion, evidence) {
@@ -231,6 +274,7 @@ function renderReview(measure, documents, completion, evidence) {
   return `
     <section class="stack">
       <h2>Lo que ya mediste</h2>
+      <p>Cada métrica debe poder explicarse: ${TermLink({ termId: 'baseline' })} → cálculo → ${TermLink({ termId: 'kpi' })}. El informe profesional no incluye estas instrucciones.</p>
       <ul class="review-list">${rows}</ul>
       ${completion.reviewPending ? '<p class="form-error">Hay métricas en revisión requerida.</p>' : ''}
       ${subsections}

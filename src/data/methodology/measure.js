@@ -50,14 +50,14 @@ export const measureMethodSteps = [
 ];
 
 export const measureSubstages = [
-  { id: 1, key: 'prepare', name: 'Preparar datos', title: 'Preparar datos' },
-  { id: 2, key: 'availability', name: 'Disponibilidad', title: 'Disponibilidad' },
-  { id: 3, key: 'mttr', name: 'MTTR', title: 'MTTR' },
-  { id: 4, key: 'mtbf', name: 'MTBF', title: 'MTBF estimado' },
-  { id: 5, key: 'capacity', name: 'Capacidad', title: 'Capacidad' },
-  { id: 6, key: 'storage', name: 'Almacenamiento', title: 'Almacenamiento y crecimiento' },
-  { id: 7, key: 'performance', name: 'Rendimiento', title: 'Rendimiento y latencia' },
-  { id: 8, key: 'integrate', name: 'Integrar', title: 'Integrar métricas' },
+  { id: 1, key: 'prepare', name: 'Preparar + glosario', title: 'Preparar datos y glosario' },
+  { id: 2, key: 'availability', name: 'Disponibilidad guiada', title: 'Disponibilidad · cálculo guiado' },
+  { id: 3, key: 'mttr', name: 'MTTR guiado', title: 'MTTR · cálculo guiado' },
+  { id: 4, key: 'mtbf', name: 'MTBF guiado', title: 'MTBF estimado · cálculo guiado' },
+  { id: 5, key: 'capacity', name: 'Capacidad guiada', title: 'Capacidad · cálculo guiado' },
+  { id: 6, key: 'storage', name: 'Almacenamiento guiado', title: 'Almacenamiento · cálculo guiado' },
+  { id: 7, key: 'performance', name: 'Rendimiento guiado', title: 'Rendimiento · cálculo guiado' },
+  { id: 8, key: 'integrate', name: 'Sin fórmula / integrar', title: 'Indicadores insuficientes e integración' },
   { id: 9, key: 'review', name: 'Documentar', title: 'Documentar resultados' },
 ];
 
@@ -97,7 +97,7 @@ export const measureFinders = {
   capacity: {
     id: 'measure-capacity',
     need: 'Señales de capacidad bajo carga',
-    lookIn: 'Información operacional — APP-SRV01',
+    lookIn: 'Información operacional — ERP-APP01',
     lookInSectionId: 'operational-data',
     needed: ['CPU promedio y pico', 'RAM', 'Demanda', 'Latencia'],
     notYet: ['Causa única', 'Decisión de compra'],
@@ -130,43 +130,43 @@ export const measureMethodValues = {
   },
   2: {
     search: 'Información operacional disponible.',
-    extract: '720 h de periodo y 12 h de indisponibilidad.',
+    extract: '2.160 h de periodo y 10 h 40 min de indisponibilidad (suma de duraciones).',
     process: '(Tiempo total − tiempo fuera) / tiempo total × 100.',
     interpret: 'Disponibilidad observada del periodo. No es el SLA.',
     write: 'Subsección de disponibilidad con fórmula y límite.',
   },
   3: {
     search: 'Información operacional: incidentes y recuperación.',
-    extract: '10 incidentes y 31 h de recuperación.',
-    process: '31 / 10.',
+    extract: '5 incidentes y 10 h 40 min de recuperación (suma de duraciones).',
+    process: '10,67 / 5.',
     interpret: 'Promedio de restauración, no la duración de cada incidente.',
     write: 'Subsección MTTR.',
   },
   4: {
     search: 'Periodo, indisponibilidad e incidentes.',
-    extract: 'Tiempo operativo estimado 708 h e incidentes 10.',
-    process: '708 / 10. Es una estimación.',
+    extract: 'Tiempo operativo estimado ≈ 2.149,33 h e incidentes 5.',
+    process: '2.149,33 / 5. Es una estimación.',
     interpret: 'Presentar con limitaciones, no como valor exacto.',
     write: 'MTBF estimado y su advertencia.',
   },
   5: {
     search: 'CPU, RAM, demanda y latencia del mismo periodo.',
-    extract: '78→96 % CPU, 88 % RAM, 14 000→31 000, 180→900 ms.',
+    extract: 'CPU 45-60 % → 92 %, RAM 88 %, concurrentes 110-135 → 181, respuesta 1,4 s → 4,8 s.',
     process: 'Relacionar variables. No forzar una causa.',
     interpret: 'Patrón de degradación bajo alta demanda.',
     write: 'Capacidad y rendimiento cualitativo.',
   },
   6: {
     search: 'Almacenamiento / NAS.',
-    extract: '20 TB, 16,8 TB usados, 420 GB/mes.',
+    extract: '24 TB, 19,2 TB usados, 650 GB/mes.',
     process: 'Libre, porcentaje y proyección a ritmo constante.',
     interpret: 'Margen teórico, no fecha exacta de agotamiento.',
     write: 'Almacenamiento y crecimiento.',
   },
   7: {
     search: 'Latencia y demanda observadas.',
-    extract: '180 ms vs 900 ms; 14 000 vs 31 000 pedidos.',
-    process: '900/180 y el incremento relativo de demanda.',
+    extract: '1,4 s vs 4,8 s; 110-135 vs 181 usuarios concurrentes.',
+    process: '4,8/1,4 y el incremento relativo de usuarios concurrentes.',
     interpret: 'Disponible no implica que responda bien.',
     write: 'Rendimiento y latencia.',
   },
@@ -244,15 +244,15 @@ export const metricDefinitions = [
 ];
 
 export const expectedResults = {
-  uptimeHours: 708,
-  availabilityPercent: 98.33,
-  mttrHours: 3.1,
-  mtbfHours: 70.8,
-  storageFreeTb: 3.2,
-  storageUsedPercent: 84,
-  storageMonths: 7.62,
-  latencyRatio: 5,
-  demandIncreasePercent: 121.43,
+  uptimeHours: 2149.3333,
+  availabilityPercent: 99.51,
+  mttrHours: 2.13,
+  mtbfHours: 429.87,
+  storageFreeTb: 4.8,
+  storageUsedPercent: 80,
+  storageMonths: 7.38,
+  latencyRatio: 3.43,
+  demandIncreasePercent: 64.55,
 };
 
 export const availabilityLimits = [
@@ -281,11 +281,11 @@ export const templates = {
   mtbf:
     'Con los datos disponibles se estima un MTBF aproximado de [resultado] horas. Este valor debe interpretarse con cautela debido a que el caso no proporciona el detalle temporal completo de todos los fallos.',
   capacity:
-    'Durante periodos de alta demanda se observan picos de CPU de 96 %, uso de RAM de 88 % y aumento de latencia desde 180 ms hasta 900 ms. Los datos sugieren presión de capacidad o degradación bajo carga, aunque no permiten determinar por sí solos una causa única.',
+    'Durante el cierre comercial se observan picos de CPU de 92 %, uso de RAM de 88 % y aumento del tiempo de respuesta desde 1,4 s hasta 4,8 s. Los datos sugieren presión de capacidad o degradación bajo carga, aunque no permiten determinar por sí solos una causa única.',
   storage:
     'El almacenamiento utiliza actualmente [x] TB de una capacidad total de [y] TB, equivalente a [z] %. Con un crecimiento aproximado de [g] GB mensuales, el margen teórico disponible es cercano a [m] meses si la tendencia se mantiene.',
   performance:
-    'La latencia aumenta de aproximadamente 180 ms en condiciones normales a 900 ms durante alta demanda, es decir, cerca de cinco veces el valor habitual. Esto evidencia degradación de rendimiento aun cuando el servicio pueda permanecer técnicamente disponible.',
+    'El tiempo de respuesta del ERP aumenta de aproximadamente 1,4 s en condiciones habituales a 4,8 s durante el pico, es decir, cerca de 3,4 veces el valor habitual. Esto evidencia degradación de rendimiento aun cuando el servicio pueda permanecer técnicamente disponible.',
 };
 
 export const measureActivities = {
@@ -293,7 +293,7 @@ export const measureActivities = {
     id: 'm-avail-affirm',
     prompt: '¿Qué puedes afirmar con evidencia?',
     options: [
-      { id: 'a', label: 'El servicio estuvo disponible aproximadamente 98,33 % del periodo.' },
+      { id: 'a', label: 'El servicio estuvo disponible aproximadamente 99,51 % del periodo de 90 días.' },
       { id: 'b', label: 'La disponibilidad es excelente.' },
       { id: 'c', label: 'El servicio cumple el SLA.' },
       { id: 'd', label: 'La infraestructura debe migrarse a cloud.' },
@@ -304,20 +304,20 @@ export const measureActivities = {
   },
   mttrMeaning: {
     id: 'm-mttr-mean',
-    prompt: '¿Qué significa el MTTR de 3,1 h?',
+    prompt: '¿Qué significa el MTTR de ≈ 2,13 h?',
     options: [
-      { id: 'a', label: 'Todos los incidentes duran exactamente 3,1 h.' },
-      { id: 'b', label: 'En promedio, recuperar el servicio ha requerido 3,1 h por incidente.' },
-      { id: 'c', label: 'El sistema falla cada 3,1 h.' },
-      { id: 'd', label: 'El SLA es 3,1 h.' },
+      { id: 'a', label: 'Todos los incidentes duran exactamente 2,13 h.' },
+      { id: 'b', label: 'En promedio, recuperar el servicio ha requerido ≈ 2,13 h por incidente.' },
+      { id: 'c', label: 'El sistema falla cada 2,13 h.' },
+      { id: 'd', label: 'El SLA es 2,13 h.' },
     ],
     correctId: 'b',
     feedbackCorrect: 'Correcto. Es un promedio de restauración, no la duración de cada evento ni el SLA.',
-    feedbackIncorrect: '3,1 h no es la duración de todos los incidentes, ni el intervalo entre fallos, ni un SLA.',
+    feedbackIncorrect: '2,13 h no es la duración de todos los incidentes, ni el intervalo entre fallos, ni un SLA.',
   },
   mtbfPresent: {
     id: 'm-mtbf-present',
-    prompt: '¿Cómo deberías presentar 70,8 h?',
+    prompt: '¿Cómo deberías presentar ≈ 429,87 h?',
     options: [
       { id: 'a', label: 'Como un valor exacto.' },
       { id: 'b', label: 'Como una estimación con limitaciones de información.' },
@@ -326,13 +326,13 @@ export const measureActivities = {
     ],
     correctId: 'b',
     feedbackCorrect: 'Correcto. El caso no da el detalle temporal completo de cada fallo.',
-    feedbackIncorrect: '70,8 h no es exacto, no es el SLA y no es MTTR.',
+    feedbackIncorrect: '429,87 h no es exacto, no es el SLA y no es MTTR.',
   },
   capacityPattern: {
     id: 'm-cap-pattern',
-    prompt: 'Demanda 14.000 → 31.000. CPU 78 % → 96 % pico. Latencia 180 → 900 ms. ¿Qué patrón observas?',
+    prompt: 'Concurrentes 110-135 → 181. CPU 45-60 % → 92 %. Respuesta 1,4 s → 4,8 s. ¿Qué patrón observas?',
     options: [
-      { id: 'a', label: 'La demanda aumenta mientras CPU y latencia también aumentan.' },
+      { id: 'a', label: 'La demanda aumenta mientras CPU y tiempo de respuesta también aumentan.' },
       { id: 'b', label: 'El servidor está dañado.' },
       { id: 'c', label: 'El firewall es la causa.' },
       { id: 'd', label: 'La solución es cloud.' },
@@ -343,14 +343,14 @@ export const measureActivities = {
   },
   peakEqualsAverage: {
     id: 'm-cap-peak',
-    prompt: 'CPU promedio 78 % y CPU pico 96 %. ¿Son equivalentes?',
+    prompt: 'CPU habitual 45-60 % y CPU pico 92 %. ¿Son equivalentes?',
     options: [
       { id: 'yes', label: 'Sí, miden lo mismo.' },
       { id: 'no', label: 'No.' },
     ],
     correctId: 'no',
-    feedbackCorrect: 'El promedio describe el comportamiento general. El pico es el máximo observado. Un pico aislado no demuestra presión sostenida.',
-    feedbackIncorrect: 'Promedio y pico no son intercambiables.',
+    feedbackCorrect: 'El valor habitual describe el comportamiento general. El pico es el máximo observado. Un pico aislado no demuestra presión sostenida.',
+    feedbackIncorrect: 'Habitual y pico no son intercambiables.',
   },
   ramBuy: {
     id: 'm-cap-ram',
@@ -365,14 +365,14 @@ export const measureActivities = {
   },
   storageWait: {
     id: 'm-sto-wait',
-    prompt: '¿Debemos esperar 7,6 meses para actuar?',
+    prompt: '¿Debemos esperar ≈ 7,4 meses para actuar?',
     options: [
       { id: 'yes', label: 'Sí, hay margen exacto.' },
       { id: 'no', label: 'No.' },
     ],
     correctId: 'no',
     feedbackCorrect: 'La proyección permite anticipar el riesgo antes de alcanzar niveles críticos.',
-    feedbackIncorrect: '7,6 meses no es una cita de espera. Es un margen teórico con supuesto de crecimiento constante.',
+    feedbackIncorrect: '≈ 7,4 meses no es una cita de espera. Es un margen teórico con supuesto de crecimiento constante.',
   },
   availableSlow: {
     id: 'm-perf-avail',
@@ -387,7 +387,7 @@ export const measureActivities = {
   },
   integrate: {
     id: 'm-int-conclusion',
-    prompt: 'CPU 96 %, latencia 900 ms, demanda 31.000, RAM 88 %. ¿Cuál conclusión está mejor sustentada?',
+    prompt: 'CPU 92 %, respuesta 4,8 s, concurrentes 181, RAM 88 %. ¿Cuál conclusión está mejor sustentada?',
     options: [
       { id: 'a', label: 'El servidor debe reemplazarse.' },
       { id: 'b', label: 'Existe evidencia de degradación durante alta demanda.' },
@@ -429,16 +429,16 @@ export const measureCheckpoint = [
   },
   {
     id: 'm-q3',
-    prompt: '¿Un CPU de 96 % demuestra por sí solo saturación?',
+    prompt: '¿Un CPU de 92 % demuestra por sí solo saturación?',
     options: [
       { id: 'a', label: 'Sí, siempre.' },
       { id: 'b', label: 'No. Hay que ver duración, demanda, latencia y si el pico es sostenido.' },
       { id: 'c', label: 'Sí, y obliga a comprar CPU.' },
-      { id: 'd', label: 'Solo si el servidor se llama APP-SRV01.' },
+      { id: 'd', label: 'Solo si el servidor se llama ERP-APP01.' },
     ],
     correctId: 'b',
     feedbackCorrect: 'Correcto. Un pico no demuestra, solo, saturación sostenida.',
-    feedbackIncorrect: '96 % es una señal, no un veredicto automático.',
+    feedbackIncorrect: '92 % es una señal, no un veredicto automático.',
   },
   {
     id: 'm-q4',
@@ -451,7 +451,7 @@ export const measureCheckpoint = [
     ],
     correctId: 'b',
     feedbackCorrect: 'Correcto. La proyección no es una fecha de agotamiento exacta.',
-    feedbackIncorrect: 'El margen de ~7,6 meses asume crecimiento constante.',
+    feedbackIncorrect: 'El margen de ≈ 7,4 meses asume crecimiento constante.',
   },
   {
     id: 'm-q5',

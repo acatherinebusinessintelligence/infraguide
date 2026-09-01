@@ -20,6 +20,7 @@ import { EvidenceBank } from '../components/diagnose/EvidenceBank.js';
 import { FindingBuilder, MissingEvidenceFinding } from '../components/diagnose/FindingBuilder.js';
 import { DiagnosticMatrix, CoveragePanel, DiagnoseSummary } from '../components/diagnose/DiagnosticMatrix.js';
 import { escapeHtml } from '../utils/escape.js';
+import { TermLink } from '../data/pedagogy/glossary.js';
 
 export function DiagnosePage(state) {
   if (!state.selectedCase) {
@@ -41,9 +42,9 @@ export function DiagnosePage(state) {
       ${AppHeader({ state })}
       <main id="contenido" class="page diagnose-page">
         ${renderProgress(diagnose.currentSubstage, substage)}
-        <p class="principle">Un hallazgo no es una opinión. Es una conclusión que puedes rastrear hasta la evidencia.</p>
+        <p class="principle">Un hallazgo no es una opinión. Es una conclusión que puedes rastrear hasta la evidencia. ${TermLink({ termId: 'riesgo' })} se ancla al hallazgo, no a un adjetivo vacío.</p>
         <aside class="panel warning-panel">
-          <p><strong>DATO ≠ HALLAZGO.</strong> “CPU pico 96 %” es un dato. “Existe degradación de rendimiento durante periodos de alta demanda” puede ser un hallazgo si está sustentado.</p>
+          <p><strong>DATO ≠ HALLAZGO.</strong> “CPU pico 92 %” es un dato. “Existe degradación de rendimiento durante periodos de alta demanda” puede ser un hallazgo si está sustentado.</p>
           <p>DATO → EVIDENCIA → INTERPRETACIÓN → HALLAZGO → IMPACTO → CRITICIDAD</p>
         </aside>
         ${MethodCard({

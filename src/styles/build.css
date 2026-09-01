@@ -144,13 +144,21 @@
   }
 }
 
-@media (max-width: 47.99rem) {
-  .build-page .matrix-table-wrap {
-    display: none;
-  }
+.consulting-preview__page {
+  background: #eef2f6;
+  padding: var(--space-4);
+  overflow: auto;
+}
 
-  .build-page .matrix-cards {
-    display: grid;
-    gap: var(--space-3);
+.preview-edit-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 47.99rem) {
+  .consulting-preview .ig-page {
+    padding: 1rem;
   }
 }

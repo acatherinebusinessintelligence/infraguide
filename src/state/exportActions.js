@@ -40,6 +40,8 @@ export function cacheKeyFor(state, config) {
       includeEvidence: config.includeEvidence,
       includeAsIs: config.includeAsIs,
     },
+    findings: (state.analysis?.diagnose?.findings ?? []).map((item) => item.findingId),
+    recs: (state.analysis?.decide?.recommendations ?? []).map((item) => item.decisionId),
     version: state.analysis?.export?.nextVersion,
     updated: state.documentSections?.conclusions?.lastUpdated,
     caseId: state.selectedCase?.id,

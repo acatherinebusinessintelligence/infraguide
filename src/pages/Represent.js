@@ -38,6 +38,7 @@ import {
   firewallPedagogy,
 } from '../components/represent/SpofTools.js';
 import { escapeHtml } from '../utils/escape.js';
+import { TermLink } from '../data/pedagogy/glossary.js';
 
 export function RepresentPage(state) {
   if (!state.selectedCase) {
@@ -247,7 +248,7 @@ function renderDependencies(represent, criticalServices, error) {
       ${DependencyBuilder({ nodes: architectureNodes, chain, service: active, error })}
       ${AsIsDiagram({ chain, service: active })}
       <section class="panel pedagogy">
-        <h3>Ejemplo guiado — POS de tiendas</h3>
+        <h3>Ejemplo guiado — ERP Boreal</h3>
         <p>Cadena posible: ${exampleNodes.map((item) => item.name).join(' → ')}.</p>
         ${FindTheData({
           activities: posGuideQuestions,
@@ -300,6 +301,7 @@ function renderSpof(represent, criticalServices, error) {
   return `
     <section class="stack">
       <h2>¿Qué pasa si este componente falla?</h2>
+      <p>${TermLink({ termId: 'spof' })} no es lo mismo que ${TermLink({ termId: 'redundancia' })} aparente. Pregunta: ¿existe alternativa real para el mismo servicio?</p>
       ${SourceFinder({ finder: representFinders.spof })}
       ${firewallPedagogy()}
       ${IncidentEvidenceLink({ links: represent.incidents, components: asIsNodes.length ? asIsNodes : architectureNodes.filter((item) => item.principal) })}

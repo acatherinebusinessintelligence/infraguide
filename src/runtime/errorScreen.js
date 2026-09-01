@@ -10,19 +10,38 @@ export function renderFatalScreen(message = '') {
       ${detail}
       <div class="export-actions">
         <button class="btn btn--primary" type="button" data-action="fatal-reload">Recargar</button>
+        <button class="btn" type="button" data-action="recover-backup">Recuperar backup</button>
         <label class="btn">
-          Recuperar progreso
+          Importar progreso
           <input class="visually-hidden" type="file" accept="application/json,.json" data-action="fatal-import" />
         </label>
-        <button class="btn" type="button" data-action="fatal-download">Descargar progreso</button>
+        <button class="btn" type="button" data-action="export-progress">Guardar mi progreso</button>
+        <button class="btn btn--danger" type="button" data-action="recovery-start-new">Iniciar nuevo</button>
       </div>
       <p>InfraGuide v${escapeHtml(APP_VERSION)}</p>
     </div>
   `;
 }
 
+function isExternalNoise(error) {
+  const text = [
+    error?.message,
+    error?.reason,
+    error?.stack,
+    typeof error === 'string' ? error : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+  return /metamask|failed to connect to metamask|ethereum|evmAsk|solana|walletconnect|chrome-extension:|moz-extension:|inpage\.js|ResizeObserver|Script error/i.test(
+    text,
+  );
+}
+
 export function installErrorBoundary(root, onFatal) {
   const show = (error) => {
+    if (isExternalNoise(error)) {
+      return;
+    }
     if (typeof onFatal === 'function') onFatal(error);
     if (!root) return;
     const text = error?.message ? String(error.message).slice(0, 280) : '';
@@ -30,11 +49,19 @@ export function installErrorBoundary(root, onFatal) {
   };
 
   window.addEventListener('error', (event) => {
+    if (event.message && isExternalNoise({ message: event.message, stack: event.error?.stack })) {
+      return;
+    }
     if (event.message && /ResizeObserver|Script error/i.test(event.message)) return;
     show(event.error || { message: event.message });
   });
   window.addEventListener('unhandledrejection', (event) => {
-    show(event.reason);
+    const reason = event.reason;
+    if (isExternalNoise(reason)) {
+      event.preventDefault();
+      return;
+    }
+    show(reason);
   });
 
   return show;

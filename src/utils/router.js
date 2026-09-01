@@ -3,7 +3,12 @@ const VIEW_BY_PATH = {
   '/intro': 'intro',
   '/ruta': 'dashboard',
   '/ayuda': 'help',
+  '/aprender': 'learn',
+  '/progreso': 'progress',
   '/caso': 'caseOverview',
+  '/caso/conocer': 'caseIntro',
+  '/caso/lectura': 'caseGuided',
+  '/caso/documento': 'casePdf',
   '/explorar': 'caseExplore',
 };
 
@@ -16,6 +21,16 @@ export function getPathFromHash() {
 }
 
 export function parseRoute(path) {
+  if (path === '/caso/conocer') {
+    return { view: 'caseIntro' };
+  }
+  if (path === '/caso/lectura') {
+    return { view: 'caseGuided' };
+  }
+  if (path === '/caso/documento' || path.startsWith('/caso/documento')) {
+    return { view: 'casePdf' };
+  }
+
   if (path.startsWith('/explorar/')) {
     return {
       view: 'caseExplore',

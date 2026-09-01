@@ -1,17 +1,21 @@
 import { escapeHtml } from '../../utils/escape.js';
 import { METRIC_STATUS, METRIC_STATUS_LABEL, metricDefinitions } from '../../data/methodology/measure.js';
 import { metricReadiness, effectiveMetricStatus, getFact } from '../../state/measureModel.js';
+import { EvidenceLink } from '../evidence/EvidenceLink.js';
+import { getSelectedCaseData } from '../../state/appState.js';
 
 export function CaseFactsBoard({ facts, usedKeys = [] }) {
+  const caseData = getSelectedCaseData();
   const items = facts
     .map((fact) => {
       const used = usedKeys.includes(fact.key);
       return `
-        <li class="fact-chip${used ? ' is-used' : ' is-excluded'}">
+        <li class="fact-chip${used ? ' is-used' : ' is-excluded'}" data-evidence-field="${escapeHtml(fact.key)}">
           <span>
             <strong>${escapeHtml(fact.label)}</strong>
             <span>${escapeHtml(fact.displayValue)}</span>
             <span class="classify-note">Fuente: ${escapeHtml(fact.sourceLabel)}</span>
+            ${EvidenceLink({ caseData, fieldKey: fact.key, component: 'measure-facts' })}
           </span>
           <label>
             <input type="checkbox" data-action="toggle-measure-key" data-data-key="${escapeHtml(fact.key)}" ${used ? 'checked' : ''} />

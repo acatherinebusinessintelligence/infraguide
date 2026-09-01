@@ -2,6 +2,8 @@ import { escapeHtml } from '../../utils/escape.js';
 import { unrelatedComponentFeedback } from '../../data/methodology/represent.js';
 import { getNodeById, relationFor } from '../../state/representModel.js';
 import { getServiceById } from '../../state/understandModel.js';
+import { EvidenceLink } from '../evidence/EvidenceLink.js';
+import { getSelectedCaseData } from '../../state/appState.js';
 
 export function ComponentPicker({ service, items, selectedIds = [] }) {
   if (!service) {
@@ -27,6 +29,12 @@ export function ComponentPicker({ service, items, selectedIds = [] }) {
           </label>
           <p class="classify-note">${escapeHtml(item.characteristics)}</p>
           <p class="classify-note">Fuente: ${escapeHtml(item.sourceLabel)}</p>
+          ${EvidenceLink({
+            caseData: getSelectedCaseData(),
+            sourceSectionId: item.sourceSectionId,
+            extraLabel: item.name,
+            component: 'represent-picker',
+          })}
           ${
             unrelated
               ? `<p class="evidence-feedback">${escapeHtml(item.feedback || unrelatedComponentFeedback)}</p>`

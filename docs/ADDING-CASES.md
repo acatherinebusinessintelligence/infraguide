@@ -73,4 +73,14 @@ Completa:
 
 3. `CaseValidator` se ejecuta al cargar. Si el JSON está corrupto, el caso se omite y el resto de la app sigue funcionando.
 
+## 11. Vincular el PDF original
+
+Coloca el documento fuente en `public/cases/<id-del-caso>/<archivo>.pdf` y decláralo en `sourceDocuments`.
+
+No inventes `page` ni `quote`. Mientras el PDF no esté contrastado:
+
+- `"linked": false`
+- evidencias en `PENDIENTE_DE_VERIFICAR` o `NO_LOCALIZADA`
+- nunca `"verified": true`
+
 Consulta `docs/CASE-SCHEMA.md` para el detalle de campos.

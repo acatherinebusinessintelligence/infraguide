@@ -17,6 +17,30 @@ export function createMetricSlot() {
     reviewRequired: false,
     result: null,
     limitation: '',
+    level: 1,
+    conceptOpen: true,
+    feedback: null,
+    interpretationParts: {
+      resultOf: '',
+      indicates: '',
+      during: '',
+      affects: '',
+      because: '',
+      limitation: '',
+      recommend: '',
+      improvedWhen: '',
+    },
+    findingFromMetric: {
+      condition: '',
+      evidence: '',
+      criterion: '',
+      cause: '',
+      impact: '',
+      risk: '',
+      recommendation: '',
+      acceptance: '',
+    },
+    trace: null,
   };
 }
 
@@ -30,6 +54,7 @@ export function createMeasureState() {
     capacity: createMetricSlot(),
     storage: createMetricSlot(),
     performance: createMetricSlot(),
+    traces: {},
     activities: {},
     checkpoint: {},
     completed: false,
@@ -46,12 +71,29 @@ export function mergeMeasure(saved) {
     ...base,
     ...saved,
     usedKeys: Array.isArray(saved.usedKeys) ? saved.usedKeys : base.usedKeys,
+    traces: saved.traces ?? {},
     activities: saved.activities ?? {},
     checkpoint: saved.checkpoint ?? {},
   };
   slots.forEach((id) => {
-    merged[id] = { ...base[id], ...saved[id], inputs: { ...base[id].inputs, ...saved[id]?.inputs } };
+    const incoming = saved[id] || {};
+    const baseSlot = createMetricSlot();
+    let level = incoming.level ?? baseSlot.level;
+    if (incoming.status === METRIC_STATUS.DOCUMENTED || incoming.status === METRIC_STATUS.INTERPRETED) {
+      level = Math.max(Number(level) || 1, 3);
+    } else if (incoming.status === METRIC_STATUS.CALCULATED) {
+      level = Math.max(Number(level) || 1, 2);
+    }
+    merged[id] = {
+      ...baseSlot,
+      ...incoming,
+      inputs: { ...baseSlot.inputs, ...incoming.inputs },
+      interpretationParts: { ...baseSlot.interpretationParts, ...incoming.interpretationParts },
+      findingFromMetric: { ...baseSlot.findingFromMetric, ...incoming.findingFromMetric },
+      level,
+    };
   });
+  merged.traces = saved.traces && typeof saved.traces === 'object' ? saved.traces : {};
   return merged;
 }
 

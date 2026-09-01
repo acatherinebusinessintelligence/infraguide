@@ -39,6 +39,21 @@ export function buildPersistablePayload(state) {
     explorerSectionId: state.explorerSectionId ?? 'operational-data',
     activityAnswers: state.activityAnswers && typeof state.activityAnswers === 'object' ? state.activityAnswers : {},
     metricEvidence: Array.isArray(state.metricEvidence) ? state.metricEvidence : [],
+    caseReading: state.caseReading && typeof state.caseReading === 'object'
+      ? {
+          introCompleted: Boolean(state.caseReading.introCompleted),
+          guidedStep: Number(state.caseReading.guidedStep) || 1,
+          openedPdf: Boolean(state.caseReading.openedPdf),
+          pageCount: state.caseReading.pageCount ?? null,
+          notes: state.caseReading.notes && typeof state.caseReading.notes === 'object' ? state.caseReading.notes : {},
+        }
+      : {
+          introCompleted: false,
+          guidedStep: 1,
+          openedPdf: false,
+          pageCount: null,
+          notes: {},
+        },
   };
   return payload;
 }

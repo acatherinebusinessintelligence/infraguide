@@ -167,24 +167,28 @@ invalidateExportCache();
 const academicModel = getExportModel(getState());
 const academicErrors = validateExportPayload(getState(), academicModel.config);
 assert(academicErrors.length === 0, `Validación académica: ${academicErrors.join(' | ')}`);
-assert(academicModel.sections.length === 14, 'Deben exportarse 14 secciones');
-assert(academicModel.manifest.sectionsIncluded.length === 14, 'ExportManifest incompleto');
+assert(academicModel.kind === 'consulting', 'El modelo exportado debe ser de consultoría');
+assert(academicModel.sections[0].key === 'dictamen', 'El informe debe abrir con el dictamen técnico');
+assert(academicModel.sections.length === 13, `Deben exportarse 13 secciones de consultoría, hay ${academicModel.sections.length}`);
+assert(academicModel.manifest.sectionsIncluded.length === 13, 'ExportManifest incompleto');
 assert(academicModel.manifest.InfraGuideVersion, 'Falta InfraGuideVersion');
-assert(!modelHasTechnicalIds(academicModel), 'El modelo académico contiene IDs técnicos');
+assert(!modelHasTechnicalIds(academicModel), 'El modelo de consultoría contiene IDs internos (finding-/dec-/ev-)');
 const academicHtml = HtmlExporter(academicModel).html;
 assert(academicHtml.startsWith('<!DOCTYPE html>'), 'HTML no es independiente');
-assert(academicHtml.includes('1. Contexto') || academicHtml.includes('Contexto de la organización'), 'Falta contexto');
-assert(academicHtml.includes('14. Conclusiones'), 'Faltan conclusiones');
-assert(academicHtml.includes('98,33'), 'Falta disponibilidad');
+assert(academicHtml.includes('Dictamen técnico'), 'Falta dictamen');
+assert(academicHtml.includes('Hallazgos de ingeniería'), 'Faltan hallazgos');
+assert(academicHtml.includes('F-01'), 'Falta identificador de hallazgo');
+assert(academicHtml.includes('Informe técnico de consultoría'), 'Falta tipo de documento');
+assert(academicHtml.includes('98,33'), 'Falta disponibilidad documentada');
 assert(academicHtml.includes('(720 - 12) / 720 × 100') || academicHtml.includes('(720-12)/720'), 'Falta fórmula');
-assert(academicHtml.includes('Tiendas') && academicHtml.includes('<svg'), 'Falta AS-IS SVG');
-assert(academicHtml.includes('Hallazgo origen') || academicHtml.includes('Fuente:'), 'Falta trazabilidad académica');
-assert(!/finding-0\d/.test(academicHtml), 'HTML académico muestra finding-id');
-assert(!/dec-0\d/.test(academicHtml), 'HTML académico muestra decision-id');
+assert(academicHtml.includes('<svg'), 'Falta diagrama AS-IS');
+assert(academicHtml.includes('Fuente:'), 'Falta cita de fuente');
+assert(!/finding-0\d/.test(academicHtml), 'HTML muestra finding-id');
+assert(!/dec-0\d/.test(academicHtml), 'HTML muestra decision-id');
 assert(!academicHtml.includes('SourceFinder') && !academicHtml.includes('MethodCard'), 'HTML incluye UI pedagógica');
 const htmlName = HtmlExporter(academicModel).fileName;
-assert(htmlName === 'Helados_Boreal_Analisis_Infraestructura.html', `Nombre HTML: ${htmlName}`);
-console.log('3-8 HTML académico OK', htmlName);
+assert(htmlName === 'Informe_Tecnico_Consultoria_Helados_Boreal.html', `Nombre HTML: ${htmlName}`);
+console.log('3-8 HTML consultoría OK', htmlName);
 
 const packed = await packDocx(academicModel);
 const buffer = packed instanceof Uint8Array ? packed : Buffer.from(await packed.arrayBuffer?.() || packed);
@@ -201,11 +205,10 @@ setExportMode(EXPORT_MODES.clean);
 invalidateExportCache();
 const cleanModel = getExportModel(getState());
 const cleanHtml = HtmlExporter(cleanModel).html;
-assert(!cleanHtml.includes('Hallazgo origen'), 'Modo limpio muestra trazabilidad de recomendación');
-assert(!cleanHtml.includes('Procesamiento:'), 'Modo limpio muestra procesamiento');
-assert(cleanHtml.includes('14. Conclusiones'), 'Modo limpio perdió conclusiones');
-assert(cleanHtml.includes('98,33'), 'Modo limpio perdió métricas');
-console.log('17-18 modo limpio OK');
+assert(!cleanHtml.includes('Procesamiento:'), 'Modo compacto muestra procesamiento');
+assert(cleanHtml.includes('Conclusión y recomendación de cierre'), 'Modo compacto perdió el cierre');
+assert(cleanHtml.includes('98,33'), 'Modo compacto perdió métricas');
+console.log('17-18 modo compacto OK');
 
 patchState((prev) => ({
   ...prev,
@@ -232,7 +235,7 @@ assert(getState().analysis.export.history.length === 2, 'Historial no persistió
 assert(getState().analysis.export.config.mode === 'clean', 'Config no persistió');
 assert(!persistableExport(getState().analysis.export).history.some((item) => item.blob), 'Se persistió un blob');
 assert(safeFileName('Helados Boreal S.A.S. *?', 'html') === 'Helados_Boreal_S_A_S.html' || safeFileName('Helados Boreal', 'html').includes('Helados'), 'safeFileName');
-assert(exportBaseName('Helados Boreal S.A.S.') === 'Helados_Boreal_Analisis_Infraestructura', `base: ${exportBaseName('Helados Boreal S.A.S.')}`);
+assert(exportBaseName('Helados Boreal S.A.S.') === 'Informe_Tecnico_Consultoria_Helados_Boreal', `base: ${exportBaseName('Helados Boreal S.A.S.')}`);
 console.log('21-22 persistencia OK');
 
 const blocked = { ...getState(), analysis: { ...getState().analysis, build: { ...getState().analysis.build, readyToExport: false } } };

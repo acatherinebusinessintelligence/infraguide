@@ -7,6 +7,7 @@ import {
 } from '../data/methodology/data-map.js';
 import { documentSections } from '../data/document/sections.js';
 import { PersistenceService, createPersistenceUi } from './persistence.js';
+import { SaveIndicator } from '../components/progress/SaveIndicator.js';
 import { debugMode } from '../config.js';
 import { createUnderstandState, createDocumentBundle, mergeUnderstand } from './understandModel.js';
 import { createRepresentState, mergeRepresent } from './representModel.js';
@@ -57,7 +58,27 @@ const initialState = {
   activityAnswers: {},
   documentViewKey: null,
   documentError: null,
+  glossaryTerm: null,
+  howObtainedMetric: null,
+  pedagogyNotice: null,
   persistence: createPersistenceUi(),
+  pdfViewer: {
+    open: false,
+    documentId: null,
+    page: null,
+    evidenceId: null,
+    fieldKey: null,
+    sourceSectionId: null,
+    mode: 'read',
+  },
+  evidenceReturn: null,
+  caseReading: {
+    introCompleted: false,
+    guidedStep: 1,
+    openedPdf: false,
+    pageCount: null,
+    notes: {},
+  },
 };
 
 let persistEnabled = false;
@@ -70,6 +91,11 @@ PersistenceService.configure({
       ...state,
       persistence: { ...state.persistence, ...partial },
     };
+    const mount = typeof document !== 'undefined' ? document.querySelector('.topbar__save') : null;
+    if (mount && partial.toast == null && partial.recovery == null) {
+      mount.innerHTML = SaveIndicator({ persistence: state.persistence });
+      return;
+    }
     listeners.forEach((listener) => listener(state));
   },
 });
@@ -247,6 +273,27 @@ export function selectWorkCase(caseId) {
     mobileNavOpen: false,
     documentError: null,
     documentViewKey: null,
+    pdfViewer: sameCase
+      ? state.pdfViewer
+      : {
+          open: false,
+          documentId: null,
+          page: null,
+          evidenceId: null,
+          fieldKey: null,
+          sourceSectionId: null,
+          mode: 'read',
+        },
+    evidenceReturn: sameCase ? state.evidenceReturn : null,
+    caseReading: sameCase
+      ? state.caseReading
+      : {
+          introCompleted: false,
+          guidedStep: 1,
+          openedPdf: false,
+          pageCount: null,
+          notes: {},
+        },
   });
 }
 
@@ -376,6 +423,25 @@ export function applyPersistedPayload(persisted, options = {}) {
     activityAnswers: persisted.activityAnswers ?? {},
     documentError: null,
     meta: persisted.meta ?? state.meta,
+    caseReading: persisted.caseReading
+      ? {
+          introCompleted: Boolean(persisted.caseReading.introCompleted),
+          guidedStep: Number(persisted.caseReading.guidedStep) || 1,
+          openedPdf: Boolean(persisted.caseReading.openedPdf),
+          pageCount: persisted.caseReading.pageCount ?? null,
+          notes: persisted.caseReading.notes && typeof persisted.caseReading.notes === 'object' ? persisted.caseReading.notes : {},
+        }
+      : state.caseReading,
+    pdfViewer: {
+      open: false,
+      documentId: null,
+      page: null,
+      evidenceId: null,
+      fieldKey: null,
+      sourceSectionId: null,
+      mode: 'read',
+    },
+    evidenceReturn: null,
   });
   notify({ persist: options.persist === true });
   return true;
@@ -431,10 +497,10 @@ export function hydrateFromStorage() {
 }
 
 export function importProgressState(payload) {
-  const ok = applyPersistedPayload(payload, { persist: false });
+  PersistenceService.importState(payload);
   persistEnabled = true;
+  const ok = applyPersistedPayload(payload, { persist: false });
   if (ok) {
-    PersistenceService.importState(payload);
     const meta = PersistenceService.getMeta();
     state = {
       ...state,
@@ -442,7 +508,9 @@ export function importProgressState(payload) {
         ...state.persistence,
         importPreview: null,
         importConfirm: false,
+        recovery: null,
         lastSavedAt: meta.lastSavedAt,
+        lastBackupAt: meta.lastBackupAt,
         isDirty: false,
         status: 'saved',
         toast: { message: 'Progreso cargado correctamente.', tone: 'ok' },

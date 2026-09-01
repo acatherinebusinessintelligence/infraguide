@@ -74,5 +74,5 @@ export function downloadBlob(blob, filename) {
 
 export function exportBaseName(caseName) {
   const raw = sanitizePlain(caseName).replace(/S\.A\.S\.?/gi, '').trim() || 'Caso';
-  return safeFileName(`${raw} Analisis Infraestructura`, '').replace(/\.$/, '');
+  return safeFileName(`Informe Tecnico Consultoria ${raw}`, '').replace(/\.$/, '');
 }

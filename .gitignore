@@ -18,7 +18,7 @@ dist-ssr
 *.infraguide.json
 progreso-*.json
 *-progreso.json
-Helados_Boreal_Analisis_Infraestructura.*
+tmp-report/
 
 # Editor directories and files
 .vscode/*

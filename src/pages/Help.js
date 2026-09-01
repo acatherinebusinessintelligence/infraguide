@@ -20,6 +20,12 @@ export function HelpPage(state) {
             </header>
             <p>${escapeHtml(appCopy.help.aboutBody)}</p>
             <p>InfraGuide v${escapeHtml(APP_VERSION)}</p>
+            <p><a class="btn btn--primary" href="#/aprender" data-nav="/aprender">Abrir APRENDIZAJE</a></p>
+          </section>
+
+          <section class="panel" aria-labelledby="learn-help-title">
+            <h2 class="panel__title" id="learn-help-title">Capa pedagógica</h2>
+            <p>El menú <strong>APRENDIZAJE</strong> explica conceptos, glosario y cálculo guiado. El menú <strong>Tu documento</strong> es el informe profesional: no incluye esas instrucciones.</p>
           </section>
 
           <section class="panel" aria-labelledby="help-title">
@@ -34,7 +40,8 @@ export function HelpPage(state) {
             <p>${escapeHtml(appCopy.help.progressIntro)}</p>
             ${state.documentError ? `<p class="form-error" role="status">${escapeHtml(state.documentError)}</p>` : ''}
             <div class="export-actions">
-              <button class="btn btn--primary" type="button" data-action="export-progress">${escapeHtml(appCopy.help.exportProgress)}</button>
+              <a class="btn btn--primary" href="#/progreso" data-nav="/progreso">${escapeHtml(appCopy.help.openProgress)}</a>
+              <button class="btn" type="button" data-action="export-progress">${escapeHtml(appCopy.help.exportProgress)}</button>
               <label class="btn">
                 ${escapeHtml(appCopy.help.importProgress)}
                 <input class="visually-hidden" type="file" accept="application/json,.json" data-action="import-progress" />

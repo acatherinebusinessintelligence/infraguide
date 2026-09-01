@@ -77,7 +77,7 @@ function renderBuilderStep(step, draft, diagnose, bank, similar, error) {
   if (step === 1) {
     return `
       <h4>Paso 1 · Selecciona evidencias</h4>
-      <p>No se exige una única evidencia. Ejemplo: CPU 96 % + latencia 900 ms + demanda 31 000.</p>
+      <p>No se exige una única evidencia. Ejemplo: CPU 92 % + respuesta 4,8 s + concurrentes 181.</p>
       ${EvidenceBank({
         bank,
         filter: diagnose.currentFilter,

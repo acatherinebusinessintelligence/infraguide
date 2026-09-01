@@ -1,6 +1,6 @@
 {
   "name": "infraguide",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "description": "InfraGuide — Constructor guiado de análisis de infraestructura TI",
   "private": true,
   "type": "module",
@@ -10,12 +10,18 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:report": "node scripts/simulate-consulting-report.mjs",
+    "test:pedagogy": "node scripts/simulate-pedagogy.mjs",
+    "test:persistence": "node scripts/simulate-fase11.mjs",
+    "test:evidence": "node scripts/simulate-fase12.1.mjs",
+    "pdf:placeholder": "node scripts/write-placeholder-pdf.mjs"
   },
   "devDependencies": {
     "vite": "^8.2.2"
   },
   "dependencies": {
-    "docx": "^9.7.1"
+    "docx": "^9.7.1",
+    "pdfjs-dist": "^4.10.38"
   }
 }

@@ -223,7 +223,7 @@ export const isoAssets = [
   { id: 'database', label: 'Base de datos' },
   { id: 'customer-data', label: 'Datos de clientes' },
   { id: 'credentials', label: 'Credenciales' },
-  { id: 'wms', label: 'WMS' },
+  { id: 'wms', label: 'ERP Boreal' },
   { id: 'inventory-info', label: 'Información de inventario' },
   { id: 'backups', label: 'Respaldos' },
   { id: 'configs', label: 'Configuraciones' },

@@ -1,6 +1,8 @@
 import { appCopy } from '../data/copy.js';
 import { dataMap, getAnalysisLabel } from '../data/methodology/data-map.js';
 import { formatFieldValue } from '../data/cases/index.js';
+import { getSelectedCaseData } from '../state/appState.js';
+import { EvidenceLink } from './evidence/EvidenceLink.js';
 import { escapeHtml } from '../utils/escape.js';
 
 export function DataTag({ field, section, collected = false, compact = false }) {
@@ -8,6 +10,7 @@ export function DataTag({ field, section, collected = false, compact = false }) 
   const uses = (meta.usedIn ?? []).map(getAnalysisLabel).join(', ');
   const value = formatFieldValue(field);
   const source = section?.sectionTitle ?? field.sourceLabel ?? '';
+  const caseData = getSelectedCaseData();
 
   return `
     <article class="data-tag${compact ? ' data-tag--compact' : ''}${collected ? ' is-collected' : ''}" data-data-key="${escapeHtml(field.key)}">
@@ -25,6 +28,7 @@ export function DataTag({ field, section, collected = false, compact = false }) 
           ? `<p class="data-tag__source"><span>${escapeHtml(appCopy.caseWork.sourceHeading)}:</span> ${escapeHtml(source)}</p>`
           : ''
       }
+      <p class="data-tag__evidence" data-evidence-field="${escapeHtml(field.key)}">${EvidenceLink({ caseData, fieldKey: field.key, component: 'data-tag' })}</p>
       ${
         uses
           ? `<p class="data-tag__uses"><span>${escapeHtml(appCopy.caseWork.usesHeading)}</span> ${escapeHtml(uses)}</p>`
@@ -35,8 +39,6 @@ export function DataTag({ field, section, collected = false, compact = false }) 
           ? `
             <div class="data-tag__actions">
               <button class="data-tag__flag" type="button" data-action="why-data" data-data-key="${escapeHtml(field.key)}">
-                ${escapeHtml(appCopy.caseWork.usefulData)}
-              </button>
                 ${escapeHtml(appCopy.caseWork.whyButton)}
               </button>
               ${

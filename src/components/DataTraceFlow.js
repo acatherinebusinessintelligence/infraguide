@@ -2,6 +2,8 @@ import { appCopy } from '../data/copy.js';
 import { dataMap, getAnalysisLabel, DATA_STATUS, DATA_STATUS_LABEL } from '../data/methodology/data-map.js';
 import { documentSections } from '../data/document/sections.js';
 import { getCaseField, getCaseSection, formatFieldValue } from '../data/cases/index.js';
+import { EvidenceLink } from './evidence/EvidenceLink.js';
+import { TraceabilityChain } from './evidence/CaseDocumentIntro.js';
 import { escapeHtml } from '../utils/escape.js';
 
 export function DataTraceFlow({ caseData, dataKey, methodologyStatus = {} }) {
@@ -22,6 +24,15 @@ export function DataTraceFlow({ caseData, dataKey, methodologyStatus = {} }) {
 
   return `
     <aside class="trace-flow" aria-label="${escapeHtml(appCopy.caseWork.traceTitle)}">
+      ${TraceabilityChain({
+        items: [
+          { label: 'PDF', value: 'Documento fuente' },
+          { label: 'Evidencia', value: section?.sectionTitle || '' },
+          { label: 'Dato extraído', value: `${located.field.label} = ${formatFieldValue(located.field)}` },
+          { label: 'Uso', value: uses || 'Identificación' },
+          { label: 'Documento', value: doc ? `Sección ${meta.documentSectionId} - ${doc.title}` : 'Informe' },
+        ],
+      })}
       <div class="trace-flow__step">
         <p class="trace-flow__label">${escapeHtml(appCopy.caseWork.caseLabel)}</p>
         <p class="trace-flow__value">${escapeHtml(section?.sectionTitle ?? '')}</p>
@@ -30,6 +41,7 @@ export function DataTraceFlow({ caseData, dataKey, methodologyStatus = {} }) {
       <div class="trace-flow__step">
         <p class="trace-flow__label">${escapeHtml(appCopy.caseWork.datumLabel)}</p>
         <p class="trace-flow__value">${escapeHtml(located.field.label)} = ${escapeHtml(formatFieldValue(located.field))}</p>
+        ${EvidenceLink({ caseData, fieldKey: dataKey, component: 'trace-flow' })}
       </div>
       <p class="trace-flow__arrow" aria-hidden="true">↓</p>
       <div class="trace-flow__step">

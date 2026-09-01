@@ -6,17 +6,21 @@ import {
   getGroupProgress,
 } from '../data/methodology/data-map.js';
 import { escapeHtml } from '../utils/escape.js';
+import { EvidenceLink } from './evidence/EvidenceLink.js';
+import { getSelectedCaseData } from '../state/appState.js';
 
 export function CollectedDataPanel({ collectedData, methodologyStatus, open = true, variant = 'inline' }) {
+  const caseData = getSelectedCaseData();
   const progress = getGroupProgress(collectedData);
   const items = collectedData
     .map(
       (item) => `
-        <li class="collected-item">
+        <li class="collected-item" data-evidence-field="${escapeHtml(item.key)}">
           <div>
             <strong>${escapeHtml(item.label)}</strong>
             <span>${escapeHtml(item.displayValue || `${item.value} ${item.unit || ''}`.trim())}</span>
             <small>${escapeHtml(appCopy.caseWork.sourceHeading)}: ${escapeHtml(item.sourceLabel)}</small>
+            ${EvidenceLink({ caseData, fieldKey: item.key, component: 'collected' })}
           </div>
           <button class="btn btn--small" type="button" data-action="remove-data" data-data-key="${escapeHtml(item.key)}">
             ${escapeHtml(appCopy.caseWork.removeButton)}

@@ -54,7 +54,7 @@ export const exportCopy = {
   fallback: 'Puedes descargar HTML o abrir la vista imprimible.',
   generating: 'Generando archivo…',
   success: 'Archivo generado.',
-  htmlCard: 'Archivo completo que puede abrirse en cualquier navegador.',
-  wordCard: 'Documento editable en formato .docx.',
-  printCard: 'Versión lista para imprimir o guardar como PDF.',
+  htmlCard: 'Informe técnico de consultoría en HTML, con vínculos al PDF del caso.',
+  wordCard: 'Informe técnico editable (.docx) para entrega al comité.',
+  printCard: 'Vista A4 lista para imprimir o guardar como PDF.',
 };

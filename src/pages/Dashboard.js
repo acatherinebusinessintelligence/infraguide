@@ -101,10 +101,11 @@ export function DashboardPage(state) {
                               ? `<p>Las dependencias y el SPOF se documentan en REPRESENTAR.</p>
                                  <a class="btn btn--primary" href="#/representar/6" data-nav="/representar/6">Abrir análisis SPOF</a>`
                             : selectedStage.id === 4
-                              ? `<p>Calcula con fuente y fórmula. Calcular no es diagnosticar.</p>
+                              ? `<p>Cálculo guiado: concepto, fórmula, sustitución, interpretación y hallazgo. Calcular no es diagnosticar.</p>
                                  <a class="btn btn--primary" href="#/medir" data-nav="/medir">${
                                    state.completedStages.includes(4) ? 'Reabrir MEDIR' : 'Abrir MEDIR'
-                                 }</a>`
+                                 }</a>
+                                 <a class="btn" href="#/aprender" data-nav="/aprender">Abrir aprendizaje y glosario</a>`
                             : selectedStage.id === 5
                               ? `<p>Transforma evidencias en hallazgos técnicos sustentados. Un hallazgo no es una opinión.</p>
                                  <a class="btn btn--primary" href="#/diagnosticar" data-nav="/diagnosticar">${

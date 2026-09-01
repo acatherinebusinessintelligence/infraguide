@@ -8,7 +8,7 @@ export function RecoveryScreen({ recovery = {} }) {
   return `
     <div class="recovery-screen" role="alert">
       <h1>No pudimos abrir tu progreso</h1>
-      <p>${escapeHtml(message)}</p>
+      <p role="status" aria-live="polite">${escapeHtml(message)}</p>
       <p>La aplicación no se detiene: puedes recuperar una copia, cargar un archivo o empezar de nuevo.</p>
       <div class="progress-actions">
         <button class="btn btn--primary" type="button" data-action="recover-backup" ${recovery.hasBackup ? '' : 'disabled'}>Recuperar backup</button>

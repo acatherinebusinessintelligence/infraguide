@@ -220,32 +220,32 @@ export const pedagogicalExamples = [
   {
     id: 'ex-capacity',
     title: 'Capacidad / rendimiento',
-    evidence: 'CPU 96 %, RAM 88 %, latencia 900 ms, demanda 31 000.',
+    evidence: 'CPU 92 %, RAM 88 %, respuesta 4,8 s, concurrentes 181.',
     finding: 'Existe evidencia de degradación de rendimiento durante periodos de alta demanda.',
     category: 'CAPACIDAD / RENDIMIENTO',
   },
   {
     id: 'ex-storage',
     title: 'Almacenamiento',
-    evidence: '16,8 TB / 20 TB, 420 GB/mes, margen ≈7,6 meses, incidente NAS 94 %.',
+    evidence: '19,2 TB / 24 TB, 650 GB/mes, margen ≈7,4 meses, NAS al 80 %.',
     finding: 'Existe riesgo de agotamiento progresivo de capacidad de almacenamiento.',
   },
   {
     id: 'ex-monitor',
     title: 'Monitoreo',
-    evidence: 'Backup falla dos días sin alerta.',
+    evidence: 'Copia externa falló 9 días; última restauración parcial en nov. 2025.',
     finding: 'El monitoreo de respaldos presenta debilidades de detección.',
   },
   {
     id: 'ex-fw',
     title: 'Dependencia',
-    evidence: 'Un firewall principal, caída de 4 h, tiendas incomunicadas.',
+    evidence: 'Un firewall principal (FW-01), caída VPN 1 h 35 min.',
     finding: 'Existe una dependencia crítica del firewall principal.',
   },
   {
     id: 'ex-change',
     title: 'Cambios / operación',
-    evidence: 'Actualización POS sin rollback.',
+    evidence: 'Actualización de conector ERP sin evaluación de riesgo, pruebas ni reversa.',
     finding: 'El proceso de cambios presenta debilidad en planificación de reversa.',
     note: 'No se desarrolla ITIL todavía. Solo se diagnostica.',
   },
@@ -273,7 +273,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-wms',
     filters: ['service'],
-    datum: 'WMS — gestión de inventarios y despachos. Criticidad declarada: crítica.',
+    datum: 'ERP Boreal — pedidos, inventario, crédito y despacho. Criticidad declarada: crítica.',
     interpretation: 'Servicio crítico seleccionado en COMPRENDER.',
     source: 'Servicios tecnológicos',
     sourceSectionId: 'services',
@@ -283,7 +283,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-mes',
     filters: ['service'],
-    datum: 'MES — control de producción. Crítico durante operación de planta.',
+    datum: 'Producción y lotes — registro de consumos y producto terminado. Criticidad declarada: crítica.',
     interpretation: 'Servicio crítico de planta.',
     source: 'Servicios tecnológicos',
     sourceSectionId: 'services',
@@ -293,8 +293,8 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-ecom',
     filters: ['service'],
-    datum: 'E-commerce — ventas online 24/7. Criticidad alta.',
-    interpretation: 'Canal digital dependiente de disponibilidad y rendimiento.',
+    datum: 'Ventas y pedidos — WEB-APP01 y ERP. Criticidad alta. 06:00-22:00.',
+    interpretation: 'Canal comercial dependiente de disponibilidad y rendimiento.',
     source: 'Servicios tecnológicos',
     sourceSectionId: 'services',
     stage: 'COMPRENDER',
@@ -313,7 +313,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-db-srv01',
     filters: ['infrastructure'],
-    datum: 'DB-SRV01 — 24 vCPU / 96 GB. Base de datos principal.',
+    datum: 'ERP-DB01 — 12 vCPU / 48 GB. Base de datos SQL única.',
     interpretation: 'Componente de datos del AS-IS.',
     source: 'Infraestructura',
     sourceSectionId: 'infrastructure',
@@ -323,8 +323,8 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-wms-srv01',
     filters: ['infrastructure', 'service'],
-    datum: 'WMS-SRV01 — 16 vCPU / 32 GB. Rol WMS.',
-    interpretation: 'Servidor de aplicación del WMS.',
+    datum: 'PROD-APP01 — 6 vCPU / 16 GB. Producción y lotes. Comparte ERP-DB01.',
+    interpretation: 'Servidor de aplicación de producción.',
     source: 'Infraestructura',
     sourceSectionId: 'infrastructure',
     stage: 'REPRESENTAR',
@@ -333,7 +333,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-spof-firewall',
     filters: ['infrastructure', 'network', 'incidents'],
-    datum: 'SPOF: firewall justificado — instancia única + incidente B.',
+    datum: 'SPOF: FW-01 justificado — instancia única + incidente VPN (3 jul.).',
     interpretation: 'Candidato fuerte a punto único de falla.',
     source: 'Red e incidentes',
     sourceSectionId: 'incidents',
@@ -343,8 +343,8 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-inc-b',
     filters: ['incidents', 'network'],
-    datum: 'Incidente B — firewall fuera 4 h. Tiendas pierden conectividad.',
-    interpretation: 'Impacto transversal sobre el canal físico.',
+    datum: 'Incidente B — FW-01 1 h 35 min. VPN de sedes interrumpida.',
+    interpretation: 'Impacto transversal sobre conectividad de sedes.',
     source: 'Incidentes',
     sourceSectionId: 'incidents',
     stage: 'REPRESENTAR',
@@ -353,8 +353,8 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-inc-c',
     filters: ['incidents', 'storage'],
-    datum: 'Incidente C — NAS alcanza 94 %. Eliminación manual urgente.',
-    interpretation: 'Presión de almacenamiento observada en incidente.',
+    datum: 'Incidente C — IOT-GW01 dejó de recibir sensores 3 h 10 min.',
+    interpretation: 'Cadena de frío sin lecturas durante el evento.',
     source: 'Incidentes',
     sourceSectionId: 'incidents',
     stage: 'REPRESENTAR',
@@ -363,8 +363,8 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-inc-d',
     filters: ['incidents', 'backup'],
-    datum: 'Incidente D — backup falla dos días sin generar alerta.',
-    interpretation: 'Fallo de respaldo no detectado oportunamente.',
+    datum: 'Copia externa de backup falló 9 días (9-18 ago.). Última restauración parcial: nov. 2025.',
+    interpretation: 'Debilidad de detección y de prueba de recuperación.',
     source: 'Incidentes / Backup',
     sourceSectionId: 'incidents',
     stage: 'REPRESENTAR',
@@ -373,7 +373,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-inc-e',
     filters: ['incidents', 'operation'],
-    datum: 'Incidente E — actualización POS 1 h 20 min. Sin plan formal de rollback.',
+    datum: 'Incidente D — actualización de conector ERP 55 min. Sin riesgo, pruebas ni reversa.',
     interpretation: 'Cambio sin reversa planificada.',
     source: 'Incidentes',
     sourceSectionId: 'incidents',
@@ -383,7 +383,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-avail',
     filters: ['availability'],
-    datum: 'Disponibilidad observada ≈ 98,33 % (720 h / 12 h).',
+    datum: 'Disponibilidad observada ≈ 99,51 % (2.160 h / 10 h 40 min calculadas).',
     interpretation: 'Disponibilidad del periodo. No es el SLA.',
     source: 'Información operacional disponible',
     sourceSectionId: 'operational-data',
@@ -393,7 +393,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-mttr',
     filters: ['availability', 'operation'],
-    datum: 'MTTR 3,1 h (31 h / 10 incidentes).',
+    datum: 'MTTR ≈ 2,13 h (10 h 40 min / 5 incidentes).',
     interpretation: 'Tiempo promedio de restauración.',
     source: 'Información operacional disponible',
     sourceSectionId: 'operational-data',
@@ -403,7 +403,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-mtbf',
     filters: ['availability'],
-    datum: 'MTBF estimado ≈ 70,8 h.',
+    datum: 'MTBF estimado ≈ 429,87 h.',
     interpretation: 'Estimación con limitaciones de información.',
     source: 'Información operacional disponible',
     sourceSectionId: 'operational-data',
@@ -413,7 +413,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-cpu',
     filters: ['capacity'],
-    datum: 'CPU pico 96 % (promedio 78 %).',
+    datum: 'CPU pico 92 % (habitual 45-60 %).',
     interpretation: 'Pico observado; no equivale al promedio.',
     source: 'Información operacional disponible',
     sourceSectionId: 'operational-data',
@@ -433,8 +433,8 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-latency',
     filters: ['capacity'],
-    datum: 'Latencia pico 900 ms (normal 180 ms).',
-    interpretation: '≈ 5 veces la latencia normal.',
+    datum: 'Tiempo de respuesta pico 4,8 s (habitual 1,4 s).',
+    interpretation: '≈ 3,4 veces el tiempo habitual.',
     source: 'Información operacional disponible',
     sourceSectionId: 'operational-data',
     stage: 'MEDIR',
@@ -443,8 +443,8 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-demand',
     filters: ['capacity', 'service'],
-    datum: 'Demanda pico 31 000 pedidos (normal 14 000).',
-    interpretation: '≈ 121 % superior al nivel de referencia.',
+    datum: 'Usuarios concurrentes pico 181 (habitual 110-135).',
+    interpretation: 'Pico superior al rango habitual del 28 de agosto.',
     source: 'Información operacional disponible',
     sourceSectionId: 'operational-data',
     stage: 'MEDIR',
@@ -453,7 +453,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-storage-used',
     filters: ['storage'],
-    datum: 'Almacenamiento 16,8 TB de 20 TB (84 %).',
+    datum: 'Almacenamiento 19,2 TB de 24 TB (80 %).',
     interpretation: 'Uso alto; el contexto lo da el crecimiento.',
     source: 'Almacenamiento',
     sourceSectionId: 'storage',
@@ -463,7 +463,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-growth',
     filters: ['storage'],
-    datum: 'Crecimiento NAS 420 GB/mes.',
+    datum: 'Crecimiento NAS 650 GB/mes.',
     interpretation: 'Ritmo usado para proyectar margen teórico.',
     source: 'Almacenamiento',
     sourceSectionId: 'storage',
@@ -473,7 +473,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-margin',
     filters: ['storage'],
-    datum: 'Margen teórico ≈ 7,6 meses (crecimiento constante).',
+    datum: 'Margen teórico ≈ 7,4 meses (crecimiento constante).',
     interpretation: 'No es fecha exacta de agotamiento.',
     source: 'Almacenamiento',
     sourceSectionId: 'storage',
@@ -483,7 +483,7 @@ export const baseEvidenceCatalog = [
   {
     id: 'ev-metric-capacity-01',
     filters: ['capacity'],
-    datum: 'Evidencia metric-capacity-01: CPU 96 % + latencia 900 ms + demanda 31 000.',
+    datum: 'Evidencia metric-capacity-01: CPU 92 % + respuesta 4,8 s + concurrentes 181.',
     interpretation: 'Degradación bajo alta demanda (guardada en MEDIR).',
     source: 'Información operacional disponible',
     sourceSectionId: 'operational-data',
@@ -547,10 +547,10 @@ export const datoVsFindingItems = [
     text: 'Existe debilidad de monitoreo de respaldos, ya que fallos pueden permanecer sin detección.',
     correct: 'hallazgo',
   },
-  { id: 'd3', text: 'Firewall estuvo fuera cuatro horas.', correct: 'dato' },
+  { id: 'd3', text: 'FW-01 interrumpió la VPN durante 1 h 35 min.', correct: 'dato' },
   {
     id: 'h3',
-    text: 'La dependencia de un único firewall representa un riesgo significativo para la conectividad de tiendas.',
+    text: 'La dependencia de un único firewall representa un riesgo significativo para la conectividad de sedes.',
     correct: 'hallazgo',
   },
 ];
@@ -558,7 +558,7 @@ export const datoVsFindingItems = [
 export const diagnoseActivities = {
   pattern: {
     id: 'd-pattern',
-    prompt: '¿Qué patrón aparece en CPU 96 %, latencia 900 ms y demanda 31 000?',
+    prompt: '¿Qué patrón aparece en CPU 92 %, respuesta 4,8 s y 181 usuarios concurrentes?',
     options: [
       { id: 'a', label: 'Alta demanda coincide con mayor utilización y latencia.' },
       { id: 'b', label: 'El servidor está dañado.' },
@@ -618,7 +618,7 @@ export const diagnoseCheckpoint = [
     ],
     correctId: 'b',
     feedbackCorrect: 'Correcto. Un hallazgo se rastrea hasta la evidencia.',
-    feedbackIncorrect: 'CPU 96 % es un dato. El hallazgo interpreta ese dato en contexto.',
+    feedbackIncorrect: 'CPU 92 % es un dato. El hallazgo interpreta ese dato en contexto.',
   },
   {
     id: 'd-q2',

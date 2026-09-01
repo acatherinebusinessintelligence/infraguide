@@ -1,8 +1,10 @@
 import { HomePage, IntroPage } from './pages/Home.js';
 import { DashboardPage } from './pages/Dashboard.js';
 import { HelpPage } from './pages/Help.js';
+import { LearnPage } from './pages/Learn.js';
 import { CaseOverviewPage } from './pages/CaseOverview.js';
 import { CaseExplorePage } from './pages/CaseExplore.js';
+import { CaseIntroPage, CaseGuidedPage, CaseDocumentPage } from './pages/CaseSource.js';
 import { UnderstandPage } from './pages/Understand.js';
 import { RepresentPage } from './pages/Represent.js';
 import { MeasurePage } from './pages/Measure.js';
@@ -11,6 +13,8 @@ import { GovernPage } from './pages/Govern.js';
 import { DecidePage } from './pages/Decide.js';
 import { BuildPage } from './pages/Build.js';
 import { ExportPage } from './pages/Export.js';
+import { ProgressPage } from './pages/Progress.js';
+import { RecoveryScreen } from './components/progress/RecoveryScreen.js';
 import {
   getState,
   setState,
@@ -34,9 +38,31 @@ import {
   writeDecideFieldSilent,
   writeBuildFieldSilent,
   openDocumentSection,
-  importProgressState,
   loadDemoProgress,
 } from './state/appState.js';
+import { PersistenceService } from './state/persistence.js';
+import {
+  toggleProgressMenu,
+  saveProgressCopy,
+  beginImportFromFile,
+  cancelImport,
+  requestImportConfirm,
+  confirmImport,
+  previewBackup,
+  cancelBackupPreview,
+  confirmRestoreBackup,
+  createRecoveryPoint,
+  previewSnapshot,
+  cancelSnapshotPreview,
+  confirmRestoreSnapshot,
+  beginReset,
+  continueReset,
+  cancelReset,
+  confirmReset,
+  recoverFromBackup,
+  startFreshFromRecovery,
+  closeProgressDialogs,
+} from './state/progressActions.js';
 import {
   toggleContextEvidence,
   setContextField,
@@ -105,6 +131,18 @@ import {
   completeMeasureStage,
   insertMeasureTemplate,
 } from './state/measureActions.js';
+import {
+  openGlossary,
+  closeGlossary,
+  toggleHowObtained,
+  setPedagogyLevel,
+  toggleConceptOpen,
+  validateInterpretation,
+  persistTrace,
+  persistMetricFinding,
+  applyCalcFeedback,
+  setInsufficientFeedback,
+} from './state/pedagogyActions.js';
 import {
   setDiagnoseSubstage,
   setDiagnoseFilter,
@@ -209,19 +247,49 @@ import { getPathFromHash, parseRoute, navigate } from './utils/router.js';
 import { stages, getStageStatus, isStageActionable } from './data/stages/index.js';
 import { appCopy } from './data/copy.js';
 import { debugMode, APP_VERSION } from './config.js';
-import { downloadProgress, parseProgressFile, loadPersistedState } from './state/persistence.js';
 import { installErrorBoundary } from './runtime/errorScreen.js';
 import { runAppHealthCheck } from './runtime/healthCheck.js';
+import { getCaseById } from './data/cases/index.js';
+import { getPrimarySourceDocument, getEvidenceById, getEvidenceForField } from './data/evidence/index.js';
+import { CasePdfViewer } from './components/evidence/CasePdfViewer.js';
+import {
+  mountPdfRuntime,
+  pdfStep,
+  pdfZoom,
+  pdfFitWidth,
+  pdfGoTo,
+  pdfRuntimeState,
+  sourcePdfAsset,
+} from './components/evidence/pdfRuntime.js';
+import {
+  openCasePdf,
+  closePdfViewer,
+  applyScrollRestore,
+  completeCaseIntro,
+  startGuidedReading,
+  setGuidedStep,
+  writeGuidedNote,
+  setReadingPageCount,
+} from './state/evidenceActions.js';
 
 const root = document.querySelector('#app');
 
 function render(state) {
+  if (state.persistence?.recovery?.blocking) {
+    root.innerHTML = RecoveryScreen({ recovery: state.persistence.recovery });
+    return;
+  }
   const views = {
     home: HomePage,
     intro: IntroPage,
     dashboard: DashboardPage,
     help: HelpPage,
+    learn: LearnPage,
+    progress: ProgressPage,
     caseOverview: CaseOverviewPage,
+    caseIntro: CaseIntroPage,
+    caseGuided: CaseGuidedPage,
+    casePdf: CaseDocumentPage,
     caseExplore: CaseExplorePage,
     understand: UnderstandPage,
     represent: RepresentPage,
@@ -241,6 +309,29 @@ function render(state) {
     document.getElementById(`doc-sec-${previewKey}`)?.scrollIntoView({ block: 'start' });
   }
   maybeAutoPrint(state);
+  maybeFocusDialog(state);
+  syncPdfPortal(state);
+  applyScrollRestore();
+}
+
+let lastDialogKey = null;
+function maybeFocusDialog(state) {
+  const persistence = state.persistence ?? {};
+  const key = persistence.resetStep
+    ? `reset-${persistence.resetStep}`
+    : persistence.importConfirm
+      ? 'confirm'
+      : persistence.snapshotPreview
+        ? 'snapshot'
+        : persistence.backupPreview
+          ? 'backup'
+          : persistence.importPreview
+            ? 'import'
+            : null;
+  if (key && key !== lastDialogKey) {
+    root.querySelector('[data-autofocus]')?.focus();
+  }
+  lastDialogKey = key;
 }
 
 let printQueued = false;
@@ -260,15 +351,83 @@ function maybeAutoPrint(state) {
   });
 }
 
+function syncPdfPortal(state) {
+  const portal = document.getElementById('pdf-portal');
+  if (!portal) return;
+  const caseData = state.selectedCase?.id ? getCaseById(state.selectedCase.id) : null;
+  const overlay = Boolean(state.pdfViewer?.open && state.currentView !== 'casePdf');
+  const signature = [
+    overlay ? '1' : '0',
+    state.pdfViewer?.evidenceId || '',
+    state.pdfViewer?.fieldKey || '',
+    state.pdfViewer?.sourceSectionId || '',
+    state.pdfViewer?.page || '',
+    state.pdfViewer?.documentId || '',
+  ].join('|');
+
+  if (overlay && caseData) {
+    if (portal.getAttribute('data-pdf-signature') !== signature) {
+      portal.hidden = false;
+      portal.innerHTML = CasePdfViewer({ state, caseData });
+      portal.setAttribute('data-pdf-signature', signature);
+    } else {
+      portal.hidden = false;
+    }
+  } else {
+    portal.hidden = true;
+    if (!state.pdfViewer?.open) {
+      portal.innerHTML = '';
+      portal.removeAttribute('data-pdf-signature');
+    }
+  }
+
+  const mount = document.querySelector('[data-pdf-root]');
+  if (!state.pdfViewer?.open || !mount || !caseData) {
+    return;
+  }
+  if (mount.getAttribute('data-pdf-mounted') === signature) {
+    return;
+  }
+  const doc = getPrimarySourceDocument(caseData);
+  if (!doc?.file) return;
+  const evidence =
+    (state.pdfViewer.evidenceId ? getEvidenceById(caseData, state.pdfViewer.evidenceId) : null) ||
+    (state.pdfViewer.fieldKey ? getEvidenceForField(caseData, state.pdfViewer.fieldKey) : null);
+  mount.setAttribute('data-pdf-mounted', signature);
+  mountPdfRuntime(mount, {
+    url: sourcePdfAsset(doc.file),
+    page: state.pdfViewer.page || 1,
+    quote: evidence?.quote || evidence?.extract || '',
+  }).then(() => {
+    const runtime = pdfRuntimeState();
+    if (runtime.pageCount) setReadingPageCount(runtime.pageCount);
+  });
+}
+
 function syncViewFromLocation() {
+  if (getState().persistence?.recovery?.blocking) {
+    return;
+  }
   const path = getPathFromHash();
   const route = parseRoute(path);
   const current = getState();
+
+  const pdfViewer =
+    route.view === 'casePdf'
+      ? {
+          ...(current.pdfViewer || {}),
+          open: true,
+          documentId: current.pdfViewer?.documentId || 'caso-helados-boreal',
+          mode: current.pdfViewer?.mode || 'read',
+        }
+      : current.pdfViewer;
 
   setState({
     currentView: route.view,
     explorerSectionId: route.sectionId || current.explorerSectionId,
     mobileNavOpen: false,
+    persistence: { ...current.persistence, progressMenuOpen: false },
+    pdfViewer,
   });
   if (route.view === 'understand' && route.substage) {
     setUnderstandSubstage(route.substage);
@@ -294,6 +453,18 @@ function syncViewFromLocation() {
 }
 
 function handleClick(event) {
+  const pdfControl = event.target.closest('[data-pdf-action]');
+  if (pdfControl) {
+    event.preventDefault();
+    const pdfAct = pdfControl.getAttribute('data-pdf-action');
+    if (pdfAct === 'prev') pdfStep(-1);
+    if (pdfAct === 'next') pdfStep(1);
+    if (pdfAct === 'zoom-in') pdfZoom(0.15);
+    if (pdfAct === 'zoom-out') pdfZoom(-0.15);
+    if (pdfAct === 'fit-width') pdfFitWidth();
+    return;
+  }
+
   const navTarget = event.target.closest('[data-nav]');
   if (navTarget) {
     event.preventDefault();
@@ -340,7 +511,61 @@ function handleClick(event) {
   if (action === 'select-case') {
     const caseId = actionTarget.getAttribute('data-case-id');
     selectWorkCase(caseId);
-    navigate('/caso');
+    const next = getState();
+    navigate(next.caseReading?.introCompleted ? '/caso' : '/caso/conocer');
+    return;
+  }
+
+  if (action === 'open-evidence') {
+    event.preventDefault();
+    openCasePdf({
+      evidenceId: actionTarget.getAttribute('data-evidence-id') || null,
+      fieldKey: actionTarget.getAttribute('data-field-key') || null,
+      sourceSectionId: actionTarget.getAttribute('data-section-id') || null,
+      component: actionTarget.getAttribute('data-component') || '',
+      activity: actionTarget.getAttribute('data-activity') || '',
+      asOverlay: true,
+    });
+    return;
+  }
+
+  if (action === 'open-case-pdf') {
+    openCasePdf({
+      sourceSectionId: actionTarget.getAttribute('data-section-id') || null,
+      asOverlay: getState().currentView !== 'caseIntro' && getState().currentView !== 'caseGuided',
+    });
+    if (getState().currentView === 'caseIntro' || getState().currentView === 'caseGuided') {
+      navigate('/caso/documento');
+    }
+    return;
+  }
+
+  if (action === 'open-case-section') {
+    openCasePdf({
+      sourceSectionId: actionTarget.getAttribute('data-section-id') || null,
+      page: actionTarget.getAttribute('data-page') ? Number(actionTarget.getAttribute('data-page')) : null,
+      asOverlay: true,
+    });
+    return;
+  }
+
+  if (action === 'close-pdf-viewer') {
+    closePdfViewer();
+    return;
+  }
+
+  if (action === 'complete-case-intro') {
+    completeCaseIntro();
+    return;
+  }
+
+  if (action === 'start-guided-reading') {
+    startGuidedReading();
+    return;
+  }
+
+  if (action === 'guided-step') {
+    setGuidedStep(actionTarget.getAttribute('data-step'));
     return;
   }
 
@@ -601,24 +826,64 @@ function handleClick(event) {
     return;
   }
 
+  if (action === 'open-glossary') {
+    openGlossary(actionTarget.getAttribute('data-term'));
+    return;
+  }
+  if (action === 'close-glossary') {
+    closeGlossary();
+    return;
+  }
+  if (action === 'toggle-how-obtained') {
+    toggleHowObtained(actionTarget.getAttribute('data-metric-id'));
+    return;
+  }
+  if (action === 'pedagogy-level') {
+    setPedagogyLevel(actionTarget.getAttribute('data-metric-id'), actionTarget.getAttribute('data-level'));
+    return;
+  }
+  if (action === 'toggle-concept') {
+    toggleConceptOpen(actionTarget.getAttribute('data-metric-id'));
+    return;
+  }
+  if (action === 'validate-interpretation') {
+    validateInterpretation(actionTarget.getAttribute('data-metric-id'));
+    return;
+  }
+  if (action === 'persist-metric-finding') {
+    persistMetricFinding(actionTarget.getAttribute('data-metric-id'));
+    return;
+  }
+  if (action === 'mark-insufficient') {
+    setInsufficientFeedback(actionTarget.getAttribute('data-concept-id'));
+    return;
+  }
+
   if (action === 'submit-availability') {
-    submitAvailabilityStep(actionTarget.getAttribute('data-step'));
+    const step = actionTarget.getAttribute('data-step');
+    const ok = submitAvailabilityStep(step);
+    afterMetricCalc('availability', ok, step === 'percent');
     return;
   }
   if (action === 'submit-mttr') {
-    submitMttr();
+    afterMetricCalc('mttr', submitMttr(), true);
     return;
   }
   if (action === 'submit-mtbf') {
-    submitMtbfStep(actionTarget.getAttribute('data-step'));
+    const step = actionTarget.getAttribute('data-step');
+    const ok = submitMtbfStep(step);
+    afterMetricCalc('mtbf', ok, step !== 'uptime');
     return;
   }
   if (action === 'submit-storage') {
-    submitStorageStep(actionTarget.getAttribute('data-step'));
+    const ok = submitStorageStep(actionTarget.getAttribute('data-step'));
+    afterMetricCalc('storage', ok, Boolean(getState().analysis?.measure?.storage?.inputs?.monthsOk));
     return;
   }
   if (action === 'submit-performance') {
-    submitPerformanceStep(actionTarget.getAttribute('data-step'));
+    const step = actionTarget.getAttribute('data-step');
+    const ok = submitPerformanceStep(step);
+    afterMetricCalc('performance', ok, step !== 'ratio');
     return;
   }
   if (action === 'insert-measure-template') {
@@ -627,26 +892,32 @@ function handleClick(event) {
   }
   if (action === 'add-availability-doc') {
     addAvailabilityToDocument();
+    persistTrace('availability');
     return;
   }
   if (action === 'add-mttr-doc') {
     addMttrToDocument();
+    persistTrace('mttr');
     return;
   }
   if (action === 'add-mtbf-doc') {
     addMtbfToDocument();
+    persistTrace('mtbf');
     return;
   }
   if (action === 'add-capacity-doc') {
     addCapacityToDocument();
+    persistTrace('capacity');
     return;
   }
   if (action === 'add-storage-doc') {
     addStorageToDocument();
+    persistTrace('storage');
     return;
   }
   if (action === 'add-performance-doc') {
     addPerformanceToDocument();
+    persistTrace('performance');
     return;
   }
   if (action === 'save-capacity-evidence') {
@@ -654,13 +925,14 @@ function handleClick(event) {
     saveMetricEvidence({
       evidenceId: 'metric-capacity-01',
       metricId: 'capacity',
-      data: { cpuPeak: '96 %', latencyPeak: '900 ms', demandPeak: '31 000' },
+      data: { cpuPeak: '92 %', latencyPeak: '4,8 s', demandPeak: '181' },
       interpretation: 'Degradación bajo alta demanda.',
       sourceKeys: ['appCpuPeak', 'appLatencyPeak', 'appDemandPeak'],
     });
     if (existed) {
       markEvidenceChanged('ev-metric-capacity-01');
     }
+    persistTrace('capacity');
     return;
   }
   if (action === 'complete-measure') {
@@ -929,11 +1201,77 @@ function handleClick(event) {
   }
   if (action === 'export-progress' || action === 'fatal-download') {
     try {
-      const source = action === 'fatal-download' ? reconstructStoredState() : state;
-      downloadProgress(source);
+      saveProgressCopy();
     } catch (error) {
       setState({ documentError: error.message || 'No hay progreso para descargar.' });
     }
+    return;
+  }
+  if (action === 'toggle-progress-menu') {
+    toggleProgressMenu();
+    return;
+  }
+  if (action === 'close-progress-dialog') {
+    closeProgressDialogs();
+    return;
+  }
+  if (action === 'cancel-import') {
+    cancelImport();
+    return;
+  }
+  if (action === 'accept-import-preview') {
+    requestImportConfirm();
+    return;
+  }
+  if (action === 'confirm-import') {
+    confirmImport();
+    return;
+  }
+  if (action === 'preview-backup') {
+    previewBackup();
+    return;
+  }
+  if (action === 'cancel-backup-preview') {
+    cancelBackupPreview();
+    return;
+  }
+  if (action === 'confirm-restore-backup' || action === 'recover-backup') {
+    if (action === 'recover-backup') recoverFromBackup();
+    else confirmRestoreBackup();
+    return;
+  }
+  if (action === 'create-snapshot') {
+    const label = document.querySelector('[data-snapshot-label]')?.value ?? '';
+    createRecoveryPoint(label);
+    return;
+  }
+  if (action === 'preview-snapshot') {
+    previewSnapshot(actionTarget.getAttribute('data-snapshot-id'));
+    return;
+  }
+  if (action === 'cancel-snapshot-preview') {
+    cancelSnapshotPreview();
+    return;
+  }
+  if (action === 'confirm-restore-snapshot') {
+    confirmRestoreSnapshot();
+    return;
+  }
+  if (action === 'begin-reset') {
+    beginReset();
+    return;
+  }
+  if (action === 'continue-reset') {
+    continueReset();
+    return;
+  }
+  if (action === 'cancel-reset') {
+    cancelReset();
+    return;
+  }
+  if (action === 'confirm-reset' || action === 'recovery-start-new') {
+    if (action === 'recovery-start-new') startFreshFromRecovery();
+    else confirmReset();
     return;
   }
   if (action === 'load-demo') {
@@ -1012,6 +1350,10 @@ function handleClick(event) {
 
 function handleChange(event) {
   const target = event.target;
+  if (target.matches('[data-pdf-page-input]')) {
+    pdfGoTo(target.value);
+    return;
+  }
   if (target.matches('[data-action="export-mode"]')) {
     setExportMode(target.getAttribute('data-mode'));
     return;
@@ -1023,25 +1365,9 @@ function handleChange(event) {
   if (target.matches('[data-action="import-progress"], [data-action="fatal-import"]')) {
     const file = target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const payload = parseProgressFile(String(reader.result || ''));
-        if (!importProgressState(payload)) {
-          throw new Error('No se pudo aplicar el progreso.');
-        }
-        setState({ documentError: null });
-        if (target.getAttribute('data-action') === 'fatal-import') {
-          window.location.hash = '/ruta';
-          window.location.reload();
-          return;
-        }
-        navigate('/ruta');
-      } catch (error) {
-        setState({ documentError: error.message || 'No se pudo importar el progreso.' });
-      }
-    };
-    reader.readAsText(file);
+    beginImportFromFile(file).finally(() => {
+      target.value = '';
+    });
     return;
   }
   if (target.matches('[data-action="change-section"]')) {
@@ -1230,6 +1556,11 @@ function handleInput(event) {
   if (!draft) {
     return;
   }
+  if (event.target.getAttribute('data-scope') === 'case-reading') {
+    const stepId = draft.replace('notes.', '');
+    writeGuidedNote(stepId, event.target.value);
+    return;
+  }
   if (event.target.getAttribute('data-scope') === 'represent') {
     writeRepresentFieldSilent(draft, event.target.value);
     return;
@@ -1257,12 +1588,36 @@ function handleInput(event) {
   writeUnderstandFieldSilent(draft, event.target.value);
 }
 
+function afterMetricCalc(metricId, ok, complete) {
+  if (!ok) {
+    applyCalcFeedback(metricId, getState().documentError);
+    return;
+  }
+  if (complete) {
+    persistTrace(metricId);
+    const level = Number(getState().analysis?.measure?.[metricId]?.level || 1);
+    if (level < 2) setPedagogyLevel(metricId, 2);
+  }
+}
+
 function handleKeydown(event) {
   if (event.key !== 'Escape') {
     return;
   }
 
   const state = getState();
+  if (state.glossaryTerm) {
+    closeGlossary();
+    return;
+  }
+  if (state.howObtainedMetric) {
+    toggleHowObtained(state.howObtainedMetric);
+    return;
+  }
+  if (state.pdfViewer?.open) {
+    closePdfViewer();
+    return;
+  }
   if (state.methodInfoKey) {
     closeMethodInfo();
     return;
@@ -1277,6 +1632,10 @@ function handleKeydown(event) {
   }
   if (state.mobileNavOpen) {
     setState({ mobileNavOpen: false });
+    return;
+  }
+  if (state.persistence?.progressMenuOpen || state.persistence?.importPreview || state.persistence?.resetStep) {
+    closeProgressDialogs();
   }
 }
 
@@ -1295,25 +1654,24 @@ export function bootstrap() {
     document.addEventListener('change', handleChange);
     document.addEventListener('input', handleInput);
     document.addEventListener('keydown', handleKeydown);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden' && PersistenceService.isDirty()) {
+        PersistenceService.flush();
+      }
+    });
+    window.addEventListener('pagehide', () => PersistenceService.flush());
+    window.addEventListener('beforeunload', () => PersistenceService.flush());
 
-    if (!window.location.hash) {
-      window.location.hash = '/';
+    if (getState().persistence?.recovery?.blocking) {
+      render(getState());
+    } else {
+      if (!window.location.hash) {
+        window.location.hash = '/';
+      }
+      syncViewFromLocation();
     }
-
-    syncViewFromLocation();
     document.title = `InfraGuide | Gestión de la Infraestructura · v${APP_VERSION}`;
   } catch (error) {
     showFatal(error);
   }
-}
-
-function reconstructStoredState() {
-  const stored = loadPersistedState();
-  if (!stored) {
-    throw new Error('No hay progreso guardado en este navegador.');
-  }
-  return {
-    selectedCase: stored.selectedCaseId ? { id: stored.selectedCaseId } : null,
-    ...stored,
-  };
 }

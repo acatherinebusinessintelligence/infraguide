@@ -155,9 +155,9 @@ export const contextEvidence = [
   },
   {
     id: 'stores',
-    label: 'Tiene 46 tiendas.',
+    label: 'Tiene tiendas propias, distribuidores, supermercados y clientes institucionales.',
     relevant: true,
-    source: 'Contexto - tiendas',
+    source: 'Contexto - canales',
     slot: 'coverage',
   },
   {
@@ -169,35 +169,35 @@ export const contextEvidence = [
   },
   {
     id: 'dc',
-    label: 'Tiene centro de distribución.',
+    label: 'Tiene centros de distribución en Medellín y Cali.',
     relevant: true,
     source: 'Contexto - centro de distribución',
     slot: 'coverage',
   },
   {
     id: 'ecom',
-    label: 'Cuenta con e-commerce 24/7.',
+    label: 'Cuenta con portal de ventas y pedidos (WEB-APP01).',
     relevant: true,
-    source: 'Contexto - e-commerce',
+    source: 'Servicios - ventas y pedidos',
     slot: 'channels',
   },
   {
     id: 'employees',
-    label: 'Tiene aproximadamente 980 empleados.',
+    label: 'Bogotá concentra planta, oficinas y centro de datos, con 145 usuarios habituales.',
     relevant: true,
     source: 'Contexto - empleados',
     slot: 'size',
   },
   {
     id: 'users',
-    label: 'Tiene 420 usuarios directos de sistemas.',
+    label: 'Tiene 235 usuarios con acceso a servicios tecnológicos corporativos.',
     relevant: true,
     source: 'Contexto - usuarios de sistemas',
     slot: 'size',
   },
   {
     id: 'cpu',
-    label: 'CPU APP-SRV01 = 78 %.',
+    label: 'CPU pico ERP-APP01 = 92 %.',
     relevant: false,
     laterStage: 'MEDIR',
     feedback:
@@ -205,7 +205,7 @@ export const contextEvidence = [
   },
   {
     id: 'nas',
-    label: 'NAS = 16,8 TB usados.',
+    label: 'NAS-01 = 19,2 TB usados de 24 TB.',
     relevant: false,
     laterStage: 'MEDIR',
     feedback:
@@ -225,13 +225,13 @@ export const contextTemplate =
   '[Organización] es una empresa del sector [sector] dedicada a [actividad]. Su operación incluye [sedes/canales]. Cuenta aproximadamente con [dato] y su operación tecnológica soporta [característica relevante].';
 
 export const contextExample =
-  'Helados Boreal S.A.S. es una empresa dedicada a la producción, distribución y comercialización de helados y productos congelados. Su operación incluye una planta principal, un centro de distribución, 46 tiendas y un canal de e-commerce. La compañía cuenta con aproximadamente 980 empleados y 420 usuarios directos de sistemas.';
+  'Helados Boreal S.A.S. es una empresa colombiana mediana dedicada a la fabricación y comercialización de helados, postres congelados y productos de temporada. Su operación principal está en Bogotá, con centros de distribución en Medellín y Cali. La compañía tiene 235 usuarios con acceso a servicios tecnológicos corporativos.';
 
 export const userActors = [
-  { id: 'employees', label: 'Empleados', correct: 'internal' },
-  { id: 'storeStaff', label: 'Personal de tiendas', correct: 'internal' },
-  { id: 'ecomCustomers', label: 'Clientes e-commerce', correct: 'external' },
-  { id: 'storeCustomers', label: 'Clientes en tiendas', correct: 'external' },
+  { id: 'employees', label: 'Usuarios de planta, oficinas y CD en Bogotá', correct: 'internal' },
+  { id: 'storeStaff', label: 'Personal de centros de distribución', correct: 'internal' },
+  { id: 'ecomCustomers', label: 'Vendedores y supervisión remota', correct: 'internal' },
+  { id: 'storeCustomers', label: 'Clientes institucionales y supermercados', correct: 'external' },
   { id: 'sensors', label: 'Sensores de cadena de frío', correct: 'systems' },
 ];
 
@@ -242,10 +242,10 @@ export const userCategories = [
 ];
 
 export const operationWindows = [
-  { id: 'production', label: 'Producción', value: '20 horas/día - 6 días/semana' },
-  { id: 'stores', label: 'Tiendas', value: 'Todos los días' },
-  { id: 'ecommerce', label: 'E-commerce', value: '24/7' },
-  { id: 'logistics', label: 'Logística', value: 'Operación extendida' },
+  { id: 'production', label: 'Producción', value: '24/6' },
+  { id: 'stores', label: 'Ventas y pedidos', value: '06:00-22:00' },
+  { id: 'ecommerce', label: 'Cadena de frío', value: '24/7' },
+  { id: 'logistics', label: 'Centros de distribución', value: '16 h, lunes a sábado' },
 ];
 
 export const scheduleQuestion = {
@@ -265,22 +265,17 @@ export const scheduleQuestion = {
 };
 
 export const operationsExample =
-  'Los servicios tecnológicos son utilizados por personal administrativo, usuarios de tiendas, producción y logística, además de clientes de los canales físicos y digitales. La operación presenta diferentes ventanas de servicio, incluyendo e-commerce 24/7 y producción extendida.';
+  'Los servicios tecnológicos son utilizados desde Bogotá, Medellín, Cali y posiciones remotas. La producción opera 24/6; la cadena de frío requiere 24/7; ventas y pedidos operan de 06:00 a 22:00.';
 
 export const serviceComponentItems = [
-  { id: 'pos', label: 'POS', correct: 'service' },
-  { id: 'app-srv01', label: 'APP-SRV01', correct: 'component' },
-  { id: 'wms', label: 'WMS', correct: 'service' },
-  { id: 'db-srv01', label: 'DB-SRV01', correct: 'component' },
-  { id: 'ecommerce', label: 'E-commerce', correct: 'service' },
-  { id: 'firewall', label: 'Firewall', correct: 'component' },
-  {
-    id: 'ad',
-    label: 'Active Directory',
-    correct: 'service',
-    note: 'Servicio / servicio de infraestructura según el enfoque del caso.',
-  },
-  { id: 'nas', label: 'NAS', correct: 'component' },
+  { id: 'erp', label: 'ERP Boreal', correct: 'service' },
+  { id: 'erp-app01', label: 'ERP-APP01', correct: 'component' },
+  { id: 'production', label: 'Producción y lotes', correct: 'service' },
+  { id: 'erp-db01', label: 'ERP-DB01', correct: 'component' },
+  { id: 'sales', label: 'Ventas y pedidos', correct: 'service' },
+  { id: 'firewall', label: 'FW-01', correct: 'component' },
+  { id: 'cold-chain', label: 'Cadena de frío', correct: 'service' },
+  { id: 'nas', label: 'NAS-01', correct: 'component' },
 ];
 
 export const serviceComponentCategories = [
@@ -290,119 +285,67 @@ export const serviceComponentCategories = [
 
 export const understandServices = [
   {
-    id: 'pos',
-    name: 'POS',
-    description: 'Registro de ventas en tiendas.',
-    declaredCriticality: 'Alta',
-    users: 'Personal de tiendas y clientes en puntos de venta.',
-    operation: 'Todos los días, en horario de tiendas.',
-    failureImpact: 'Se dificulta o detiene el registro de ventas en el canal físico.',
-    alternativeHint: 'Parcial: venta manual, con pérdida de control e integración.',
-    when: 'Operación de tiendas',
-    sourceSectionId: 'services',
-    sourceLabel: 'Servicios tecnológicos',
-  },
-  {
     id: 'erp',
-    name: 'ERP',
-    description: 'Finanzas, compras, inventario y operación administrativa.',
-    declaredCriticality: 'Alta',
-    users: 'Áreas administrativas, compras y finanzas.',
-    operation: 'Jornada administrativa, con dependencias hacia otros sistemas.',
-    failureImpact: 'Se afecta la operación administrativa y la consistencia de inventario y compras.',
-    alternativeHint: 'Parcial y de corto plazo, no sustituye el proceso.',
-    when: 'Operación administrativa continua',
-    sourceSectionId: 'services',
-    sourceLabel: 'Servicios tecnológicos',
-  },
-  {
-    id: 'wms',
-    name: 'WMS',
-    description: 'Gestión de inventarios y despachos del centro de distribución.',
+    name: 'ERP Boreal',
+    description: 'ERP-APP01, ERP-DB01, AD/DNS y NAS. 24/6, con cierres mensuales.',
     declaredCriticality: 'Crítica',
-    users: 'Centro de distribución / logística.',
-    operation: 'Operación logística extendida.',
-    failureImpact: 'Se dificulta la preparación y el despacho de pedidos.',
-    alternativeHint: 'No está claro que exista una alternativa equivalente.',
-    when: 'Operación logística',
+    users: 'Operación administrativa, inventario, crédito y despacho.',
+    operation: '24/6; cierres mensuales.',
+    failureImpact: 'Se afectan pedidos, inventario, crédito y programación de despacho.',
+    alternativeHint: 'No hay alternativa equivalente de corto plazo; el ERP no puede reemplazarse en 18 meses.',
+    when: 'Producción 24/6 y cierres',
     sourceSectionId: 'services',
     sourceLabel: 'Servicios tecnológicos',
   },
   {
-    id: 'mes',
-    name: 'MES',
-    description: 'Control de producción.',
-    declaredCriticality: 'Crítica durante operación de planta',
+    id: 'production',
+    name: 'Producción y lotes',
+    description: 'PROD-APP01, ERP-DB01 y red de planta.',
+    declaredCriticality: 'Crítica',
     users: 'Planta de producción.',
-    operation: '20 horas al día, 6 días por semana.',
-    failureImpact: 'Se pierde visibilidad y control de la producción en curso.',
+    operation: '24/6.',
+    failureImpact: 'Se pierde registro de consumos, lotes y producto terminado.',
     alternativeHint: 'Parcial, con riesgo operativo alto.',
-    when: 'Ventana de producción',
-    sourceSectionId: 'services',
-    sourceLabel: 'Servicios tecnológicos',
-  },
-  {
-    id: 'ecommerce',
-    name: 'E-commerce',
-    description: 'Ventas online.',
-    declaredCriticality: 'Alta',
-    users: 'Clientes digitales y operación comercial en línea.',
-    operation: '24/7',
-    failureImpact: 'Se interrumpen compras en línea y puede haber abandono de pedidos.',
-    alternativeHint: 'El canal físico no cubre la demanda digital.',
-    when: 'Continuo',
+    when: 'Ventana de producción 24/6',
     sourceSectionId: 'services',
     sourceLabel: 'Servicios tecnológicos',
   },
   {
     id: 'cold-chain',
-    name: 'Integración de cadena de frío',
-    description: 'Recepción de datos de temperatura y monitoreo de transporte.',
-    declaredCriticality: 'Alta',
-    users: 'Logística, calidad y sensores de transporte.',
-    operation: 'Operación extendida de distribución refrigerada.',
-    failureImpact: 'Se pierde trazabilidad de temperatura en tránsito.',
-    alternativeHint: 'Monitoreo manual, con menor cobertura.',
-    when: 'Transporte y almacenamiento refrigerado',
-    sourceSectionId: 'services',
-    sourceLabel: 'Servicios tecnológicos',
-  },
-  {
-    id: 'ad',
-    name: 'Active Directory',
-    description: 'Identidad y acceso de usuarios y equipos.',
+    name: 'Cadena de frío',
+    description: 'IOT-GW01, COLD-APP01 y red de planta. 96 sensores.',
     declaredCriticality: 'Crítica',
-    users: 'Todos los usuarios internos de sistemas.',
-    operation: 'Continua, como servicio de infraestructura.',
-    failureImpact: 'Se afecta el acceso a múltiples servicios dependientes de identidad.',
-    alternativeHint: 'No hay alternativa equivalente de corto plazo.',
-    when: 'Toda la operación tecnológica',
+    users: 'Planta, cuartos fríos y vehículos seleccionados.',
+    operation: '24/7.',
+    failureImpact: 'Se deja de recibir lecturas de temperatura.',
+    alternativeHint: 'Monitoreo manual, con menor cobertura.',
+    when: 'Continuo 24/7',
     sourceSectionId: 'services',
     sourceLabel: 'Servicios tecnológicos',
   },
   {
-    id: 'mail',
-    name: 'Correo',
-    description: 'Comunicación institucional.',
-    declaredCriticality: 'Media',
-    users: 'Personal administrativo y de soporte.',
-    operation: 'Puede permanecer disponible de forma continua.',
-    failureImpact: 'Se degrada la coordinación, sin detener necesariamente la producción o el despacho.',
-    alternativeHint: 'Sí: otros canales de mensajería, con menor formalidad.',
-    when: 'Jornada y soporte',
+    id: 'sales',
+    name: 'Ventas y pedidos',
+    description: 'WEB-APP01, ERP-APP01 e Internet.',
+    declaredCriticality: 'Alta',
+    users: 'Vendedores y portal web.',
+    operation: '06:00-22:00.',
+    failureImpact: 'Se interrumpe la consolidación de pedidos en el ERP.',
+    alternativeHint: 'Pedidos por otros canales, con menor integración.',
+    when: '06:00-22:00',
     sourceSectionId: 'services',
     sourceLabel: 'Servicios tecnológicos',
   },
   {
     id: 'files',
-    name: 'Archivos compartidos',
-    description: 'Repositorio de documentos y archivos administrativos.',
+    name: 'Archivos corporativos',
+    description: 'FILE-SRV01, NAS y AD.',
     declaredCriticality: 'Media',
     users: 'Áreas administrativas.',
-    operation: 'Jornada administrativa.',
-    failureImpact: 'Se dificulta el acceso a documentos, sin detener la cadena de frío ni el despacho.',
+    operation: '07:00-20:00.',
+    failureImpact: 'Se dificulta el acceso a documentos corporativos.',
     alternativeHint: 'Parcial, copias locales no gobernadas.',
-    when: 'Operación administrativa',
+    when: 'Jornada administrativa',
     sourceSectionId: 'services',
     sourceLabel: 'Servicios tecnológicos',
   },
@@ -435,17 +378,17 @@ export const alternativeOptions = [
 ];
 
 export const wmsPedagogy = {
-  service: 'WMS',
-  datum: 'Gestiona inventario y despacho.',
-  impact: 'Una falla afecta la preparación de pedidos.',
+  service: 'ERP Boreal',
+  datum: 'Soporta pedidos, inventario, crédito y despacho. Criticidad declarada: crítica.',
+  impact: 'Una falla afecta la consolidación de pedidos y la programación de despacho.',
   conclusion:
-    'El WMS presenta criticidad alta/crítica porque soporta directamente la operación del centro de distribución.',
-  reminder: 'La conclusión no surge del nombre WMS. Surge de: FUNCIÓN + DEPENDENCIA + IMPACTO.',
+    'El ERP Boreal presenta criticidad crítica porque los pedidos, el inventario y los despachos dependen de él.',
+  reminder: 'La conclusión no surge del nombre ERP. Surge de: FUNCIÓN + DEPENDENCIA + IMPACTO.',
   trace: {
     search: 'Servicios tecnológicos.',
-    extract: 'WMS gestiona inventario y despachos.',
+    extract: 'ERP Boreal — ERP-APP01, ERP-DB01, AD/DNS, NAS. Crítica.',
     process: 'Analizar función e impacto.',
-    interpret: 'Su indisponibilidad afecta la operación logística.',
+    interpret: 'Su indisponibilidad afecta la operación comercial y logística.',
     write: 'Servicios críticos.',
   },
 };
@@ -453,48 +396,48 @@ export const wmsPedagogy = {
 export const hoursCriticalityQuestion = {
   id: 'same-hours-criticality',
   prompt:
-    'El e-commerce funciona 24/7 y el correo también puede estar disponible 24/7. ¿Eso significa que tienen la misma criticidad?',
+    'La cadena de frío opera 24/7 y los archivos corporativos también pueden consultarse en jornada extendida. ¿Eso significa que tienen la misma criticidad?',
   options: [
-    { id: 'yes', label: 'Sí, la ventana 24/7 iguala la criticidad.' },
+    { id: 'yes', label: 'Sí, la ventana de operación iguala la criticidad.' },
     { id: 'no', label: 'No.' },
   ],
   correctId: 'no',
   feedbackCorrect:
     'La ventana de operación es solo uno de los criterios. Debes analizar impacto y dependencia del negocio.',
   feedbackIncorrect:
-    'Compartir horario no iguala criticidad. Un canal de venta y un correo institucional no tienen el mismo impacto de negocio.',
+    'Compartir o acercar horarios no iguala criticidad. La cadena de frío y los archivos corporativos no tienen el mismo impacto de negocio.',
 };
 
 export const restrictionItems = [
   {
     id: 'budget',
-    label: 'Presupuesto limitado',
+    label: 'Presupuesto hasta COP 180 millones en doce meses',
     correctType: 'financial',
     suggestedImpact: 'Limita el alcance de inversiones y obliga a priorizar.',
   },
   {
     id: 'production-window',
-    label: 'No detener producción por periodos largos',
+    label: 'No se puede detener producción de lunes 05:00 a sábado 22:00 salvo emergencia',
     correctType: 'operational',
     suggestedImpact: 'La implementación debe minimizar ventanas de interrupción.',
   },
   {
     id: 'keep-erp',
-    label: 'No reemplazar ERP a corto plazo',
+    label: 'El ERP no puede reemplazarse durante los próximos 18 meses',
     correctType: 'technological',
     suggestedImpact: 'Afecta la estrategia tecnológica: se evoluciona sobre el ERP actual.',
   },
   {
     id: 'keep-stores',
-    label: 'Mantener operación de tiendas',
+    label: 'No se autoriza aumentar la planta de TI durante 2026',
     correctType: 'operational',
-    suggestedImpact: 'Los cambios no pueden dejar inoperante el canal físico.',
+    suggestedImpact: 'La propuesta no puede depender de más personal interno en 2026.',
   },
   {
     id: 'ecom-growth',
-    label: 'Crecimiento esperado de e-commerce del 35 %',
-    correctType: 'growth',
-    suggestedImpact: 'La capacidad futura debe contemplar un canal digital en expansión.',
+    label: 'Adquisiciones superiores a COP 60 millones requieren comité',
+    correctType: 'financial',
+    suggestedImpact: 'Las compras grandes no se aprueban solo por el equipo de TI.',
   },
   {
     id: 'cloud-ok',
@@ -571,10 +514,10 @@ export const checkpointQuestions = [
       { id: 'a', label: 'No hay diferencia.' },
       { id: 'b', label: 'El servicio es lo que el negocio usa; el componente es un elemento técnico que lo sostiene.' },
       { id: 'c', label: 'Todo servidor es un servicio.' },
-      { id: 'd', label: 'WMS es un componente y APP-SRV01 es un servicio.' },
+      { id: 'd', label: 'ERP Boreal es un componente y ERP-APP01 es un servicio.' },
     ],
     correctId: 'b',
-    feedbackCorrect: 'Correcto. POS o WMS son servicios; APP-SRV01 o NAS son componentes.',
+    feedbackCorrect: 'Correcto. ERP Boreal o cadena de frío son servicios; ERP-APP01 o NAS-01 son componentes.',
     feedbackIncorrect: 'No confundas la función de negocio con el servidor o el almacenamiento que la ejecutan.',
   },
   {

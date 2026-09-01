@@ -46,6 +46,33 @@ export function validateCase(caseData) {
     });
   });
 
+  if (Array.isArray(caseData.sourceDocuments)) {
+    caseData.sourceDocuments.forEach((doc, index) => {
+      if (!doc?.id) errors.push(`sourceDocuments[${index}] no tiene id.`);
+      if (!doc?.file) errors.push(`sourceDocuments[${index}] no tiene file.`);
+    });
+  }
+
+  if (Array.isArray(caseData.evidenceRegistry)) {
+    const seen = new Set();
+    caseData.evidenceRegistry.forEach((item, index) => {
+      if (!item?.evidenceId) {
+        errors.push(`evidenceRegistry[${index}] no tiene evidenceId.`);
+        return;
+      }
+      if (seen.has(item.evidenceId)) {
+        errors.push(`evidenceId duplicado: ${item.evidenceId}.`);
+      }
+      seen.add(item.evidenceId);
+      if (item.sourceSectionId && !sectionIds.has(item.sourceSectionId)) {
+        errors.push(`evidenceRegistry ${item.evidenceId}: sourceSectionId inválido.`);
+      }
+      if (item.verified === true && (item.page == null || Number(item.page) < 1)) {
+        errors.push(`evidenceRegistry ${item.evidenceId}: verificada sin página.`);
+      }
+    });
+  }
+
   return { ok: errors.length === 0, errors: [...new Set(errors)] };
 }
 
