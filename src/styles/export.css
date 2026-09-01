@@ -1,0 +1,239 @@
+.export-page {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.export-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--space-3);
+  margin: 0 0 var(--space-5);
+}
+
+.export-stats div {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+}
+
+.export-stats dt {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.export-stats dd {
+  margin: 0.2rem 0 0;
+  font-weight: 700;
+  color: var(--navy-800);
+}
+
+.export-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-5) 0;
+}
+
+.export-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-5);
+}
+
+.export-card h3 {
+  color: var(--navy-800);
+  margin-top: 0;
+}
+
+.export-mode,
+.export-flags {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-4) 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  background: var(--white);
+}
+
+.export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+}
+
+.export-history {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.export-preview__frame {
+  border: 1px solid var(--border);
+  background: var(--white);
+  min-height: 24rem;
+  margin-top: var(--space-4);
+}
+
+.export-preview__iframe {
+  width: 100%;
+  min-height: 70vh;
+  border: 0;
+}
+
+.export-preview--word,
+.export-preview--print {
+  padding: var(--space-5);
+  overflow: auto;
+}
+
+.export-preview--word {
+  font-family: Calibri, Arial, sans-serif;
+}
+
+.document-panel__export {
+  margin: var(--space-4);
+  padding: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+.print-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--navy-800);
+}
+
+.print-toolbar .btn {
+  color: inherit;
+}
+
+.print-hint {
+  margin: var(--space-4);
+}
+
+.print-root .ig-page {
+  max-width: 210mm;
+  margin: 0 auto;
+  background: #fff;
+  padding: 18mm 16mm;
+}
+
+.print-root .ig-cover {
+  text-align: center;
+  border-bottom: 2px solid #0b3a6a;
+  margin-bottom: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.print-root .ig-kicker,
+.print-root .ig-section h2,
+.print-root .ig-cover h1 {
+  color: #0b3a6a;
+}
+
+.print-root .ig-section h3 {
+  color: #1f6aa5;
+}
+
+.print-root .ig-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10pt;
+}
+
+.print-root .ig-table th,
+.print-root .ig-table td {
+  border: 1px solid #c5d4e3;
+  padding: 0.4rem 0.5rem;
+  word-break: break-word;
+}
+
+.print-root .ig-table th {
+  background: #d6e6f5;
+}
+
+.print-root .ig-asis-svg {
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+
+.print-root .ig-metric,
+.print-root .ig-asis,
+.print-root .ig-table {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm;
+  }
+
+  .print-toolbar,
+  .topbar,
+  .nav,
+  .site-footer,
+  .document-panel,
+  .backdrop,
+  .skip-link,
+  .print-hint,
+  .export-center,
+  .export-preview,
+  .export-actions,
+  button,
+  .btn {
+    display: none !important;
+  }
+
+  .print-root,
+  .print-shell {
+    background: #fff;
+  }
+
+  .print-root .ig-cover {
+    page-break-after: always;
+    break-after: page;
+    min-height: auto;
+  }
+
+  .print-root .ig-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  .app-shell:has(.export-center) .topbar,
+  .app-shell:has(.export-center) .site-footer,
+  .app-shell:has(.export-center) .document-panel,
+  .app-shell:has(.export-center) nav,
+  .export-center,
+  .export-preview,
+  .export-page > .section-heading {
+    display: none !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .export-actions .btn {
+    width: 100%;
+  }
+
+  .print-root .ig-page {
+    padding: 1rem;
+  }
+}

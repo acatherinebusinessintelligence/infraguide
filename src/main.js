@@ -1,0 +1,17 @@
+import './styles/tokens.css';
+import './styles/reset.css';
+import './styles/layout.css';
+import './styles/components.css';
+import './styles/pages.css';
+import './styles/case.css';
+import './styles/understand.css';
+import './styles/represent.css';
+import './styles/measure.css';
+import './styles/diagnose.css';
+import './styles/govern.css';
+import './styles/decide.css';
+import './styles/build.css';
+import './styles/export.css';
+import { bootstrap } from './app.js';
+
+bootstrap();

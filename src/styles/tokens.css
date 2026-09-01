@@ -1,0 +1,52 @@
+:root {
+  --navy-950: #05101c;
+  --navy-900: #071526;
+  --navy-800: #0b1f3a;
+  --navy-700: #123056;
+  --blue-700: #164a86;
+  --blue-600: #1a5a9c;
+  --blue-500: #2b6cb0;
+  --blue-200: #b7cce0;
+  --blue-100: #e8f1fa;
+  --blue-50: #f4f8fc;
+  --white: #ffffff;
+  --warn-700: #8a6a12;
+  --warn-500: #c9a227;
+  --warn-100: #f8efd4;
+  --ok-700: #165c3a;
+  --ok-500: #1f7a4d;
+  --ok-100: #d9efe4;
+  --blocked-700: #4a5568;
+  --blocked-100: #e8ecf0;
+  --text: #152033;
+  --text-muted: #3d4d63;
+  --border: #c5d4e3;
+  --shadow: 0 1px 2px rgb(11 31 58 / 0.06), 0 8px 24px rgb(11 31 58 / 0.06);
+  --radius: 8px;
+  --header-h: 4.25rem;
+  --font: "Segoe UI", "Candara", "Calibri", system-ui, sans-serif;
+  --font-mono: "Cascadia Mono", "Consolas", "Segoe UI Mono", ui-monospace, monospace;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --content: 72rem;
+  --focus: 0 0 0 2px var(--white), 0 0 0 4px var(--warn-500);
+  --focus-on-dark: 0 0 0 2px var(--navy-800), 0 0 0 4px var(--warn-500);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

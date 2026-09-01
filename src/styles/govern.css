@@ -1,0 +1,112 @@
+.govern-page {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.framework-intro-grid,
+.multi-grid,
+.gov-finding-grid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.framework-intro,
+.gov-finding-card,
+.framework-option {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: var(--space-4);
+  background: var(--white);
+}
+
+.framework-itil {
+  border-left: 4px solid var(--blue-600);
+}
+
+.framework-cobit {
+  border-left: 4px solid var(--navy-700);
+}
+
+.framework-iso {
+  border-left: 4px solid var(--ok-700);
+}
+
+.framework-option {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.framework-option.is-active {
+  background: var(--blue-50);
+  outline: 2px solid var(--blue-500);
+}
+
+.framework-option__q {
+  display: block;
+  font-weight: 600;
+  margin: 0.2rem 0;
+}
+
+.gov-finding-card.is-selected {
+  outline: 2px solid var(--blue-500);
+  background: var(--blue-50);
+}
+
+.gov-finding-card__head {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.usage-line {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.edm-flow {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.doc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+@media (min-width: 48rem) {
+  .framework-intro-grid,
+  .gov-finding-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .multi-grid,
+  .framework-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+}
+
+@media (min-width: 60rem) {
+  .gov-finding-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .govern-page .matrix-table-wrap {
+    display: none;
+  }
+
+  .govern-page .matrix-cards {
+    display: grid;
+    gap: var(--space-3);
+  }
+}

@@ -1,0 +1,156 @@
+.build-page {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.doc-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+}
+
+.issue-grid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.issue-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: var(--space-4);
+  background: var(--white);
+}
+
+.severity-ERROR {
+  border-left: 4px solid #7a1f1f;
+}
+
+.severity-REVISIÓN {
+  border-left: 4px solid var(--warn-700);
+}
+
+.severity-ADVERTENCIA {
+  border-left: 4px solid var(--blue-500);
+}
+
+.trace-nodes {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.trace-node {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: var(--space-3);
+  background: var(--white);
+  font: inherit;
+  cursor: pointer;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.report {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: var(--space-5);
+}
+
+.report-cover {
+  text-align: center;
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-5);
+}
+
+.report-kicker {
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.report-index {
+  margin-bottom: var(--space-5);
+}
+
+.report-index.is-collapsed ol {
+  display: none;
+}
+
+.report-section {
+  margin-bottom: var(--space-6);
+}
+
+.report-section__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.report-prose {
+  white-space: pre-wrap;
+}
+
+.metric-result {
+  font-weight: 700;
+}
+
+.academic-note {
+  font-size: 0.9rem;
+  color: var(--navy-800);
+}
+
+.asis-static {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+}
+
+.asis-static li {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  background: var(--blue-50);
+}
+
+.preview-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.quality-list span {
+  display: inline-block;
+  min-width: 1.25rem;
+}
+
+@media (min-width: 48rem) {
+  .issue-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .doc-summary {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .build-page .matrix-table-wrap {
+    display: none;
+  }
+
+  .build-page .matrix-cards {
+    display: grid;
+    gap: var(--space-3);
+  }
+}

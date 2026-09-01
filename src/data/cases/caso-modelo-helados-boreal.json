@@ -1,0 +1,938 @@
+{
+  "id": "modelo-helados-boreal",
+  "name": "Helados Boreal S.A.S.",
+  "kind": "model",
+  "kindLabel": "Caso modelo",
+  "sector": "Producción y comercialización de alimentos congelados",
+  "organizationType": "Empresa nacional de helados y productos congelados",
+  "useButtonLabel": "USAR CASO MODELO",
+  "summary": "Empresa nacional que produce, distribuye y comercializa helados y productos congelados, con planta, centro de distribución, tiendas, e-commerce y cadena de frío.",
+  "pedagogicalNote": "Caso ficticio de uso pedagógico. No corresponde a ninguno de los casos oficiales del curso.",
+  "readOnly": true,
+  "sections": [
+    {
+      "sectionId": "context",
+      "sectionTitle": "Contexto",
+      "index": 1,
+      "groupId": "context",
+      "summary": "Qué hace la organización, dónde opera y quiénes utilizan sus servicios.",
+      "blocks": [
+        {
+          "type": "fields",
+          "fields": [
+            {
+              "key": "organizationName",
+              "label": "Empresa",
+              "value": "Helados Boreal S.A.S.",
+              "unit": "",
+              "usable": false
+            },
+            {
+              "key": "activity",
+              "label": "Actividad",
+              "value": "Produce, distribuye y comercializa helados y productos congelados.",
+              "unit": "",
+              "usable": false
+            },
+            {
+              "key": "sector",
+              "label": "Sector",
+              "value": "Producción y comercialización de alimentos congelados",
+              "unit": "",
+              "usable": false
+            },
+            {
+              "key": "plantCount",
+              "label": "Planta principal",
+              "value": 1,
+              "unit": "",
+              "usable": false
+            },
+            {
+              "key": "distributionCenterCount",
+              "label": "Centro de distribución",
+              "value": 1,
+              "unit": "",
+              "usable": false
+            },
+            {
+              "key": "storeCount",
+              "label": "Tiendas",
+              "value": 46,
+              "unit": "",
+              "usable": true
+            },
+            {
+              "key": "employeeCount",
+              "label": "Empleados",
+              "value": 980,
+              "unit": "",
+              "qualifier": "aproximadamente",
+              "displayValue": "aproximadamente 980",
+              "usable": true
+            },
+            {
+              "key": "systemUsers",
+              "label": "Usuarios directos de sistemas",
+              "value": 420,
+              "unit": "",
+              "qualifier": "aproximadamente",
+              "displayValue": "aproximadamente 420",
+              "usable": true
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "title": "Operación de canales",
+          "items": [
+            "Producción: 20 horas al día, 6 días por semana.",
+            "Tiendas: todos los días.",
+            "E-commerce: 24/7.",
+            "Logística refrigerada: operación extendida.",
+            "Cadena de frío en producción, distribución y puntos de venta."
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "services",
+      "sectionTitle": "Servicios tecnológicos",
+      "index": 2,
+      "groupId": "services",
+      "summary": "Servicios que soportan venta, inventario, producción y distribución.",
+      "blocks": [
+        {
+          "type": "records",
+          "title": "Catálogo de servicios",
+          "records": [
+            {
+              "title": "POS de tiendas",
+              "fields": [
+                {
+                  "key": "servicePos",
+                  "label": "Descripción",
+                  "value": "Registro de ventas en tiendas.",
+                  "unit": "",
+                  "usable": false
+                },
+                {
+                  "key": "servicePosCriticality",
+                  "label": "Criticidad",
+                  "value": "Alta",
+                  "unit": "",
+                  "usable": true
+                }
+              ]
+            },
+            {
+              "title": "ERP",
+              "fields": [
+                {
+                  "key": "serviceErp",
+                  "label": "Descripción",
+                  "value": "Finanzas, compras, inventario y operación administrativa.",
+                  "unit": "",
+                  "usable": false
+                },
+                {
+                  "key": "serviceErpCriticality",
+                  "label": "Criticidad",
+                  "value": "Alta",
+                  "unit": "",
+                  "usable": true
+                }
+              ]
+            },
+            {
+              "title": "WMS",
+              "fields": [
+                {
+                  "key": "serviceWms",
+                  "label": "Descripción",
+                  "value": "Gestión de inventarios y despachos del centro de distribución.",
+                  "unit": "",
+                  "usable": false
+                },
+                {
+                  "key": "serviceWmsCriticality",
+                  "label": "Criticidad",
+                  "value": "Crítica",
+                  "unit": "",
+                  "usable": true
+                }
+              ]
+            },
+            {
+              "title": "MES",
+              "fields": [
+                {
+                  "key": "serviceMes",
+                  "label": "Descripción",
+                  "value": "Control de producción.",
+                  "unit": "",
+                  "usable": false
+                },
+                {
+                  "key": "serviceMesCriticality",
+                  "label": "Criticidad",
+                  "value": "Crítica durante operación de planta",
+                  "unit": "",
+                  "usable": true
+                }
+              ]
+            },
+            {
+              "title": "E-commerce",
+              "fields": [
+                {
+                  "key": "serviceEcommerce",
+                  "label": "Descripción",
+                  "value": "Ventas online.",
+                  "unit": "",
+                  "usable": false
+                },
+                {
+                  "key": "serviceEcommerceCriticality",
+                  "label": "Criticidad",
+                  "value": "Alta",
+                  "unit": "",
+                  "usable": true
+                }
+              ]
+            },
+            {
+              "title": "Integración de cadena de frío",
+              "fields": [
+                {
+                  "key": "serviceColdChain",
+                  "label": "Descripción",
+                  "value": "Recepción de datos de temperatura y monitoreo de transporte.",
+                  "unit": "",
+                  "usable": false
+                },
+                {
+                  "key": "serviceColdChainCriticality",
+                  "label": "Criticidad",
+                  "value": "Alta",
+                  "unit": "",
+                  "usable": true
+                }
+              ]
+            },
+            {
+              "title": "Active Directory",
+              "fields": [
+                {
+                  "key": "serviceAd",
+                  "label": "Descripción",
+                  "value": "Identidad y acceso de usuarios y equipos.",
+                  "unit": "",
+                  "usable": false
+                },
+                {
+                  "key": "serviceAdCriticality",
+                  "label": "Criticidad",
+                  "value": "Crítica",
+                  "unit": "",
+                  "usable": true
+                }
+              ]
+            },
+            {
+              "title": "Correo",
+              "fields": [
+                {
+                  "key": "serviceMail",
+                  "label": "Descripción",
+                  "value": "Comunicación institucional.",
+                  "unit": "",
+                  "usable": false
+                },
+                {
+                  "key": "serviceMailCriticality",
+                  "label": "Criticidad",
+                  "value": "Media",
+                  "unit": "",
+                  "usable": false
+                }
+              ]
+            },
+            {
+              "title": "Archivos compartidos",
+              "fields": [
+                {
+                  "key": "serviceFiles",
+                  "label": "Descripción",
+                  "value": "Repositorio de documentos y archivos administrativos.",
+                  "unit": "",
+                  "usable": false
+                },
+                {
+                  "key": "serviceFilesCriticality",
+                  "label": "Criticidad",
+                  "value": "Media",
+                  "unit": "",
+                  "usable": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "infrastructure",
+      "sectionTitle": "Infraestructura",
+      "index": 3,
+      "groupId": "architecture",
+      "summary": "Servidores de aplicación, datos e identidad que sostienen la operación.",
+      "blocks": [
+        {
+          "type": "fields",
+          "fields": [
+            {
+              "key": "serverCount",
+              "label": "Servidores descritos en el inventario",
+              "value": 7,
+              "unit": "",
+              "usable": true
+            }
+          ]
+        },
+        {
+          "type": "records",
+          "title": "Inventario de servidores",
+          "records": [
+            {
+              "title": "APP-SRV01",
+              "fields": [
+                { "key": "appSrv01Vcpu", "label": "vCPU", "value": 8, "unit": "vCPU", "usable": false },
+                { "key": "appSrv01Ram", "label": "RAM", "value": 24, "unit": "GB", "usable": false },
+                { "key": "appSrv01Os", "label": "Sistema operativo", "value": "Linux", "unit": "", "usable": false },
+                { "key": "appSrv01Role", "label": "Rol", "value": "Aplicación de integración tiendas / POS", "unit": "", "usable": false }
+              ]
+            },
+            {
+              "title": "ERP-SRV01",
+              "fields": [
+                { "key": "erpSrv01Vcpu", "label": "vCPU", "value": 16, "unit": "vCPU", "usable": false },
+                { "key": "erpSrv01Ram", "label": "RAM", "value": 64, "unit": "GB", "usable": false },
+                { "key": "erpSrv01Os", "label": "Sistema operativo", "value": "Windows", "unit": "", "usable": false },
+                { "key": "erpSrv01Role", "label": "Rol", "value": "ERP", "unit": "", "usable": false }
+              ]
+            },
+            {
+              "title": "WMS-SRV01",
+              "fields": [
+                { "key": "wmsSrv01Vcpu", "label": "vCPU", "value": 16, "unit": "vCPU", "usable": false },
+                { "key": "wmsSrv01Ram", "label": "RAM", "value": 32, "unit": "GB", "usable": false },
+                { "key": "wmsSrv01Os", "label": "Sistema operativo", "value": "Linux", "unit": "", "usable": false },
+                { "key": "wmsSrv01Role", "label": "Rol", "value": "WMS", "unit": "", "usable": false }
+              ]
+            },
+            {
+              "title": "MES-SRV01",
+              "fields": [
+                { "key": "mesSrv01Vcpu", "label": "vCPU", "value": 16, "unit": "vCPU", "usable": false },
+                { "key": "mesSrv01Ram", "label": "RAM", "value": 32, "unit": "GB", "usable": false },
+                { "key": "mesSrv01Os", "label": "Sistema operativo", "value": "Windows", "unit": "", "usable": false },
+                { "key": "mesSrv01Role", "label": "Rol", "value": "MES", "unit": "", "usable": false }
+              ]
+            },
+            {
+              "title": "DB-SRV01",
+              "fields": [
+                { "key": "dbSrv01Vcpu", "label": "vCPU", "value": 24, "unit": "vCPU", "usable": false },
+                { "key": "dbSrv01Ram", "label": "RAM", "value": 96, "unit": "GB", "usable": false },
+                { "key": "dbSrv01Os", "label": "Motor", "value": "PostgreSQL", "unit": "", "usable": false },
+                { "key": "dbSrv01Role", "label": "Rol", "value": "Base de datos principal", "unit": "", "usable": false }
+              ]
+            },
+            {
+              "title": "AD-SRV01",
+              "fields": [
+                { "key": "adSrv01Vcpu", "label": "vCPU", "value": 4, "unit": "vCPU", "usable": false },
+                { "key": "adSrv01Ram", "label": "RAM", "value": 16, "unit": "GB", "usable": false },
+                { "key": "adSrv01Os", "label": "Sistema operativo", "value": "Windows Server", "unit": "", "usable": false },
+                { "key": "adSrv01Role", "label": "Rol", "value": "Active Directory", "unit": "", "usable": false }
+              ]
+            },
+            {
+              "title": "FILE-SRV01",
+              "fields": [
+                { "key": "fileSrv01Vcpu", "label": "vCPU", "value": 8, "unit": "vCPU", "usable": false },
+                { "key": "fileSrv01Ram", "label": "RAM", "value": 24, "unit": "GB", "usable": false },
+                { "key": "fileSrv01Os", "label": "Sistema operativo", "value": "Windows Server", "unit": "", "usable": false },
+                { "key": "fileSrv01Role", "label": "Rol", "value": "Archivos", "unit": "", "usable": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "storage",
+      "sectionTitle": "Almacenamiento",
+      "index": 4,
+      "groupId": "capacity",
+      "summary": "Capacidad, uso actual y ritmo de crecimiento del almacenamiento.",
+      "blocks": [
+        {
+          "type": "fields",
+          "fields": [
+            {
+              "key": "storageCapacity",
+              "label": "Capacidad total",
+              "value": 20,
+              "unit": "TB",
+              "usable": true
+            },
+            {
+              "key": "storageUsed",
+              "label": "Capacidad utilizada",
+              "value": 16.8,
+              "unit": "TB",
+              "displayValue": "16,8 TB",
+              "usable": true
+            },
+            {
+              "key": "storageGrowth",
+              "label": "Crecimiento",
+              "value": 420,
+              "unit": "GB/mes",
+              "usable": true
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "title": "Uso principal",
+          "items": [
+            "Bases de datos.",
+            "Documentos.",
+            "Archivos administrativos.",
+            "Exportaciones.",
+            "Históricos.",
+            "Respaldos locales."
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "backup",
+      "sectionTitle": "Backup",
+      "index": 5,
+      "groupId": "governance",
+      "summary": "Política de copias, destino y evidencias de fallos no detectados.",
+      "blocks": [
+        {
+          "type": "list",
+          "title": "Configuración observada",
+          "items": [
+            "Backup diario.",
+            "Incrementales cada 6 horas.",
+            "Almacenamiento principal en NAS.",
+            "Copia externa semanal.",
+            "Pruebas de restauración irregulares.",
+            "No existe tablero consolidado."
+          ]
+        },
+        {
+          "type": "fields",
+          "fields": [
+            {
+              "key": "backupRestoreTests",
+              "label": "Pruebas de restauración",
+              "value": "Irregulares",
+              "unit": "",
+              "usable": true
+            },
+            {
+              "key": "undetectedBackupFailures",
+              "label": "Fallos de backup no detectados oportunamente",
+              "value": 2,
+              "unit": "",
+              "usable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "network",
+      "sectionTitle": "Red",
+      "index": 6,
+      "groupId": "architecture",
+      "summary": "Enlaces, perímetro, VPN y segmentación observada.",
+      "blocks": [
+        {
+          "type": "fields",
+          "fields": [
+            {
+              "key": "mainInternetLinks",
+              "label": "Enlaces de Internet en sede principal",
+              "value": 2,
+              "unit": "",
+              "usable": true
+            },
+            {
+              "key": "mainFirewallCount",
+              "label": "Firewall principal",
+              "value": 1,
+              "unit": "",
+              "usable": true
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "title": "Topología y acceso",
+          "items": [
+            "VPN hacia tiendas.",
+            "Tiendas con diferentes proveedores.",
+            "Algunas tiendas con un único enlace.",
+            "Red corporativa.",
+            "Red de producción.",
+            "Conectividad Wi-Fi.",
+            "Segmentación parcial."
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "security",
+      "sectionTitle": "Seguridad",
+      "index": 7,
+      "groupId": "security",
+      "summary": "Controles existentes y brechas de identidad, registros y parches.",
+      "blocks": [
+        {
+          "type": "list",
+          "title": "Controles presentes",
+          "items": [
+            "Firewall.",
+            "Antivirus/EDR.",
+            "Active Directory.",
+            "VPN.",
+            "Cuentas de servicio."
+          ]
+        },
+        {
+          "type": "fields",
+          "fields": [
+            {
+              "key": "mfaCoverage",
+              "label": "MFA",
+              "value": "Parcial",
+              "unit": "",
+              "usable": true
+            },
+            {
+              "key": "privilegedAccessReview",
+              "label": "Accesos privilegiados",
+              "value": "Algunos sin revisión periódica",
+              "unit": "",
+              "usable": true
+            },
+            {
+              "key": "logManagement",
+              "label": "Registros",
+              "value": "Logs distribuidos",
+              "unit": "",
+              "usable": false
+            },
+            {
+              "key": "patchCoordination",
+              "label": "Actualizaciones",
+              "value": "No siempre coordinadas",
+              "unit": "",
+              "usable": false
+            },
+            {
+              "key": "staleAccounts",
+              "label": "Cuentas de exempleados",
+              "value": "Varias deshabilitadas tardíamente",
+              "unit": "",
+              "usable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "it-team",
+      "sectionTitle": "Equipo TI",
+      "index": 8,
+      "groupId": "context",
+      "summary": "Composición del equipo y roles que no existen de forma exclusiva.",
+      "blocks": [
+        {
+          "type": "fields",
+          "title": "Dotación",
+          "fields": [
+            { "key": "roleCio", "label": "Director TI", "value": 1, "unit": "", "usable": false },
+            { "key": "roleInfra", "label": "Infraestructura", "value": 2, "unit": "", "usable": false },
+            { "key": "roleNetwork", "label": "Redes", "value": 2, "unit": "", "usable": false },
+            { "key": "roleApps", "label": "Aplicaciones", "value": 4, "unit": "", "usable": false },
+            { "key": "roleSupport", "label": "Soporte", "value": 5, "unit": "", "usable": false },
+            { "key": "roleSecurity", "label": "Seguridad", "value": 2, "unit": "", "usable": false },
+            { "key": "itHeadcount", "label": "Total de personas en TI", "value": 16, "unit": "", "usable": true }
+          ]
+        },
+        {
+          "type": "list",
+          "title": "No existe rol exclusivo de",
+          "items": [
+            "Capacidad.",
+            "Arquitectura empresarial.",
+            "Continuidad."
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "operations",
+      "sectionTitle": "Operación",
+      "index": 9,
+      "groupId": "governance",
+      "summary": "Canales de soporte, registro de incidentes y consolidación de reportes.",
+      "blocks": [
+        {
+          "type": "list",
+          "title": "Canales de atención",
+          "items": [
+            "Mesa de ayuda.",
+            "Correo.",
+            "Llamadas.",
+            "Mensajería.",
+            "Solicitudes directas a técnicos."
+          ]
+        },
+        {
+          "type": "fields",
+          "fields": [
+            {
+              "key": "incidentRegistrationCoverage",
+              "label": "Registro de incidentes",
+              "value": "No todos los incidentes quedan registrados",
+              "unit": "",
+              "usable": true
+            },
+            {
+              "key": "monitoringTools",
+              "label": "Monitoreo",
+              "value": "Existen varias herramientas de monitoreo",
+              "unit": "",
+              "usable": false
+            },
+            {
+              "key": "executiveReporting",
+              "label": "Reportes ejecutivos",
+              "value": "Se consolidan manualmente",
+              "unit": "",
+              "usable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "operational-data",
+      "sectionTitle": "Información operacional disponible",
+      "index": 10,
+      "groupId": "availability",
+      "summary": "Periodo observado, indisponibilidad, incidentes y señales de capacidad.",
+      "blocks": [
+        {
+          "type": "fields",
+          "title": "Periodo e incidentes",
+          "fields": [
+            {
+              "key": "periodHours",
+              "label": "Periodo observado",
+              "value": 720,
+              "unit": "h",
+              "usable": true,
+              "sourceLabel": "Periodo observado"
+            },
+            {
+              "key": "downtimeHours",
+              "label": "Tiempo total de indisponibilidad",
+              "value": 12,
+              "unit": "h",
+              "usable": true,
+              "sourceLabel": "Tiempo total de indisponibilidad"
+            },
+            {
+              "key": "incidentCount",
+              "label": "Incidentes",
+              "value": 10,
+              "unit": "",
+              "usable": true,
+              "sourceLabel": "Número de incidentes"
+            },
+            {
+              "key": "totalRecoveryHours",
+              "label": "Tiempo total de recuperación",
+              "value": 31,
+              "unit": "h",
+              "usable": true,
+              "sourceLabel": "Tiempo total de recuperación"
+            }
+          ]
+        },
+        {
+          "type": "fields",
+          "title": "APP-SRV01",
+          "fields": [
+            {
+              "key": "appCpuAverage",
+              "label": "CPU promedio",
+              "value": 78,
+              "unit": "%",
+              "usable": false
+            },
+            {
+              "key": "appCpuPeak",
+              "label": "CPU pico",
+              "value": 96,
+              "unit": "%",
+              "usable": true
+            },
+            {
+              "key": "appRamUsage",
+              "label": "Uso de RAM",
+              "value": 88,
+              "unit": "%",
+              "usable": true
+            },
+            {
+              "key": "appLatencyNormal",
+              "label": "Latencia normal",
+              "value": 180,
+              "unit": "ms",
+              "usable": false
+            },
+            {
+              "key": "appLatencyPeak",
+              "label": "Latencia pico",
+              "value": 900,
+              "unit": "ms",
+              "usable": true
+            },
+            {
+              "key": "appDemandNormal",
+              "label": "Demanda normal",
+              "value": 14000,
+              "unit": "pedidos",
+              "displayValue": "14 000 pedidos",
+              "usable": false
+            },
+            {
+              "key": "appDemandPeak",
+              "label": "Demanda pico",
+              "value": 31000,
+              "unit": "pedidos",
+              "displayValue": "31 000 pedidos",
+              "usable": true
+            }
+          ]
+        },
+        {
+          "type": "fields",
+          "title": "DB-SRV01",
+          "fields": [
+            {
+              "key": "dbStorageUsage",
+              "label": "Uso de almacenamiento",
+              "value": 84,
+              "unit": "%",
+              "usable": true
+            },
+            {
+              "key": "dbMonthlyGrowth",
+              "label": "Crecimiento mensual",
+              "value": 4.2,
+              "unit": "%",
+              "displayValue": "4,2 %",
+              "usable": true
+            },
+            {
+              "key": "dbConnectionsAverage",
+              "label": "Conexiones promedio",
+              "value": 1800,
+              "unit": "",
+              "displayValue": "1 800",
+              "usable": false
+            },
+            {
+              "key": "dbConnectionsPeak",
+              "label": "Conexiones pico",
+              "value": 5200,
+              "unit": "",
+              "displayValue": "5 200",
+              "usable": true
+            }
+          ]
+        },
+        {
+          "type": "fields",
+          "title": "NAS",
+          "fields": [
+            {
+              "key": "storageCapacity",
+              "label": "Capacidad NAS",
+              "value": 20,
+              "unit": "TB",
+              "usable": true
+            },
+            {
+              "key": "storageUsed",
+              "label": "NAS utilizado",
+              "value": 16.8,
+              "unit": "TB",
+              "displayValue": "16,8 TB",
+              "usable": true
+            },
+            {
+              "key": "storageGrowth",
+              "label": "Crecimiento NAS",
+              "value": 420,
+              "unit": "GB/mes",
+              "usable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "incidents",
+      "sectionTitle": "Incidentes",
+      "index": 11,
+      "groupId": "recovery",
+      "summary": "Eventos recientes con impacto en venta, conectividad, almacenamiento y cambios.",
+      "blocks": [
+        {
+          "type": "records",
+          "title": "Registro de incidentes",
+          "records": [
+            {
+              "title": "Incidente A — Alta demanda de e-commerce",
+              "fields": [
+                { "key": "incidentACpu", "label": "CPU", "value": 96, "unit": "%", "usable": false },
+                { "key": "incidentALatency", "label": "Latencia", "value": 900, "unit": "ms", "usable": false },
+                { "key": "incidentADuration", "label": "Duración", "value": 2.5, "unit": "h", "displayValue": "2 h 30 min", "usable": false },
+                { "key": "incidentAImpact", "label": "Impacto", "value": "Lentitud y abandono de compras.", "unit": "", "usable": false }
+              ]
+            },
+            {
+              "title": "Incidente B — Falla del firewall principal",
+              "fields": [
+                { "key": "incidentBDuration", "label": "Duración", "value": 4, "unit": "h", "displayValue": "4 horas", "usable": false },
+                { "key": "incidentBImpact", "label": "Impacto", "value": "Varias tiendas pierden conectividad con sistemas centrales.", "unit": "", "usable": false }
+              ]
+            },
+            {
+              "title": "Incidente C — NAS alcanza 94 %",
+              "fields": [
+                { "key": "incidentCNas", "label": "Uso NAS", "value": 94, "unit": "%", "usable": false },
+                { "key": "incidentCImpact", "label": "Impacto", "value": "Se requiere eliminación manual urgente de archivos.", "unit": "", "usable": false }
+              ]
+            },
+            {
+              "title": "Incidente D — Falla de backup sin alerta",
+              "fields": [
+                { "key": "incidentDDuration", "label": "Duración", "value": 2, "unit": "días", "displayValue": "dos días", "usable": false },
+                { "key": "incidentDImpact", "label": "Impacto", "value": "Backup falla durante dos días sin generar alerta.", "unit": "", "usable": false }
+              ]
+            },
+            {
+              "title": "Incidente E — Actualización del sistema de integración POS",
+              "fields": [
+                { "key": "incidentEDuration", "label": "Duración", "value": 1.333, "unit": "h", "displayValue": "1 h 20 min", "usable": false },
+                { "key": "incidentERollback", "label": "Rollback", "value": "No existía plan formal de rollback.", "unit": "", "usable": true },
+                { "key": "incidentEImpact", "label": "Impacto", "value": "Interrupción asociada a un cambio en integración POS.", "unit": "", "usable": false }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "governance",
+      "sectionTitle": "Gobierno TI",
+      "index": 12,
+      "groupId": "governance",
+      "summary": "Madurez de procedimientos, SLA, cambios, métricas e inversión.",
+      "blocks": [
+        {
+          "type": "list",
+          "title": "Prácticas observadas",
+          "items": [
+            "Algunos procedimientos documentados.",
+            "SLA incompletos.",
+            "Gestión de cambios parcialmente formal.",
+            "Incidentes no siempre consolidados.",
+            "Métricas ejecutivas manuales.",
+            "Decisiones de capacidad principalmente reactivas.",
+            "Inversiones de infraestructura suelen aprobarse ante urgencias."
+          ]
+        },
+        {
+          "type": "fields",
+          "fields": [
+            {
+              "key": "slaCompleteness",
+              "label": "SLA",
+              "value": "Incompletos",
+              "unit": "",
+              "usable": true
+            },
+            {
+              "key": "capacityDecisions",
+              "label": "Decisiones de capacidad",
+              "value": "Principalmente reactivas",
+              "unit": "",
+              "usable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "constraints",
+      "sectionTitle": "Restricciones",
+      "index": 13,
+      "groupId": "governance",
+      "summary": "Límites de negocio, operación y tecnología que condicionan las decisiones.",
+      "blocks": [
+        {
+          "type": "list",
+          "title": "Restricciones declaradas",
+          "items": [
+            "Presupuesto limitado.",
+            "No detener producción por periodos largos.",
+            "No reemplazar ERP a corto plazo.",
+            "Mantener operación de tiendas.",
+            "Cloud permitido si se justifica.",
+            "Preocupación por costos variables.",
+            "Mantener trazabilidad de cadena de frío."
+          ]
+        },
+        {
+          "type": "fields",
+          "fields": [
+            {
+              "key": "ecommerceGrowthExpected",
+              "label": "Crecimiento esperado de e-commerce",
+              "value": 35,
+              "unit": "%",
+              "usable": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

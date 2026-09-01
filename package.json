@@ -1,0 +1,21 @@
+{
+  "name": "infraguide",
+  "version": "1.0.0",
+  "description": "InfraGuide — Constructor guiado de análisis de infraestructura TI",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^8.2.2"
+  },
+  "dependencies": {
+    "docx": "^9.7.1"
+  }
+}

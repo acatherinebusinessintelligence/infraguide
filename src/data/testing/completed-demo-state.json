@@ -1,0 +1,1446 @@
+{
+  "kind": "infraguide-progress",
+  "persistenceVersion": 1,
+  "appVersion": "1.0.0",
+  "exportedAt": "2026-09-01T19:33:28.932Z",
+  "selectedCaseId": "modelo-helados-boreal",
+  "collectedData": [],
+  "methodologyStatus": {
+    "availability": "NOT_FOUND",
+    "mttr": "NOT_FOUND",
+    "mtbf": "NOT_FOUND",
+    "capacity": "NOT_FOUND",
+    "performance": "NOT_FOUND",
+    "diagnosis": "NOT_FOUND",
+    "continuity": "NOT_FOUND",
+    "context": "NOT_FOUND",
+    "services": "NOT_FOUND",
+    "architecture": "NOT_FOUND",
+    "security": "NOT_FOUND",
+    "governance": "NOT_FOUND"
+  },
+  "explorerSectionId": "context",
+  "analysis": {
+    "understand": {
+      "currentSubstage": 1,
+      "context": {
+        "selectedIds": [],
+        "wrongMomentIds": [],
+        "fields": {
+          "activity": "",
+          "coverage": "",
+          "operation": "",
+          "size": "",
+          "channels": ""
+        },
+        "draft": ""
+      },
+      "usersAndOperations": {
+        "classifications": {},
+        "scheduleAnswer": null,
+        "draft": ""
+      },
+      "services": {
+        "classification": {},
+        "selectedIds": [],
+        "reviewedIds": []
+      },
+      "criticality": {
+        "activeServiceId": "wms",
+        "records": {},
+        "compareIds": [],
+        "tableIds": [],
+        "hoursQuestion": null
+      },
+      "constraints": {
+        "classifications": {},
+        "selectedIds": [],
+        "impacts": {},
+        "draft": ""
+      },
+      "checkpoint": {},
+      "completed": false
+    },
+    "represent": {
+      "currentSubstage": 1,
+      "activeServiceId": null,
+      "serviceComponents": {},
+      "inventory": {
+        "selectedIds": [],
+        "relevance": {},
+        "serviceLinks": {},
+        "draft": ""
+      },
+      "asIs": {
+        "chains": {
+          "pos": [
+            "stores",
+            "internet",
+            "firewall"
+          ]
+        },
+        "description": "Cadena POS: tiendas → internet → firewall → APP-SRV01.",
+        "lastEditedAt": null
+      },
+      "incidents": {},
+      "spof": {
+        "activeComponentId": null,
+        "records": {},
+        "reviewRequired": false,
+        "activities": {}
+      },
+      "checkpoint": {},
+      "completed": false
+    },
+    "measure": {
+      "currentSubstage": 1,
+      "usedKeys": [
+        "periodHours",
+        "downtimeHours",
+        "incidentCount",
+        "totalRecoveryHours",
+        "appCpuAverage",
+        "appCpuPeak",
+        "appRamUsage",
+        "appLatencyNormal",
+        "appLatencyPeak",
+        "appDemandNormal",
+        "appDemandPeak",
+        "storageCapacity",
+        "storageUsed",
+        "storageGrowth"
+      ],
+      "availability": {
+        "status": "DOCUMENTED",
+        "inputs": {},
+        "interpretation": null,
+        "draft": "",
+        "sourceKeys": [
+          "periodHours",
+          "downtimeHours"
+        ],
+        "reviewRequired": false,
+        "result": 98.33,
+        "limitation": ""
+      },
+      "mttr": {
+        "status": "DOCUMENTED",
+        "inputs": {},
+        "interpretation": null,
+        "draft": "",
+        "sourceKeys": [
+          "totalRecoveryHours",
+          "incidentCount"
+        ],
+        "reviewRequired": false,
+        "result": 3.1,
+        "limitation": ""
+      },
+      "mtbf": {
+        "status": "DOCUMENTED",
+        "inputs": {},
+        "interpretation": null,
+        "draft": "",
+        "sourceKeys": [
+          "periodHours",
+          "incidentCount"
+        ],
+        "reviewRequired": false,
+        "result": 70.8,
+        "limitation": "Estimación con limitaciones de información."
+      },
+      "capacity": {
+        "status": "DOCUMENTED",
+        "inputs": {},
+        "interpretation": null,
+        "draft": "",
+        "sourceKeys": [
+          "cpuPeak"
+        ],
+        "reviewRequired": false,
+        "result": 96,
+        "limitation": ""
+      },
+      "storage": {
+        "status": "DOCUMENTED",
+        "inputs": {},
+        "interpretation": null,
+        "draft": "",
+        "sourceKeys": [
+          "storageUsed",
+          "storageCapacity",
+          "storageGrowth"
+        ],
+        "reviewRequired": false,
+        "result": {
+          "percent": 84,
+          "months": 7.62,
+          "free": 3.2
+        },
+        "limitation": ""
+      },
+      "performance": {
+        "status": "DOCUMENTED",
+        "inputs": {},
+        "interpretation": null,
+        "draft": "",
+        "sourceKeys": [
+          "appLatencyPeak"
+        ],
+        "reviewRequired": false,
+        "result": 900,
+        "limitation": ""
+      },
+      "activities": {},
+      "checkpoint": {},
+      "completed": false
+    },
+    "diagnose": {
+      "currentSubstage": 1,
+      "currentFilter": "all",
+      "expandedFindingId": null,
+      "sortBy": "created",
+      "findings": [
+        {
+          "findingId": "finding-01",
+          "title": "Degradación de rendimiento bajo alta demanda",
+          "category": "performance",
+          "evidenceIds": [
+            "ev-cpu",
+            "ev-latency",
+            "ev-demand"
+          ],
+          "impact": "Lentitud y abandono de compras.",
+          "criticality": "high",
+          "justification": "CPU 96 % y latencia 900 ms.",
+          "sources": [
+            "Información operacional disponible"
+          ],
+          "sourceSections": [
+            "operational-data"
+          ],
+          "description": "Degradación de rendimiento bajo alta demanda",
+          "status": "DOCUMENTED"
+        },
+        {
+          "findingId": "finding-02",
+          "title": "Riesgo de agotamiento de almacenamiento",
+          "category": "storage",
+          "evidenceIds": [
+            "ev-storage-used",
+            "ev-growth",
+            "ev-margin"
+          ],
+          "impact": "Depuraciones urgentes.",
+          "criticality": "high",
+          "justification": "84 % y 7,6 meses.",
+          "sources": [
+            "Almacenamiento"
+          ],
+          "sourceSections": [
+            "storage"
+          ],
+          "description": "Riesgo de agotamiento de almacenamiento",
+          "status": "DOCUMENTED"
+        },
+        {
+          "findingId": "finding-03",
+          "title": "Debilidad de monitoreo de respaldos",
+          "category": "monitoring",
+          "evidenceIds": [
+            "ev-inc-d"
+          ],
+          "impact": "Riesgo de recuperación.",
+          "criticality": "high",
+          "justification": "Dos días sin alerta.",
+          "sources": [
+            "Incidentes"
+          ],
+          "sourceSections": [
+            "incidents"
+          ],
+          "description": "Debilidad de monitoreo de respaldos",
+          "status": "DOCUMENTED"
+        },
+        {
+          "findingId": "finding-04",
+          "title": "Dependencia crítica del firewall",
+          "category": "dependency",
+          "evidenceIds": [
+            "ev-firewall-unique",
+            "ev-inc-b"
+          ],
+          "impact": "Tiendas incomunicadas.",
+          "criticality": "critical",
+          "justification": "SPOF + 4 h.",
+          "sources": [
+            "Infraestructura"
+          ],
+          "sourceSections": [
+            "infrastructure"
+          ],
+          "description": "Dependencia crítica del firewall",
+          "status": "DOCUMENTED"
+        },
+        {
+          "findingId": "finding-05",
+          "title": "Cambio POS sin reversa",
+          "category": "operation",
+          "evidenceIds": [
+            "ev-inc-e"
+          ],
+          "impact": "Interrupción POS.",
+          "criticality": "medium",
+          "justification": "Sin rollback.",
+          "sources": [
+            "Incidentes"
+          ],
+          "sourceSections": [
+            "incidents"
+          ],
+          "description": "Cambio POS sin reversa",
+          "status": "DOCUMENTED"
+        },
+        {
+          "findingId": "finding-06",
+          "title": "Baja trazabilidad de incidentes",
+          "category": "operation",
+          "evidenceIds": [
+            "ev-incident-channels"
+          ],
+          "impact": "No se cuantifica frecuencia.",
+          "criticality": "medium",
+          "justification": "Múltiples canales.",
+          "sources": [
+            "Incidentes"
+          ],
+          "sourceSections": [
+            "incidents"
+          ],
+          "description": "Baja trazabilidad de incidentes",
+          "status": "DOCUMENTED"
+        },
+        {
+          "findingId": "finding-07",
+          "title": "Ciclo de vida de identidades débil",
+          "category": "security",
+          "evidenceIds": [
+            "ev-stale-accounts"
+          ],
+          "impact": "Cuentas activas de exempleados.",
+          "criticality": "high",
+          "justification": "Deshabilitación tardía.",
+          "sources": [
+            "Seguridad"
+          ],
+          "sourceSections": [
+            "security"
+          ],
+          "description": "Ciclo de vida de identidades débil",
+          "status": "DOCUMENTED"
+        },
+        {
+          "findingId": "finding-08",
+          "title": "Gestión reactiva de capacidad",
+          "category": "government",
+          "evidenceIds": [
+            "ev-capacity-reactive"
+          ],
+          "impact": "Inversiones urgentes.",
+          "criticality": "medium",
+          "justification": "Decisiones reactivas.",
+          "sources": [
+            "Operación"
+          ],
+          "sourceSections": [
+            "operational-data"
+          ],
+          "description": "Gestión reactiva de capacidad",
+          "status": "DOCUMENTED"
+        }
+      ],
+      "evidenceRevisions": {},
+      "evidenceCoverage": {},
+      "draft": {
+        "step": 1,
+        "findingId": null,
+        "evidenceIds": [],
+        "observation": null,
+        "title": "",
+        "description": "",
+        "starter": "",
+        "category": "",
+        "impact": "",
+        "impactCategories": [],
+        "criticality": "",
+        "justification": "",
+        "kind": "standard",
+        "warnings": []
+      },
+      "summary": {
+        "draft": "",
+        "documented": false
+      },
+      "datoClassifications": {},
+      "activities": {},
+      "checkpoint": {},
+      "completed": false
+    },
+    "govern": {
+      "currentSubstage": 1,
+      "selectedFindingId": null,
+      "perspectives": {
+        "itil": false,
+        "cobit": false,
+        "iso": false
+      },
+      "expandedFindingId": null,
+      "expandedAnalysisId": null,
+      "itil": [
+        {
+          "findingId": "finding-03",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "itil-01",
+          "situation": "Backup falla sin detección.",
+          "practice": "monitoring",
+          "action": "Alerta a mesa.",
+          "benefit": "Detección temprana.",
+          "indicator": "detection-time"
+        },
+        {
+          "findingId": "finding-05",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "itil-02",
+          "situation": "Cambio POS sin reversa.",
+          "practice": "change",
+          "action": "Exigir rollback.",
+          "benefit": "Menos interrupciones.",
+          "indicator": "changes-rollback"
+        },
+        {
+          "findingId": "finding-06",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "itil-03",
+          "situation": "Incidentes en varios canales.",
+          "practice": "incident",
+          "action": "Registro único.",
+          "benefit": "Trazabilidad.",
+          "indicator": "incidents-registered"
+        },
+        {
+          "findingId": "finding-01",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "itil-04",
+          "situation": "Picos de demanda.",
+          "practice": "capacity",
+          "action": "Revisar capacidad del canal digital.",
+          "benefit": "Anticipar saturación.",
+          "indicator": "sla-compliance"
+        }
+      ],
+      "cobit": [
+        {
+          "findingId": "finding-08",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "cobit-01",
+          "problem": "Inversión reactiva.",
+          "decision": "Criterios de capacidad.",
+          "responsibleIds": [
+            "ti-direction"
+          ],
+          "responsibleJustification": "Gobierna la inversión.",
+          "indicator": "capacity-review"
+        },
+        {
+          "findingId": "finding-04",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "cobit-02",
+          "problem": "SPOF de perímetro.",
+          "decision": "Dueño de resiliencia.",
+          "responsibleIds": [
+            "infra-lead"
+          ],
+          "responsibleJustification": "Opera el perímetro.",
+          "indicator": "recovery-policy"
+        },
+        {
+          "findingId": "finding-03",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "cobit-03",
+          "problem": "Nadie alerta el backup.",
+          "decision": "Asignar control de recuperación.",
+          "responsibleIds": [
+            "service-owner"
+          ],
+          "responsibleJustification": "Dueño del servicio de archivos.",
+          "indicator": "recovery-policy"
+        }
+      ],
+      "iso27001": [
+        {
+          "findingId": "finding-07",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "iso-01",
+          "assetId": "credentials",
+          "threatId": "unauthorized-access",
+          "vulnerabilityId": "stale-account",
+          "impact": "Acceso indebido.",
+          "control": "Revisión de altas y bajas."
+        },
+        {
+          "findingId": "finding-03",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "iso-02",
+          "assetId": "backups",
+          "threatId": "info-loss",
+          "vulnerabilityId": "backup-unverified",
+          "impact": "Pérdida de recuperación.",
+          "control": "Prueba y alerta de backup."
+        },
+        {
+          "findingId": "finding-04",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "iso-03",
+          "assetId": "configs",
+          "threatId": "unavailability",
+          "vulnerabilityId": "no-redundancy",
+          "impact": "Tiendas caídas.",
+          "control": "Failover de perímetro."
+        },
+        {
+          "findingId": "finding-02",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "iso-04",
+          "assetId": "database",
+          "threatId": "info-loss",
+          "vulnerabilityId": "no-monitoring",
+          "impact": "Saturación de NAS.",
+          "control": "Umbral y retención."
+        },
+        {
+          "findingId": "finding-05",
+          "sources": [
+            "Diagnóstico"
+          ],
+          "sourceSections": [
+            "findings"
+          ],
+          "status": "DOCUMENTED",
+          "analysisId": "iso-05",
+          "assetId": "wms",
+          "threatId": "unauthorized-change",
+          "vulnerabilityId": "no-monitoring",
+          "impact": "Cambio sin reversa.",
+          "control": "Ventana y rollback."
+        }
+      ],
+      "coverage": {},
+      "itilDraft": {
+        "step": 1,
+        "analysisId": null,
+        "findingId": "",
+        "situation": "",
+        "practice": "",
+        "action": "",
+        "actionOption": "",
+        "benefit": "",
+        "indicator": "",
+        "warnings": []
+      },
+      "cobitDraft": {
+        "step": 1,
+        "analysisId": null,
+        "findingId": "",
+        "problem": "",
+        "decision": "",
+        "responsibleIds": [],
+        "responsibleJustification": "",
+        "indicator": "",
+        "warnings": []
+      },
+      "isoDraft": {
+        "step": 1,
+        "analysisId": null,
+        "findingId": "",
+        "assetId": "",
+        "threatId": "",
+        "vulnerabilityId": "",
+        "impact": "",
+        "control": "",
+        "controlTypes": [],
+        "warnings": []
+      },
+      "classifications": {},
+      "activities": {},
+      "checkpoint": {},
+      "completed": false
+    },
+    "decide": {
+      "currentSubstage": 1,
+      "selectedFindingId": null,
+      "expandedFindingId": null,
+      "expandedRecId": null,
+      "draft": {
+        "step": 1,
+        "decisionId": null,
+        "findingIds": [],
+        "evidenceIds": [],
+        "impact": "",
+        "originalImpact": "",
+        "constraintReviews": {},
+        "alternatives": [],
+        "simpleOperational": false,
+        "simpleJustification": "",
+        "tech": {
+          "onprem": {
+            "helps": "",
+            "notHelps": "",
+            "cost": "",
+            "dependency": "",
+            "skills": "",
+            "respects": "",
+            "ratings": {}
+          },
+          "cloud": {
+            "elasticity": "",
+            "provision": "",
+            "variableCost": "",
+            "connectivity": "",
+            "vendor": "",
+            "security": "",
+            "operations": "",
+            "skills": "",
+            "ratings": {}
+          },
+          "hybrid": {
+            "local": "",
+            "remote": "",
+            "why": "",
+            "ratings": {}
+          },
+          "edge": {
+            "localNeed": "",
+            "connectivity": "",
+            "latency": "",
+            "distributed": "",
+            "ratings": {}
+          }
+        },
+        "selectedAlternativeId": "",
+        "decision": "",
+        "justification": "",
+        "benefits": [],
+        "benefitText": "",
+        "risks": [],
+        "riskText": "",
+        "residualLow": false,
+        "residualJustification": "",
+        "costModel": "",
+        "costJustification": "",
+        "metricIds": [],
+        "metricText": "",
+        "metricTarget": "",
+        "targetUndefined": false,
+        "impactEffort": "",
+        "priority": "",
+        "priorityJustification": "",
+        "warnings": []
+      },
+      "alternatives": [],
+      "decisions": [
+        {
+          "decisionId": "dec-01",
+          "findingIds": [
+            "finding-01"
+          ],
+          "evidenceIds": [
+            "ev-cpu",
+            "ev-latency"
+          ],
+          "decision": "Optimizar y evaluar capacidad elástica del canal digital.",
+          "title": "Capacidad elástica",
+          "impact": "Lentitud en picos.",
+          "benefitText": "Anticipar capacidad y reducir latencia.",
+          "riskText": "Complejidad híbrida.",
+          "costModel": "mixed",
+          "costJustification": "CAPEX local y OPEX cloud puntual.",
+          "metricIds": [
+            "latency",
+            "cpu"
+          ],
+          "metricText": "Latencia pico y CPU.",
+          "priority": "high",
+          "justification": "El pico documentado exige elasticidad.",
+          "alternatives": [
+            {
+              "title": "Ampliar local"
+            },
+            {
+              "title": "Optimizar"
+            }
+          ],
+          "status": "DOCUMENTED"
+        },
+        {
+          "decisionId": "dec-02",
+          "findingIds": [
+            "finding-03"
+          ],
+          "evidenceIds": [
+            "ev-inc-d"
+          ],
+          "decision": "Alerta automática de backup a mesa.",
+          "title": "Monitoreo de backup",
+          "impact": "Fallo no detectado.",
+          "benefitText": "Reducir tiempo de detección.",
+          "riskText": "Ruido de alertas.",
+          "costModel": "opex",
+          "costJustification": "Esfuerzo operativo / suscripción.",
+          "metricIds": [
+            "detection-time",
+            "backup-success"
+          ],
+          "metricText": "Tiempo de detección y % backup exitoso.",
+          "priority": "high",
+          "justification": "Dos días sin alerta exigen detección.",
+          "alternatives": [
+            {
+              "title": "Manual"
+            },
+            {
+              "title": "Alerta automática"
+            }
+          ],
+          "status": "DOCUMENTED"
+        },
+        {
+          "decisionId": "dec-03",
+          "findingIds": [
+            "finding-04"
+          ],
+          "evidenceIds": [
+            "ev-firewall-unique"
+          ],
+          "decision": "Planificar failover de perímetro sin fijar marca.",
+          "title": "Resiliencia de firewall",
+          "impact": "Tiendas incomunicadas.",
+          "benefitText": "Mejorar disponibilidad.",
+          "riskText": "Complejidad operativa.",
+          "costModel": "capex",
+          "costJustification": "Infraestructura de perímetro.",
+          "metricIds": [
+            "availability"
+          ],
+          "metricText": "Disponibilidad de conectividad de tiendas.",
+          "priority": "immediate",
+          "justification": "El SPOF y las 4 h documentadas exigen resiliencia.",
+          "alternatives": [
+            {
+              "title": "Mantener"
+            },
+            {
+              "title": "Failover"
+            }
+          ],
+          "status": "DOCUMENTED"
+        },
+        {
+          "decisionId": "dec-04",
+          "findingIds": [
+            "finding-02"
+          ],
+          "evidenceIds": [
+            "ev-storage-used",
+            "ev-margin"
+          ],
+          "decision": "Retención/archivado y ampliación planificada de capacidad.",
+          "title": "Almacenamiento",
+          "impact": "Margen teórico limitado.",
+          "benefitText": "Anticipar saturación.",
+          "riskText": "Pérdida si la retención se aplica mal.",
+          "costModel": "mixed",
+          "costJustification": "Proceso más posible CAPEX posterior.",
+          "metricIds": [
+            "storage-use",
+            "storage-growth"
+          ],
+          "metricText": "% uso y crecimiento mensual.",
+          "priority": "medium",
+          "justification": "El margen de 7,6 meses permite planificar.",
+          "alternatives": [
+            {
+              "title": "Comprar disco"
+            },
+            {
+              "title": "Retención"
+            }
+          ],
+          "status": "DOCUMENTED"
+        },
+        {
+          "decisionId": "dec-05",
+          "findingIds": [
+            "finding-08"
+          ],
+          "evidenceIds": [
+            "ev-capacity-reactive"
+          ],
+          "decision": "Revisión periódica de capacidad e inversión.",
+          "title": "Gobierno de capacidad",
+          "impact": "Decisiones reactivas.",
+          "benefitText": "Anticipar capacidad.",
+          "riskText": "El proceso se abandona sin dueño.",
+          "costModel": "opex",
+          "costJustification": "Esfuerzo de gobierno.",
+          "metricIds": [
+            "cpu"
+          ],
+          "metricText": "Servicios con revisión periódica de capacidad.",
+          "priority": "strategic",
+          "justification": "El hallazgo es de gobierno.",
+          "alternatives": [
+            {
+              "title": "Seguir reactivo"
+            },
+            {
+              "title": "Calendario de revisión"
+            }
+          ],
+          "status": "DOCUMENTED"
+        }
+      ],
+      "recommendations": [
+        {
+          "decisionId": "dec-01",
+          "findingIds": [
+            "finding-01"
+          ],
+          "evidenceIds": [
+            "ev-cpu",
+            "ev-latency"
+          ],
+          "decision": "Optimizar y evaluar capacidad elástica del canal digital.",
+          "title": "Capacidad elástica",
+          "impact": "Lentitud en picos.",
+          "benefitText": "Anticipar capacidad y reducir latencia.",
+          "riskText": "Complejidad híbrida.",
+          "costModel": "mixed",
+          "costJustification": "CAPEX local y OPEX cloud puntual.",
+          "metricIds": [
+            "latency",
+            "cpu"
+          ],
+          "metricText": "Latencia pico y CPU.",
+          "priority": "high",
+          "justification": "El pico documentado exige elasticidad.",
+          "alternatives": [
+            {
+              "title": "Ampliar local"
+            },
+            {
+              "title": "Optimizar"
+            }
+          ],
+          "status": "DOCUMENTED"
+        },
+        {
+          "decisionId": "dec-02",
+          "findingIds": [
+            "finding-03"
+          ],
+          "evidenceIds": [
+            "ev-inc-d"
+          ],
+          "decision": "Alerta automática de backup a mesa.",
+          "title": "Monitoreo de backup",
+          "impact": "Fallo no detectado.",
+          "benefitText": "Reducir tiempo de detección.",
+          "riskText": "Ruido de alertas.",
+          "costModel": "opex",
+          "costJustification": "Esfuerzo operativo / suscripción.",
+          "metricIds": [
+            "detection-time",
+            "backup-success"
+          ],
+          "metricText": "Tiempo de detección y % backup exitoso.",
+          "priority": "high",
+          "justification": "Dos días sin alerta exigen detección.",
+          "alternatives": [
+            {
+              "title": "Manual"
+            },
+            {
+              "title": "Alerta automática"
+            }
+          ],
+          "status": "DOCUMENTED"
+        },
+        {
+          "decisionId": "dec-03",
+          "findingIds": [
+            "finding-04"
+          ],
+          "evidenceIds": [
+            "ev-firewall-unique"
+          ],
+          "decision": "Planificar failover de perímetro sin fijar marca.",
+          "title": "Resiliencia de firewall",
+          "impact": "Tiendas incomunicadas.",
+          "benefitText": "Mejorar disponibilidad.",
+          "riskText": "Complejidad operativa.",
+          "costModel": "capex",
+          "costJustification": "Infraestructura de perímetro.",
+          "metricIds": [
+            "availability"
+          ],
+          "metricText": "Disponibilidad de conectividad de tiendas.",
+          "priority": "immediate",
+          "justification": "El SPOF y las 4 h documentadas exigen resiliencia.",
+          "alternatives": [
+            {
+              "title": "Mantener"
+            },
+            {
+              "title": "Failover"
+            }
+          ],
+          "status": "DOCUMENTED"
+        },
+        {
+          "decisionId": "dec-04",
+          "findingIds": [
+            "finding-02"
+          ],
+          "evidenceIds": [
+            "ev-storage-used",
+            "ev-margin"
+          ],
+          "decision": "Retención/archivado y ampliación planificada de capacidad.",
+          "title": "Almacenamiento",
+          "impact": "Margen teórico limitado.",
+          "benefitText": "Anticipar saturación.",
+          "riskText": "Pérdida si la retención se aplica mal.",
+          "costModel": "mixed",
+          "costJustification": "Proceso más posible CAPEX posterior.",
+          "metricIds": [
+            "storage-use",
+            "storage-growth"
+          ],
+          "metricText": "% uso y crecimiento mensual.",
+          "priority": "medium",
+          "justification": "El margen de 7,6 meses permite planificar.",
+          "alternatives": [
+            {
+              "title": "Comprar disco"
+            },
+            {
+              "title": "Retención"
+            }
+          ],
+          "status": "DOCUMENTED"
+        },
+        {
+          "decisionId": "dec-05",
+          "findingIds": [
+            "finding-08"
+          ],
+          "evidenceIds": [
+            "ev-capacity-reactive"
+          ],
+          "decision": "Revisión periódica de capacidad e inversión.",
+          "title": "Gobierno de capacidad",
+          "impact": "Decisiones reactivas.",
+          "benefitText": "Anticipar capacidad.",
+          "riskText": "El proceso se abandona sin dueño.",
+          "costModel": "opex",
+          "costJustification": "Esfuerzo de gobierno.",
+          "metricIds": [
+            "cpu"
+          ],
+          "metricText": "Servicios con revisión periódica de capacidad.",
+          "priority": "strategic",
+          "justification": "El hallazgo es de gobierno.",
+          "alternatives": [
+            {
+              "title": "Seguir reactivo"
+            },
+            {
+              "title": "Calendario de revisión"
+            }
+          ],
+          "status": "DOCUMENTED"
+        }
+      ],
+      "strategy": {
+        "keep": "",
+        "improve": "",
+        "scale": "",
+        "redundant": "",
+        "cloud": "",
+        "edge": "",
+        "measure": "",
+        "draft": "",
+        "documented": false
+      },
+      "capexOpex": {},
+      "coverage": {},
+      "classifications": {},
+      "activities": {},
+      "checkpoint": {},
+      "completed": false
+    },
+    "build": {
+      "currentSubstage": 5,
+      "previewMode": "academic",
+      "previewSection": null,
+      "returnSection": null,
+      "previewReviewed": true,
+      "indexOpen": true,
+      "expandedRecId": null,
+      "conclusions": {
+        "selectedFindings": [
+          "finding-01",
+          "finding-03",
+          "finding-04",
+          "finding-02"
+        ],
+        "selectedStrengths": [
+          "helpdesk",
+          "backup-exists",
+          "ti-team"
+        ],
+        "constraintIds": [
+          "budget",
+          "production-window"
+        ],
+        "priorities": [
+          "dec-02",
+          "dec-03"
+        ],
+        "limitations": [
+          "mtbf-estimate"
+        ],
+        "limitationText": "",
+        "draft": "El análisis de la infraestructura de Helados Boreal evidencia una operación tecnológica que soporta POS, ERP, e-commerce y logística, pero presenta oportunidades de mejora principalmente en monitoreo, resiliencia de perímetro y capacidad del canal digital.\n\nLos hallazgos de mayor relevancia corresponden a la degradación en picos, el SPOF del firewall y la detección tardía de backups, debido a su impacto sobre ventas en tienda y recuperación de información.\n\nLas decisiones futuras deben considerar restricciones como presupuesto limitado y la necesidad de no detener producción. Existen fortalezas: mesa de ayuda, backup existente y equipo TI establecido.\n\nLa estrategia recomendada debe priorizar alerta de backup y failover de perímetro, utilizando indicadores como tiempo de detección, disponibilidad y latencia para validar los resultados.\n\nNo obstante, el análisis presenta limitaciones relacionadas con el MTBF estimado y la ausencia de un SLA documentado. Declarar esos límites evita inventar certeza que el caso no sostiene.",
+        "warnings": []
+      },
+      "validation": {
+        "summary": {
+          "sections": "14 / 14",
+          "completeCount": 14,
+          "findings": 8,
+          "itil": 4,
+          "cobit": 3,
+          "iso": 5,
+          "recommendations": 5,
+          "errors": 0,
+          "reviews": 0,
+          "warnings": 0,
+          "readyToExport": true,
+          "status": "READY_TO_EXPORT"
+        },
+        "issueCount": 0
+      },
+      "issues": [],
+      "quality": {},
+      "checkpoint": {},
+      "activities": {},
+      "readyToExport": true,
+      "completed": true
+    },
+    "export": {
+      "config": {
+        "mode": "clean",
+        "includeCover": true,
+        "includeIndex": true,
+        "includeTraceability": false,
+        "includeFormulas": true,
+        "includeLimitations": true,
+        "includeAsIs": true,
+        "includeEvidence": false
+      },
+      "history": [
+        {
+          "version": 1,
+          "label": "v1",
+          "format": "HTML",
+          "mode": "academic",
+          "generatedAt": "2026-09-01T19:33:28.925Z",
+          "fileName": "Helados_Boreal_Analisis_Infraestructura.html"
+        },
+        {
+          "version": 2,
+          "label": "v2",
+          "format": "WORD",
+          "mode": "clean",
+          "generatedAt": "2026-09-01T19:33:28.925Z",
+          "fileName": "Helados_Boreal_Analisis_Infraestructura.docx"
+        }
+      ],
+      "lastExport": {
+        "version": 2,
+        "label": "v2",
+        "format": "WORD"
+      },
+      "nextVersion": 3
+    }
+  },
+  "documentSections": {
+    "context": {
+      "status": "DOCUMENTED",
+      "text": "Helados Boreal produce y comercializa helados. Planta, CD, 46 tiendas y e-commerce.",
+      "rows": [],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.748Z",
+      "reviewRequired": false
+    },
+    "usersAndOperations": null,
+    "services": null,
+    "criticalServices": {
+      "status": "DOCUMENTED",
+      "text": "POS, ERP, e-commerce y WMS sustentan operación crítica.",
+      "rows": [
+        {
+          "name": "POS",
+          "justification": "Cierra la venta en tienda."
+        }
+      ],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false
+    },
+    "constraints": null,
+    "asis": {
+      "status": "DOCUMENTED",
+      "text": "AS-IS del canal de tiendas: usuario → conectividad → firewall → aplicación.",
+      "rows": [],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false,
+      "chains": [
+        {
+          "serviceId": "pos",
+          "nodeIds": [
+            "stores",
+            "internet",
+            "firewall"
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "name": "Firewall"
+        }
+      ]
+    },
+    "inventory": {
+      "status": "DOCUMENTED",
+      "text": "Inventario relevante: APP-SRV01, firewall, NAS, enlaces.",
+      "rows": [
+        {
+          "name": "Firewall",
+          "justification": "Perímetro único."
+        }
+      ],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false
+    },
+    "spof": {
+      "status": "DOCUMENTED",
+      "text": "Firewall principal sin redundancia documentada.",
+      "rows": [
+        {
+          "name": "Firewall",
+          "impact": "Tiendas incomunicadas",
+          "justification": "Instancia única",
+          "evidence": "Diagrama e incidente de 4 h"
+        }
+      ],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false
+    },
+    "metrics": {
+      "status": "DOCUMENTED",
+      "text": "Disponibilidad 98,33 %. MTTR 3,1 h. MTBF estimado 70,8 h. NAS 84 %.",
+      "rows": [],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false,
+      "subsections": {
+        "availability": {
+          "title": "Disponibilidad",
+          "text": "Observada 98,33 %.",
+          "data": "720 h / 12 h",
+          "formula": "(720-12)/720×100",
+          "substitution": "(720 - 12) / 720 × 100",
+          "result": "98,33 %",
+          "interpretation": "Periodo analizado.",
+          "limitation": "No afirma SLA.",
+          "sources": [
+            "Información operacional disponible"
+          ]
+        },
+        "mttr": {
+          "title": "MTTR",
+          "text": "3,1 h.",
+          "data": "31 h / 10 incidentes",
+          "formula": "31/10",
+          "substitution": "31/10",
+          "result": "3,1 h",
+          "interpretation": "Promedio del periodo.",
+          "sources": [
+            "Incidentes"
+          ]
+        },
+        "mtbf": {
+          "title": "MTBF estimado",
+          "text": "70,8 h.",
+          "data": "708 / 10",
+          "formula": "uptime/incidentes",
+          "substitution": "708/10",
+          "result": "70,8 h",
+          "interpretation": "Estimación.",
+          "limitation": "No es un dato directo del caso.",
+          "sources": [
+            "Información operacional disponible"
+          ]
+        },
+        "capacity": {
+          "title": "Capacidad",
+          "text": "CPU pico 96 %.",
+          "result": "96 %",
+          "formula": "dato observado",
+          "sources": [
+            "Información operacional disponible"
+          ]
+        },
+        "performance": {
+          "title": "Rendimiento",
+          "text": "Latencia pico 900 ms.",
+          "result": "900 ms",
+          "formula": "dato observado",
+          "sources": [
+            "Información operacional disponible"
+          ]
+        },
+        "storage": {
+          "title": "Almacenamiento",
+          "text": "84 % y ≈7,6 meses.",
+          "result": "84 % usado · ≈ 7,6 meses",
+          "formula": "libre/crecimiento",
+          "sources": [
+            "Almacenamiento"
+          ]
+        }
+      }
+    },
+    "findings": {
+      "status": "DOCUMENTED",
+      "text": "Ocho hallazgos sustentados de capacidad, almacenamiento, monitoreo, SPOF, operación, seguridad y gobierno.",
+      "rows": [],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false
+    },
+    "itil": {
+      "status": "DOCUMENTED",
+      "text": "ITIL cubre monitoreo, cambio, incidentes y capacidad.",
+      "rows": [],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false
+    },
+    "cobit": {
+      "status": "DOCUMENTED",
+      "text": "COBIT asigna responsabilidad de capacidad, resiliencia y recuperación.",
+      "rows": [],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false
+    },
+    "iso27001": {
+      "status": "DOCUMENTED",
+      "text": "ISO cubre identidades, backup, perímetro, archivos y cambios POS.",
+      "rows": [],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false
+    },
+    "strategy": {
+      "status": "DOCUMENTED",
+      "text": "Mantener ERP; fortalecer resiliencia y monitoreo; evaluar híbrido si se justifica.",
+      "rows": [],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false
+    },
+    "capex": {
+      "status": "DOCUMENTED",
+      "text": "Capacidad mixta; backup OPEX; perímetro CAPEX; almacenamiento mixto; gobierno OPEX.",
+      "rows": [],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false
+    },
+    "recommendations": {
+      "status": "DOCUMENTED",
+      "text": "Cinco recomendaciones priorizadas con hallazgo, beneficio y métrica.",
+      "rows": [],
+      "sources": [
+        "Caso modelo Helados Boreal"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.758Z",
+      "reviewRequired": false
+    },
+    "conclusions": {
+      "status": "DOCUMENTED",
+      "text": "El análisis de la infraestructura de Helados Boreal evidencia una operación tecnológica que soporta POS, ERP, e-commerce y logística, pero presenta oportunidades de mejora principalmente en monitoreo, resiliencia de perímetro y capacidad del canal digital.\n\nLos hallazgos de mayor relevancia corresponden a la degradación en picos, el SPOF del firewall y la detección tardía de backups, debido a su impacto sobre ventas en tienda y recuperación de información.\n\nLas decisiones futuras deben considerar restricciones como presupuesto limitado y la necesidad de no detener producción. Existen fortalezas: mesa de ayuda, backup existente y equipo TI establecido.\n\nLa estrategia recomendada debe priorizar alerta de backup y failover de perímetro, utilizando indicadores como tiempo de detección, disponibilidad y latencia para validar los resultados.\n\nNo obstante, el análisis presenta limitaciones relacionadas con el MTBF estimado y la ausencia de un SLA documentado. Declarar esos límites evita inventar certeza que el caso no sostiene.",
+      "selectedFindings": [
+        "finding-01",
+        "finding-03",
+        "finding-04",
+        "finding-02"
+      ],
+      "selectedStrengths": [
+        "helpdesk",
+        "backup-exists",
+        "ti-team"
+      ],
+      "constraints": [
+        "budget",
+        "production-window"
+      ],
+      "priorities": [
+        "dec-02",
+        "dec-03"
+      ],
+      "limitations": [
+        "mtbf-estimate"
+      ],
+      "sources": [
+        "Información operacional disponible",
+        "Almacenamiento",
+        "Incidentes",
+        "Infraestructura"
+      ],
+      "evidences": [
+        "ev-cpu",
+        "ev-latency",
+        "ev-demand",
+        "ev-storage-used",
+        "ev-growth",
+        "ev-margin",
+        "ev-inc-d",
+        "ev-firewall-unique",
+        "ev-inc-b"
+      ],
+      "lastUpdated": "2026-09-01T19:33:28.769Z",
+      "reviewRequired": false
+    }
+  },
+  "completedStages": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "currentStage": 8,
+  "activityAnswers": {},
+  "metricEvidence": []
+}
