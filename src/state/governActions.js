@@ -26,6 +26,7 @@ import {
   MIN_ISO,
 } from './governModel.js';
 import { computeProgress, getState, patchState, setState } from './appState.js';
+import { rejectIfStageLocked } from './stageGates.js';
 
 function governFrom(state = getState()) {
   return state.analysis?.govern ?? createGovernState();
@@ -564,6 +565,11 @@ function saveGovernSection(key, payload) {
 
 export function completeGovernStage() {
   const state = getState();
+  const locked = rejectIfStageLocked(state, 6);
+  if (locked) {
+    setState({ documentError: locked });
+    return false;
+  }
   const completion = getGovernCompletion(governFrom(state), documentsFrom(state));
   if (!completion.ready) {
     setState({

@@ -31,16 +31,21 @@ import { InsufficientMetricsPanel } from '../components/pedagogy/InsufficientMet
 import { TermLink } from '../data/pedagogy/glossary.js';
 import { escapeHtml } from '../utils/escape.js';
 import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
+import { StageLockedView } from '../components/StageLockedView.js';
+import { canWorkStage } from '../state/stageGates.js';
+import { isModelSolved } from '../state/caseMode.js';
+import { SolvedStagePage } from '../components/model/SolvedStages.js';
 
 export function MeasurePage(state) {
+  if (isModelSolved(state)) {
+    return SolvedStagePage(state, 4);
+  }
+
   if (!state.selectedCase) {
     return shell(state, `<h1>MEDIR</h1><p>${escapeHtml(appCopy.caseWork.noCaseYet)}</p><a class="btn btn--primary" href="#/ruta" data-nav="/ruta">Seleccionar caso</a>`);
   }
-  if (!state.completedStages.includes(2) && !state.completedStages.includes(3)) {
-    return shell(
-      state,
-      `<h1>MEDIR</h1><p>Primero cierra REPRESENTAR. Calcular sin arquitectura es adelantar el diagnóstico.</p><a class="btn btn--primary" href="#/representar" data-nav="/representar">Ir a REPRESENTAR</a>`,
-    );
+  if (!canWorkStage(state, 4)) {
+    return shell(state, StageLockedView({ state, stageId: 4 }));
   }
 
   const { measure, facts, expected, documents, evidence, completion } = getMeasureSnapshot(state);

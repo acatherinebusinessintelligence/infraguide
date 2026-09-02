@@ -15,6 +15,7 @@ import {
   MIN_FINDINGS,
 } from './diagnoseModel.js';
 import { computeProgress, getState, patchState, setState } from './appState.js';
+import { rejectIfStageLocked } from './stageGates.js';
 import { invalidateAnalysesUsingFinding } from './governActions.js';
 import { invalidateDecisionsUsingFinding } from './decideActions.js';
 
@@ -426,6 +427,11 @@ function isFindingReady(finding) {
 
 export function completeDiagnoseStage() {
   const state = getState();
+  const locked = rejectIfStageLocked(state, 5);
+  if (locked) {
+    setState({ documentError: locked });
+    return false;
+  }
   const diagnose = diagnoseFrom(state);
   const completion = getDiagnoseCompletion(diagnose, documentsFrom(state));
   if (!completion.ready) {

@@ -1,5 +1,8 @@
 import borealModel from './caso-modelo-helados-boreal.json' with { type: 'json' };
 import { validateCase } from './caseValidator.js';
+import { CASE_MODE, isModelSolvedCase, isStudentWorkCase } from './caseMode.js';
+
+const extraCases = [];
 
 function warnInvalid(entry, errors) {
   if (typeof console !== 'undefined') {
@@ -31,9 +34,30 @@ export function getRegisteredCases() {
   return caseRegistry;
 }
 
-export function getCaseById(id) {
-  return cases.find((item) => item.id === id) ?? null;
+export function registerCaseForTests(caseData) {
+  const result = validateCase(caseData);
+  if (!result.ok) {
+    throw new Error(`Fixture de caso inválido: ${result.errors.join(' ')}`);
+  }
+  const idx = extraCases.findIndex((item) => item.id === caseData.id);
+  if (idx >= 0) extraCases[idx] = caseData;
+  else extraCases.push(caseData);
+  return caseData;
 }
+
+export function getCaseById(id) {
+  return cases.find((item) => item.id === id) ?? extraCases.find((item) => item.id === id) ?? null;
+}
+
+export function getModelCases() {
+  return cases.filter((item) => isModelSolvedCase(item));
+}
+
+export function getStudentWorkCases() {
+  return cases.filter((item) => isStudentWorkCase(item));
+}
+
+export { CASE_MODE, isModelSolvedCase, isStudentWorkCase };
 
 export function getCaseSection(caseData, sectionId) {
   return caseData?.sections?.find((section) => section.sectionId === sectionId) ?? null;

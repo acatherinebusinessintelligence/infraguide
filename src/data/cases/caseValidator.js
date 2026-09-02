@@ -1,3 +1,5 @@
+import { normalizeCaseMode } from './caseMode.js';
+
 const REQUIRED_SECTIONS = [
   'context',
   'services',
@@ -14,6 +16,9 @@ export function validateCase(caseData) {
   }
   if (!String(caseData.id || '').trim()) errors.push('Falta id.');
   if (!String(caseData.name || '').trim()) errors.push('Falta name.');
+  if (!normalizeCaseMode(caseData.caseMode)) {
+    errors.push('Falta caseMode válido (MODEL_SOLVED o STUDENT_WORK).');
+  }
   if (!Array.isArray(caseData.sections) || !caseData.sections.length) {
     errors.push('Faltan secciones.');
     return { ok: false, errors };

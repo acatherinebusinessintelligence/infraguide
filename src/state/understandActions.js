@@ -9,6 +9,7 @@ import {
   nowIso,
 } from './understandModel.js';
 import { computeProgress, getState, patchState, setState } from './appState.js';
+import { understandRequirementItems, rejectIfStageLocked } from './stageGates.js';
 import { invalidateDecisionsUsingConstraint } from './decideActions.js';
 
 function understandFrom(state = getState()) {
@@ -393,10 +394,23 @@ export function updateDocumentSectionText(key, text) {
 
 export function completeUnderstandStage() {
   const state = getState();
+  const locked = rejectIfStageLocked(state, 1);
+  if (locked) {
+    setState({ documentError: locked });
+    return false;
+  }
   const understand = understandFrom(state);
   const completion = getUnderstandCompletion(understand, documentsFrom(state));
   if (!completion.ready) {
-    setState({ documentError: 'Completa las secciones pendientes antes de cerrar COMPRENDER.' });
+    const missing = understandRequirementItems(state)
+      .filter((item) => !item.done)
+      .map((item) => item.label);
+    setState({
+      documentError:
+        missing.length
+          ? `No puedes finalizar COMPRENDER. Falta: ${missing.join('; ')}.`
+          : 'No puedes finalizar COMPRENDER hasta completar los requisitos de la etapa.',
+    });
     return false;
   }
 

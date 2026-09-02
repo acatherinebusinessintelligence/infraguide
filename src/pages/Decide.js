@@ -38,16 +38,21 @@ import {
 import { escapeHtml } from '../utils/escape.js';
 import { TermLink } from '../data/pedagogy/glossary.js';
 import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
+import { StageLockedView } from '../components/StageLockedView.js';
+import { canWorkStage } from '../state/stageGates.js';
+import { isModelSolved } from '../state/caseMode.js';
+import { SolvedStagePage } from '../components/model/SolvedStages.js';
 
 export function DecidePage(state) {
+  if (isModelSolved(state)) {
+    return SolvedStagePage(state, 7);
+  }
+
   if (!state.selectedCase) {
     return shell(state, `<h1>DECIDIR</h1><p>${escapeHtml(appCopy.caseWork.noCaseYet)}</p><a class="btn btn--primary" href="#/ruta" data-nav="/ruta">Seleccionar caso</a>`);
   }
-  if (!state.completedStages.includes(6)) {
-    return shell(
-      state,
-      `<h1>DECIDIR</h1><p>Primero cierra GOBERNAR. Las decisiones se apoyan en hallazgos gobernados, no en tecnología de moda.</p><a class="btn btn--primary" href="#/gobernar" data-nav="/gobernar">Ir a GOBERNAR</a>`,
-    );
+  if (!canWorkStage(state, 7)) {
+    return shell(state, StageLockedView({ state, stageId: 7 }));
   }
 
   const snap = getDecideSnapshot(state);

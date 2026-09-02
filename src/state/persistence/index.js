@@ -27,6 +27,7 @@ import { validateState } from './StateValidator.js';
 import { migrateState } from './StateMigrationService.js';
 import { emitPersistenceEvent, PERSISTENCE_EVENTS } from './events.js';
 import { buildProgressFile, parseProgressFile, downloadFileName } from './progressFile.js';
+import { CASE_MODE, isModelSolvedCase } from '../../data/cases/caseMode.js';
 
 let debounceTimer = null;
 let lastFingerprint = null;
@@ -100,7 +101,10 @@ export const PersistenceService = {
   },
 
   saveState(state = getLiveState(), options = {}) {
-    if (!state) return { ok: false, code: 'NO_STATE' };
+    if (!state || state.teacherMode) return { ok: false, code: 'TEACHER_MODE', skipped: true };
+    if (state.selectedCase?.caseMode === CASE_MODE.MODEL_SOLVED || isModelSolvedCase(state.selectedCase)) {
+      return { ok: false, code: 'MODEL_SOLVED', skipped: true };
+    }
     const payload = buildPersistablePayload(state);
     if (!createdAt) createdAt = payload.meta.createdAt;
     payload.meta.createdAt = createdAt;
@@ -152,7 +156,8 @@ export const PersistenceService = {
 
   scheduleSave(state, delay = AUTOSAVE_DEBOUNCE_MS) {
     const live = state || getLiveState();
-    if (!live) return;
+    if (!live || live.teacherMode) return;
+    if (live.selectedCase?.caseMode === CASE_MODE.MODEL_SOLVED || isModelSolvedCase(live.selectedCase)) return;
     const payload = buildPersistablePayload(live);
     const fingerprint = envelopeFingerprint({ payload });
     if (fingerprint === lastFingerprint) {

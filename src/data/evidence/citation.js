@@ -24,11 +24,11 @@ export function formatAcademicCitation(caseData, evidence) {
   return `Fuente: Caso ${caseName}. Ubicación en el PDF original pendiente de verificar.`;
 }
 
-export function academicPdfHref(caseData, evidence) {
+export function academicPdfHref(caseData, evidence, { standalone = false } = {}) {
   const doc = getPrimarySourceDocument(caseData);
   if (!doc?.file) return '';
   const page = resolveEvidenceStatus(evidence) === EVIDENCE_STATUS.VERIFIED ? evidence.page : null;
-  return pdfPageHref(doc.file, page);
+  return pdfPageHref(doc.file, page, { standalone });
 }
 
 export function sourcePdfUrl(caseData) {

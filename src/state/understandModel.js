@@ -2,6 +2,7 @@ import {
   contextEvidence,
   understandServices,
   restrictionItems,
+  checkpointQuestions,
 } from '../data/methodology/understand.js';
 
 export function createUnderstandState() {
@@ -112,6 +113,9 @@ export function getUnderstandCompletion(understand, documentSections) {
   const reviewed = (understand.services.reviewedIds ?? []).length >= 6;
   const documentedCritical =
     isDocumented(documentSections.criticalServices) && (justified.length >= 3 || tableCount >= 3);
+  const checkpoint = checkpointQuestions.every(
+    (item) => understand.checkpoint?.[item.id] === item.correctId,
+  );
 
   return {
     context: documentedContext,
@@ -119,13 +123,15 @@ export function getUnderstandCompletion(understand, documentSections) {
     services: documentedServices || reviewed,
     criticalServices: documentedCritical,
     constraints: documentedConstraints,
+    checkpoint,
     ready:
       documentedContext &&
       documentedUsers &&
       (documentedServices || reviewed) &&
       justified.length >= 3 &&
       documentedConstraints &&
-      documentedCritical,
+      documentedCritical &&
+      checkpoint,
     justifiedCount: justified.length,
   };
 }

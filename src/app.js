@@ -248,11 +248,14 @@ import {
   exportSnapshotDocx,
   openSnapshotPrint,
 } from './state/exportActions.js';
-import { createModelReportState } from './data/testing/modelReportState.js';
+import { enterTeacherMode, exitTeacherMode } from './state/teacherMode.js';
 import { contextTemplate } from './data/methodology/understand.js';
 import { asIsTemplate } from './data/methodology/represent.js';
 import { getPathFromHash, parseRoute, navigate } from './utils/router.js';
-import { stages, getStageStatus, isStageActionable } from './data/stages/index.js';
+import { stages } from './data/stages/index.js';
+import { canWorkStage } from './state/stageGates.js';
+import { isModelSolved } from './state/caseMode.js';
+import { createModelReportState } from './data/testing/modelReportState.js';
 import { appCopy } from './data/copy.js';
 import { debugMode, APP_VERSION } from './config.js';
 import { installErrorBoundary } from './runtime/errorScreen.js';
@@ -491,6 +494,9 @@ function handleClick(event) {
     return;
   }
   const state = getState();
+  if (isModelSolved(state) && /^(complete-|save-|classify-|add-|toggle-table|toggle-restriction)/.test(action)) {
+    return;
+  }
 
   if (action === 'toggle-nav') {
     setState({ mobileNavOpen: !state.mobileNavOpen });
@@ -521,6 +527,10 @@ function handleClick(event) {
     const caseId = actionTarget.getAttribute('data-case-id');
     selectWorkCase(caseId);
     const next = getState();
+    if (next.selectedCase?.caseMode === 'MODEL_SOLVED') {
+      navigate('/ruta');
+      return;
+    }
     navigate(next.caseReading?.introCompleted ? '/caso' : '/caso/conocer');
     return;
   }
@@ -1310,15 +1320,14 @@ function handleClick(event) {
     else confirmReset();
     return;
   }
-  if (action === 'load-demo') {
-    loadDemoProgress().then((ok) => {
-      if (!ok) {
-        setState({ documentError: 'La demostración solo está disponible en modo de desarrollo.' });
-        return;
-      }
+  if (action === 'load-demo' || action === 'enter-teacher-mode') {
+    enterTeacherMode().then(() => {
       setState({ documentError: null });
-      navigate('/ruta');
     });
+    return;
+  }
+  if (action === 'exit-teacher-mode') {
+    exitTeacherMode();
     return;
   }
   if (action === 'fatal-reload') {
@@ -1355,16 +1364,19 @@ function handleClick(event) {
     if (!stage) {
       return;
     }
-    const status = getStageStatus(stage, state);
-    if (!isStageActionable(status)) {
+    selectStage(stageId);
+    if (!canWorkStage(state, stageId)) {
+      navigate('/ruta');
       return;
     }
-    selectStage(stageId);
     if (stageId === 1) {
       navigate('/comprender');
     }
     if (stageId === 2) {
       navigate('/representar');
+    }
+    if (stageId === 3) {
+      navigate('/representar/6');
     }
     if (stageId === 4) {
       navigate('/medir');
@@ -1381,6 +1393,7 @@ function handleClick(event) {
     if (stageId === 8) {
       navigate('/construir');
     }
+    return;
   }
 }
 

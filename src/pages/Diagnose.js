@@ -22,16 +22,21 @@ import { DiagnosticMatrix, CoveragePanel, DiagnoseSummary } from '../components/
 import { escapeHtml } from '../utils/escape.js';
 import { TermLink } from '../data/pedagogy/glossary.js';
 import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
+import { StageLockedView } from '../components/StageLockedView.js';
+import { canWorkStage } from '../state/stageGates.js';
+import { isModelSolved } from '../state/caseMode.js';
+import { SolvedStagePage } from '../components/model/SolvedStages.js';
 
 export function DiagnosePage(state) {
+  if (isModelSolved(state)) {
+    return SolvedStagePage(state, 5);
+  }
+
   if (!state.selectedCase) {
     return shell(state, `<h1>DIAGNOSTICAR</h1><p>${escapeHtml(appCopy.caseWork.noCaseYet)}</p><a class="btn btn--primary" href="#/ruta" data-nav="/ruta">Seleccionar caso</a>`);
   }
-  if (!state.completedStages.includes(4)) {
-    return shell(
-      state,
-      `<h1>DIAGNOSTICAR</h1><p>Primero cierra MEDIR. Un hallazgo sin métricas ni arquitectura se convierte en opinión.</p><a class="btn btn--primary" href="#/medir" data-nav="/medir">Ir a MEDIR</a>`,
-    );
+  if (!canWorkStage(state, 5)) {
+    return shell(state, StageLockedView({ state, stageId: 5 }));
   }
 
   const { diagnose, bank, documents, completion, draftStatus, similar } = getDiagnoseSnapshot(state);

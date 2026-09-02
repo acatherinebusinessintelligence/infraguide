@@ -6,7 +6,7 @@ import { AppHeader, SiteFooter, DocumentOverlay, CollectedOverlay } from '../com
 import { MethodCard } from '../components/MethodCard.js';
 import { TraceabilityPanel } from '../components/TraceabilityPanel.js';
 import { escapeHtml } from '../utils/escape.js';
-import { APP_VERSION, debugMode } from '../config.js';
+import { APP_VERSION } from '../config.js';
 
 export function HelpPage(state) {
   return `
@@ -47,10 +47,11 @@ export function HelpPage(state) {
                 <input class="visually-hidden" type="file" accept="application/json,.json" data-action="import-progress" />
               </label>
               ${
-                debugMode
-                  ? `<button class="btn" type="button" data-action="load-demo">${escapeHtml(appCopy.help.demoLoad)}</button>`
-                  : ''
+                state.teacherMode
+                  ? `<button class="btn" type="button" data-action="exit-teacher-mode">Salir del modo demostración</button>`
+                  : `<button class="btn" type="button" data-action="enter-teacher-mode">${escapeHtml(appCopy.help.teacherMode)}</button>`
               }
+              <a class="btn" href="#/informe/modelo" data-nav="/informe/modelo">${escapeHtml(appCopy.dashboard.modelReport)}</a>
             </div>
           </section>
 

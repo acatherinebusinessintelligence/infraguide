@@ -16,6 +16,7 @@ import {
 } from './measureModel.js';
 import { nowIso } from './understandModel.js';
 import { computeProgress, getState, patchState, setState, getSelectedCaseData } from './appState.js';
+import { rejectIfStageLocked } from './stageGates.js';
 
 function measureFrom(state = getState()) {
   return state.analysis?.measure ?? createMeasureState();
@@ -582,6 +583,11 @@ export function saveMetricEvidence(payload) {
 
 export function completeMeasureStage() {
   const state = getState();
+  const locked = rejectIfStageLocked(state, 4);
+  if (locked) {
+    setState({ documentError: locked });
+    return false;
+  }
   const completion = getMeasureCompletion(measureFrom(state), documentsFrom(state), state.metricEvidence ?? []);
   if (!completion.ready) {
     setState({

@@ -3,13 +3,15 @@ export const STAGE_STATUS = {
   AVAILABLE: 'available',
   IN_PROGRESS: 'in_progress',
   COMPLETED: 'completed',
+  SOLVED: 'solved',
 };
 
 export const STAGE_STATUS_LABEL = {
-  blocked: 'BLOQUEADO',
+  blocked: 'AÚN NO HABILITADA',
   available: 'DISPONIBLE',
   in_progress: 'EN PROGRESO',
   completed: 'COMPLETADO',
+  solved: 'RESUELTO',
 };
 
 export const stages = [
@@ -92,6 +94,7 @@ export function isStageActionable(status) {
   return (
     status === STAGE_STATUS.AVAILABLE ||
     status === STAGE_STATUS.IN_PROGRESS ||
-    status === STAGE_STATUS.COMPLETED
+    status === STAGE_STATUS.COMPLETED ||
+    status === STAGE_STATUS.SOLVED
   );
 }

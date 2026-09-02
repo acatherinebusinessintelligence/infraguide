@@ -9,7 +9,9 @@ globalThis.window = {
   dispatchEvent() {},
 };
 
-const { getCaseById } = await import('../src/data/cases/index.js');
+const { getCaseById, registerCaseForTests } = await import('../src/data/cases/index.js');
+const { createStudentWorkFixture } = await import('../src/data/testing/studentWorkFixture.js');
+registerCaseForTests(createStudentWorkFixture());
 const {
   buildEvidenceRegistry,
   caseMapSections,
@@ -81,15 +83,19 @@ assert(ev.ok, `EvidenceValidator: ${ev.errors.join(' | ')}`);
 const beforeMeasure = JSON.stringify(getState().analysis?.measure?.availability?.result ?? null);
 assert(!/Este ejemplo valida el componente/.test(appCopy.dashboard.methodIntro), 'Mensaje de maqueta sigue en dashboard');
 assert(/demostración te permite comprender/.test(availabilityExample.disclaimer), 'Disclaimer de demostración no actualizado');
-assert(beforeMeasure === 'null' || beforeMeasure === 'undefined', 'El estado de MEDIR no debe venir precargado');
+assert(beforeMeasure !== 'null' && beforeMeasure !== 'undefined', 'El caso modelo debe traer MEDIR resuelto');
+
+selectWorkCase('fixture-equipo-trabajo');
+const studentMeasure = JSON.stringify(getState().analysis?.measure?.availability?.result ?? null);
+assert(studentMeasure === 'null' || studentMeasure === 'undefined', 'El caso de trabajo no debe heredar MEDIR del modelo');
 
 const studentBefore = structuredClone(getState());
 const modelState = createModelReportState();
 const report = generateConsultingReport(modelState);
 assert(report.findings.length >= 5, 'Informe modelo sin hallazgos');
 assert(CONSULTING_SECTION_KEYS.length === consultingDocumentSections.length, 'Tu documento no alinea 13 secciones de consultoría');
-assert(getState().analysis?.diagnose?.findings?.length !== report.findings.length || studentBefore.analysis.diagnose.findings.length === getState().analysis.diagnose.findings.length, 'El modelo no debe mezclarse con el progreso');
-assert(JSON.stringify(getState().analysis?.measure?.availability?.result ?? null) === beforeMeasure, 'La demo/modelo no debe guardar cálculo del estudiante');
+assert(getState().analysis?.diagnose?.findings?.length === studentBefore.analysis.diagnose.findings.length, 'El modelo no debe mezclarse con el progreso');
+assert(JSON.stringify(getState().analysis?.measure?.availability?.result ?? null) === studentMeasure, 'La demo/modelo no debe guardar cálculo del estudiante');
 
 const exportModel = buildExportModel(modelState, createExportConfig());
 assert(exportModel.kind === 'consulting', 'Export no usa ConsultingReportModel');
@@ -107,7 +113,11 @@ console.log('validadores', { evidence: ev.verifiedCount, pending: ev.pendingCoun
 
 addCollectedData('organizationName');
 const collected = getState().collectedData.find((item) => item.key === 'organizationName');
-assert(collected?.evidenceId && collected.page === 2 && collected.quote, 'El dato recolectado perdió la referencia al PDF');
+assert(!collected, 'El caso de trabajo fixture no debe recolectar campos de Helados');
+
+selectWorkCase('modelo-helados-boreal');
+const modelCollected = getState().collectedData.find((item) => item.key === 'organizationName');
+assert(modelCollected?.evidenceId && modelCollected.page === 2 && modelCollected.quote, 'El dato recolectado perdió la referencia al PDF');
 
 console.log('MATRIZ DE EVIDENCIAS');
 registry

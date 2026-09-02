@@ -34,16 +34,21 @@ import {
 } from '../components/govern/FrameworkBuilders.js';
 import { escapeHtml } from '../utils/escape.js';
 import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
+import { StageLockedView } from '../components/StageLockedView.js';
+import { canWorkStage } from '../state/stageGates.js';
+import { isModelSolved } from '../state/caseMode.js';
+import { SolvedStagePage } from '../components/model/SolvedStages.js';
 
 export function GovernPage(state) {
+  if (isModelSolved(state)) {
+    return SolvedStagePage(state, 6);
+  }
+
   if (!state.selectedCase) {
     return shell(state, `<h1>GOBERNAR</h1><p>${escapeHtml(appCopy.caseWork.noCaseYet)}</p><a class="btn btn--primary" href="#/ruta" data-nav="/ruta">Seleccionar caso</a>`);
   }
-  if (!state.completedStages.includes(5)) {
-    return shell(
-      state,
-      `<h1>GOBERNAR</h1><p>Primero cierra DIAGNOSTICAR. ITIL, COBIT e ISO 27001 se aplican a hallazgos sustentados, no a opiniones.</p><a class="btn btn--primary" href="#/diagnosticar" data-nav="/diagnosticar">Ir a DIAGNOSTICAR</a>`,
-    );
+  if (!canWorkStage(state, 6)) {
+    return shell(state, StageLockedView({ state, stageId: 6 }));
   }
 
   const { govern, findings, documents, completion, coverage, selected } = getGovernSnapshot(state);

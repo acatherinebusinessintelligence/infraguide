@@ -10,6 +10,8 @@ import { getCaseById } from '../data/cases/index.js';
 import { SaveIndicator } from './progress/SaveIndicator.js';
 import { ProgressOverlays } from './progress/ProgressOverlays.js';
 import { GlossaryDrawer } from './pedagogy/ContextualGlossary.js';
+import { TeacherBanner } from './StageLockedView.js';
+import { ModelCaseBanner } from './model/ModelCaseBanner.js';
 import { CollectEvidenceDialog } from './evidence/CollectEvidenceDialog.js';
 
 export function SkipLink() {
@@ -104,6 +106,8 @@ export function AppHeader({ state }) {
         ? `<p class="consultant-tip return-banner">Estás editando una sección del informe. <button class="btn btn--small" type="button" data-action="return-to-preview">Volver a la vista previa</button></p>`
         : ''
     }
+    ${TeacherBanner({ state })}
+    ${ModelCaseBanner({ state })}
     ${ProgressOverlays({ state })}
     ${GlossaryDrawer({ termId: state.glossaryTerm })}
     ${

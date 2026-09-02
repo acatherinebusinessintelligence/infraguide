@@ -8,7 +8,8 @@ import { getExportModel, canExport } from '../state/exportActions.js';
 import { HtmlExporter } from '../export/htmlExporter.js';
 import { renderDocumentBody } from '../export/documentHtml.js';
 import { PrintableDocument, suggestedPdfName } from '../export/printView.js';
-import { exportBaseName } from '../export/text.js';
+import { exportBaseName, modelConsultoriaBaseName } from '../export/text.js';
+import { isModelSolved } from '../state/caseMode.js';
 
 export function ExportPage(state, route = {}) {
   if (typeof window !== 'undefined') {
@@ -30,7 +31,7 @@ export function ExportPage(state, route = {}) {
         <p><strong>EXPORTAR INFORME</strong> genera el documento profesional. <strong>GUARDAR PROGRESO</strong> conserva tu trabajo.</p>
         <div class="export-actions">
           <a class="btn btn--primary" href="#/informe" data-nav="/informe">Vista previa del informe</a>
-          <a class="btn" href="#/informe/modelo" data-nav="/informe/modelo">Ver informe modelo</a>
+          <a class="btn" href="#/informe/modelo" data-nav="/informe/modelo">${escapeHtml(appCopy.dashboard.modelReport)}</a>
           <a class="btn" href="#/construir" data-nav="/construir">${escapeHtml(exportCopy.review)}</a>
           <a class="btn" href="#/progreso" data-nav="/progreso">Guardar progreso</a>
         </div>
@@ -123,6 +124,11 @@ function ExportCenter({ state, summary, exp, academic, live, cards, history }) {
         <button class="btn" type="button" data-action="export-docx">Descargar Word</button>
         <button class="btn" type="button" data-action="export-print">Imprimir / Guardar PDF</button>
       </div>
+      ${
+        isModelSolved(state)
+          ? `<p>Nombres de archivo del caso modelo: <code>${escapeHtml(modelConsultoriaBaseName())}.html</code>, <code>${escapeHtml(modelConsultoriaBaseName())}.docx</code>, <code>${escapeHtml(modelConsultoriaBaseName())}.pdf</code>.</p>`
+          : ''
+      }
       ${history}
     </section>
   `;
@@ -197,7 +203,7 @@ function liveMessage(exp) {
 
 function printLayout(state) {
   const model = getExportModel(state);
-  const pdfName = suggestedPdfName(exportBaseName(state.selectedCase?.name));
+  const pdfName = suggestedPdfName(isModelSolved(state) ? modelConsultoriaBaseName() : exportBaseName(state.selectedCase?.name));
   return `
     <div class="print-shell">
       <div class="print-toolbar">

@@ -15,6 +15,7 @@ import {
   traceabilityNodes,
 } from './buildModel.js';
 import { computeProgress, getState, patchState, setState } from './appState.js';
+import { rejectIfStageLocked } from './stageGates.js';
 
 function buildFrom(state = getState()) {
   return state.analysis?.build ?? createBuildState();
@@ -170,6 +171,11 @@ export function addConclusionsToDocument() {
 
 export function completeBuildStage() {
   const state = getState();
+  const locked = rejectIfStageLocked(state, 8);
+  if (locked) {
+    setState({ documentError: locked });
+    return false;
+  }
   const completion = getBuildCompletion(state);
   if (!completion.ready) {
     setState({

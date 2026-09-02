@@ -25,16 +25,21 @@ import {
 import { ConclusionsBuilder, DocumentPreview } from '../components/build/DocumentPreview.js';
 import { escapeHtml } from '../utils/escape.js';
 import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
+import { StageLockedView } from '../components/StageLockedView.js';
+import { canWorkStage } from '../state/stageGates.js';
+import { isModelSolved } from '../state/caseMode.js';
+import { SolvedStagePage } from '../components/model/SolvedStages.js';
 
 export function BuildPage(state) {
+  if (isModelSolved(state)) {
+    return SolvedStagePage(state, 8);
+  }
+
   if (!state.selectedCase) {
     return shell(state, `<h1>CONSTRUIR</h1><p>${escapeHtml(appCopy.caseWork.noCaseYet)}</p><a class="btn btn--primary" href="#/ruta" data-nav="/ruta">Seleccionar caso</a>`);
   }
-  if (!state.completedStages.includes(7)) {
-    return shell(
-      state,
-      `<h1>CONSTRUIR</h1><p>Primero cierra DECIDIR. El documento final ensambla lo ya construido; no inventa análisis.</p><a class="btn btn--primary" href="#/decidir" data-nav="/decidir">Ir a DECIDIR</a>`,
-    );
+  if (!canWorkStage(state, 8)) {
+    return shell(state, StageLockedView({ state, stageId: 8 }));
   }
 
   const snap = getBuildSnapshot(state);

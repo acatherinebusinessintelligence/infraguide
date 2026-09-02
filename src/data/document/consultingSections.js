@@ -134,10 +134,12 @@ export const consultingDocumentSections = [
 
 export const DOCUMENT_SECTION_STATUS = {
   EMPTY: 'VACÍO',
+  BASE: 'BASE DISPONIBLE',
   BUILDING: 'EN CONSTRUCCIÓN',
   READY: 'LISTO PARA REVISAR',
   VALIDATED: 'VALIDADO',
   OBSERVATIONS: 'CON OBSERVACIONES',
+  SOLVED: 'RESUELTO',
 };
 
 export function getConsultingSection(key) {

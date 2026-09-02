@@ -1,5 +1,6 @@
 export const APP_NAME = 'InfraGuide';
-export const APP_VERSION = '1.4.0';
+export const PUBLIC_APP_URL = 'https://acatherinebusinessintelligence.github.io/infraguide/';
+export const APP_VERSION = '1.5.0';
 export const STATE_VERSION = 1;
 export const PERSISTENCE_VERSION = STATE_VERSION;
 export const STORAGE_PREFIX = 'infraguide:v1';

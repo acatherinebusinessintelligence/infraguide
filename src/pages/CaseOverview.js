@@ -9,6 +9,8 @@ import { FindTheData } from '../components/FindTheData.js';
 import { MethodDataInfo } from '../components/MethodDataInfo.js';
 import { CollectedDataPanel } from '../components/CollectedDataPanel.js';
 import { escapeHtml } from '../utils/escape.js';
+import { MODEL_INTRO } from '../data/testing/heladosBorealSolvedContent.js';
+import { isModelSolved } from '../state/caseMode.js';
 
 export function CaseOverviewPage(state) {
   const caseData = state.selectedCase ? getCaseById(state.selectedCase.id) : null;
@@ -40,6 +42,23 @@ export function CaseOverviewPage(state) {
 }
 
 function renderOverview(caseData, state, progress) {
+  if (isModelSolved(state)) {
+    return `
+      <header class="overview-hero">
+        <p class="overview-hero__case">${escapeHtml(caseData.name)} · CASO MODELO RESUELTO</p>
+        <h1>Explorar el caso modelo</h1>
+        <p>${escapeHtml(MODEL_INTRO.lead)}</p>
+        <p class="prep-indicator">RESUELTO · EJEMPLO GUIADO · DISPONIBLE PARA CONSULTA</p>
+      </header>
+      <div class="export-actions">
+        <a class="btn btn--primary" href="#/comprender" data-nav="/comprender">EXPLORAR CASO MODELO</a>
+        <a class="btn" href="#/caso/documento" data-nav="/caso/documento">ABRIR PDF ORIGINAL</a>
+        <a class="btn" href="#/ruta" data-nav="/ruta">VER RUTA RESUELTA</a>
+        <a class="btn" href="#/informe" data-nav="/informe">VER INFORME FINAL</a>
+      </div>
+    `;
+  }
+
   const cards = caseData.sections
     .map(
       (section) => `

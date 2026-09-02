@@ -36,7 +36,8 @@ export const appCopy = {
     methodHeading: 'Ficha metodológica (demostración)',
     methodIntro:
       'Esta demostración te permite comprender cómo un dato del caso se transforma en cálculo, interpretación y contenido del informe. Tus resultados se generarán cuando completes las actividades correspondientes.',
-    blockedHint: 'Esta etapa estará disponible cuando se complete la anterior.',
+    blockedHint: 'Puedes consultar la etapa, pero no editarla ni finalizarla hasta cumplir los prerrequisitos.',
+    modelReport: 'VER INFORME MODELO',
     stagePreviewNote: 'El contenido de esta etapa se desarrollará en una fase posterior.',
     workCaseHeading: 'Caso de trabajo',
     exploreCase: 'Conocer la estructura del caso',
@@ -73,6 +74,7 @@ export const appCopy = {
     importProgress: 'Cargar progreso',
     openProgress: 'Abrir panel de progreso',
     demoLoad: 'Cargar demostración completa',
+    teacherMode: 'Modo docente / demostración',
   },
   caseWork: {
     principle: 'Antes de calcular o concluir, identifica de dónde sale el dato.',

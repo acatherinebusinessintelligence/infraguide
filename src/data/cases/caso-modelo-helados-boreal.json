@@ -2,12 +2,15 @@
   "id": "modelo-helados-boreal",
   "name": "Helados Boreal S.A.S.",
   "kind": "model",
-  "kindLabel": "Caso modelo",
+  "kindLabel": "Caso modelo resuelto",
+  "caseMode": "MODEL_SOLVED",
+  "stagesUnlocked": true,
+  "reportAvailable": true,
   "sector": "Fabricación y comercialización de helados y postres congelados",
   "organizationType": "Empresa colombiana mediana de helados y productos de temporada",
-  "useButtonLabel": "USAR CASO MODELO",
+  "useButtonLabel": "EXPLORAR EJEMPLO RESUELTO",
   "summary": "Empresa colombiana mediana de helados y postres congelados, con planta y centro de datos en Bogotá, centros de distribución en Medellín y Cali, y operación remota de ventas.",
-  "pedagogicalNote": "Caso académico ficticio. La empresa, las personas y las cifras son ficticias. El PDF original es la fuente académica.",
+  "pedagogicalNote": "Caso académico ficticio. La empresa, las personas y las cifras son ficticias. El PDF original es la fuente académica. Este caso está completamente resuelto: no debes desarrollarlo; recórrelo para comprender la metodología.",
   "readOnly": true,
   "sourceDocuments": [
     {

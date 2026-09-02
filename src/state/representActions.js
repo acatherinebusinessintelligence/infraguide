@@ -17,6 +17,7 @@ import {
 } from './representModel.js';
 import { nowIso, getServiceById, isDocumented } from './understandModel.js';
 import { computeProgress, getState, patchState, setState } from './appState.js';
+import { rejectIfStageLocked } from './stageGates.js';
 
 function representFrom(state = getState()) {
   return state.analysis?.represent ?? createRepresentState();
@@ -481,6 +482,11 @@ export function addSpofToDocument() {
 
 export function completeRepresentStage() {
   const state = getState();
+  const locked = rejectIfStageLocked(state, 2);
+  if (locked) {
+    setState({ documentError: locked });
+    return false;
+  }
   const represent = representFrom(state);
   const completion = getRepresentCompletion(represent, documentsFrom(state));
   if (!completion.ready) {

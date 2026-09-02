@@ -3,7 +3,8 @@ import { getState, patchState } from './appState.js';
 import { createExportState } from './exportModel.js';
 import { buildExportModel, validateExportPayload } from '../export/buildExportModel.js';
 import { HtmlExporter } from '../export/htmlExporter.js';
-import { downloadBlob, exportBaseName } from '../export/text.js';
+import { downloadBlob, exportBaseName, modelConsultoriaBaseName } from '../export/text.js';
+import { isModelSolved } from './caseMode.js';
 
 let modelCache = { key: '', model: null };
 
@@ -125,7 +126,7 @@ function recordHistory(format, fileName, state = getState()) {
 }
 
 export function canExport(state = getState()) {
-  return Boolean(state.analysis?.build?.readyToExport);
+  return Boolean(state.analysis?.build?.readyToExport) || isModelSolved(state);
 }
 
 export function exportHtml() {
@@ -134,7 +135,7 @@ export function exportHtml() {
     patchExport({ lastError: exportCopy.notReady, status: EXPORT_STATUS.NOT_READY });
     return false;
   }
-  const errors = validateExportPayload(state, exportFrom(state).config);
+  const errors = isModelSolved(state) ? [] : validateExportPayload(state, exportFrom(state).config);
   if (errors.length) {
     patchExport({ lastError: errors[0], status: EXPORT_STATUS.ERROR });
     return false;
@@ -142,7 +143,8 @@ export function exportHtml() {
   patchExport({ status: EXPORT_STATUS.GENERATING, lastError: '' });
   try {
     const model = getExportModel(getState());
-    const { html, fileName, mime } = HtmlExporter(model);
+    const fileBase = isModelSolved(state) ? modelConsultoriaBaseName() : undefined;
+    const { html, fileName, mime } = HtmlExporter(model, { fileBase });
     downloadBlob(new Blob([html], { type: mime }), fileName);
     patchExport((current, prev) => ({ ...current, ...recordHistory(EXPORT_FORMATS.html, fileName, prev) }));
     return true;
@@ -158,7 +160,7 @@ export async function exportDocx() {
     patchExport({ lastError: exportCopy.notReady, status: EXPORT_STATUS.NOT_READY });
     return false;
   }
-  const errors = validateExportPayload(state, exportFrom(state).config);
+  const errors = isModelSolved(state) ? [] : validateExportPayload(state, exportFrom(state).config);
   if (errors.length) {
     patchExport({ lastError: errors[0], status: EXPORT_STATUS.ERROR });
     return false;
@@ -172,7 +174,7 @@ export async function exportDocx() {
       packed instanceof Blob
         ? packed
         : new Blob([packed], { type: DOCX_MIME });
-    const fileName = docxFileName(model);
+    const fileName = isModelSolved(state) ? `${modelConsultoriaBaseName()}.docx` : docxFileName(model);
     downloadBlob(blob, fileName);
     patchExport((current, prev) => ({ ...current, ...recordHistory(EXPORT_FORMATS.docx, fileName, prev) }));
     return true;
@@ -194,7 +196,7 @@ export function startPrintExport({ auto = true } = {}) {
     patchExport({ lastError: exportCopy.notReady, status: EXPORT_STATUS.NOT_READY });
     return false;
   }
-  const errors = validateExportPayload(state, exportFrom(state).config);
+  const errors = isModelSolved(state) ? [] : validateExportPayload(state, exportFrom(state).config);
   if (errors.length) {
     patchExport({ lastError: errors[0], status: EXPORT_STATUS.ERROR });
     return false;
@@ -206,7 +208,7 @@ export function startPrintExport({ auto = true } = {}) {
 
 export function finishPrintExport() {
   const state = getState();
-  const name = `${exportBaseName(state.selectedCase?.name)}.pdf`;
+  const name = `${isModelSolved(state) ? modelConsultoriaBaseName() : exportBaseName(state.selectedCase?.name)}.pdf`;
   patchExport((current, prev) => ({
     ...current,
     printAuto: false,
@@ -220,7 +222,7 @@ export function clearExportError() {
 
 export function exportSnapshotHtml(snapshot) {
   const model = buildExportModel(snapshot);
-  const { html, fileName, mime } = HtmlExporter(model);
+  const { html, fileName, mime } = HtmlExporter(model, { fileBase: modelConsultoriaBaseName() });
   downloadBlob(new Blob([html], { type: mime }), fileName);
   return true;
 }
@@ -230,7 +232,7 @@ export async function exportSnapshotDocx(snapshot) {
   const model = buildExportModel(snapshot);
   const packed = await packDocx(model);
   const blob = packed instanceof Blob ? packed : new Blob([packed], { type: DOCX_MIME });
-  downloadBlob(blob, docxFileName(model));
+  downloadBlob(blob, `${modelConsultoriaBaseName()}.docx`);
   return true;
 }
 

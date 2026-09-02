@@ -54,13 +54,9 @@
   width: 100%;
 }
 
-.stage-card:not(:disabled):hover {
+.stage-card:hover,
+.stage-card:focus-visible {
   border-color: var(--blue-500);
-}
-
-.stage-card:disabled {
-  cursor: not-allowed;
-  opacity: 0.72;
 }
 
 .stage-card__number {
@@ -116,6 +112,12 @@
   background: var(--ok-100);
   color: var(--ok-700);
   border-color: #9dccb3;
+}
+
+.badge--solved {
+  background: #d6e6f5;
+  color: #0b3a6a;
+  border-color: #1f6aa5;
 }
 
 .flow {

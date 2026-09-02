@@ -7,15 +7,16 @@ import { createModelReportState, MODEL_REPORT_BANNER, MODEL_REPORT_NOTICE } from
 import { buildConsultingDocumentIndex } from '../state/documentTrace.js';
 import { HowObtainedButton, HowObtainedPanel } from '../components/pedagogy/GuidedCalculator.js';
 import { DOCUMENT_SECTION_STATUS } from '../data/document/consultingSections.js';
+import { isModelSolved } from '../state/caseMode.js';
 
 export function ReportPreviewPage(state, route = {}) {
-  const modelMode = Boolean(route.model);
-  const source = modelMode ? createModelReportState() : state;
+  const modelMode = Boolean(route.model) || isModelSolved(state);
+  const source = route.model && !isModelSolved(state) ? createModelReportState() : state.selectedCase ? state : createModelReportState();
   const report = generateConsultingReport(source);
   const exportModel = consultingReportToExportModel(report, createExportConfig());
   const index = buildConsultingDocumentIndex(source);
   const body = renderDocumentBody(exportModel);
-  const ready = Boolean(source.analysis?.build?.readyToExport) && !report.executiveOpinion?.insufficient;
+  const ready = Boolean(source.analysis?.build?.readyToExport) || isModelSolved(source);
 
   return `
     <div class="app-shell">

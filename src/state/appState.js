@@ -24,8 +24,12 @@ import {
 import { createDecideState, mergeDecide, analyzeDecisionDraft } from './decideModel.js';
 import { createBuildState, mergeBuild, analyzeConclusionsText } from './buildModel.js';
 import { createExportState, mergeExport } from './exportModel.js';
+import { caseSelectionMeta, isModelSolvedCase, isStudentWorkCase } from '../data/cases/caseMode.js';
+import { createHeladosBorealSolvedState } from '../data/testing/heladosBorealSolvedState.js';
+import { loadModelNavigation, saveModelNavigation, navigationFromState, saveLastSession, loadLastSession, clearLastSession } from './modelNavigation.js';
 
 const listeners = new Set();
+let studentWorkHold = null;
 
 const initialState = {
   selectedCase: null,
@@ -80,6 +84,8 @@ const initialState = {
     pageCount: null,
     notes: {},
   },
+  teacherMode: false,
+  modelExploredSections: [],
 };
 
 let persistEnabled = false;
@@ -103,7 +109,13 @@ PersistenceService.configure({
 
 function notify(options = {}) {
   listeners.forEach((listener) => listener(state));
-  if (persistEnabled && options.persist !== false) {
+  if (isModelSolvedCase(getCaseById(state.selectedCase?.id))) {
+    if (options.persist !== false && !state.teacherMode) {
+      saveModelNavigation(state.selectedCase.id, navigationFromState(state));
+    }
+    return;
+  }
+  if (persistEnabled && !state.teacherMode && options.persist !== false) {
     PersistenceService.scheduleSave(state);
   }
 }
@@ -191,35 +203,25 @@ export function startAnalysis() {
 }
 
 export function selectStage(stageId) {
-  const { completedStages } = state;
-  const isFirst = stageId === 1;
-  const previousCompleted = completedStages.includes(stageId - 1);
-  const alreadyCompleted = completedStages.includes(stageId);
-  const isCurrent = state.currentStage === stageId;
-
-  if (!isFirst && !previousCompleted && !alreadyCompleted && !isCurrent) {
-    return;
-  }
-
   setState({
     currentStage: stageId,
-    currentView:
-      stageId === 1
-        ? 'understand'
-        : stageId === 2
-          ? 'represent'
-          : stageId === 4
-            ? 'measure'
-            : stageId === 5
-              ? 'diagnose'
-              : stageId === 6
-                ? 'govern'
-                : stageId === 7
-                  ? 'decide'
-                  : stageId === 8
-                    ? 'build'
-                    : 'dashboard',
+    currentView: 'dashboard',
   });
+}
+
+export function setPersistEnabled(value) {
+  persistEnabled = Boolean(value);
+}
+
+export function applyTeacherLiveState(partial) {
+  const wasEnabled = persistEnabled;
+  persistEnabled = false;
+  state = refreshDerived({
+    ...state,
+    ...partial,
+  });
+  persistEnabled = wasEnabled;
+  notify({ persist: false });
 }
 
 export function computeProgress(completedStages = state.completedStages, totalStages = 8) {
@@ -236,66 +238,167 @@ export function getSelectedCaseData() {
   return getCaseById(state.selectedCase.id);
 }
 
+function snapshotStudentWork(live) {
+  return structuredClone({
+    selectedCase: live.selectedCase,
+    currentStage: live.currentStage,
+    completedStages: live.completedStages,
+    analysis: live.analysis,
+    metricEvidence: live.metricEvidence,
+    documentSections: live.documentSections,
+    collectedData: live.collectedData,
+    methodologyStatus: live.methodologyStatus,
+    dataGroups: live.dataGroups,
+    explorerSectionId: live.explorerSectionId,
+    lastCollectedKey: live.lastCollectedKey,
+    activityAnswers: live.activityAnswers,
+    documentViewKey: live.documentViewKey,
+    documentError: live.documentError,
+    progress: live.progress,
+    caseReading: live.caseReading,
+    currentView: live.currentView,
+    modelExploredSections: live.modelExploredSections,
+  });
+}
+
+function emptyStudentWork(caseData) {
+  return {
+    selectedCase: caseSelectionMeta(caseData),
+    collectedData: [],
+    methodologyStatus: {},
+    lastCollectedKey: null,
+    explorerSectionId: 'context',
+    analysis: {
+      understand: createUnderstandState(),
+      represent: createRepresentState(),
+      measure: createMeasureState(),
+      diagnose: createDiagnoseState(),
+      govern: createGovernState(),
+      decide: createDecideState(),
+      build: createBuildState(),
+      export: createExportState(),
+    },
+    metricEvidence: [],
+    documentSections: createDocumentBundle(),
+    completedStages: [],
+    currentStage: 1,
+    progress: 0,
+    methodInfoKey: null,
+    mobileNavOpen: false,
+    documentError: null,
+    documentViewKey: null,
+    activityAnswers: {},
+    caseReading: {
+      introCompleted: false,
+      guidedStep: 1,
+      openedPdf: false,
+      pageCount: null,
+      notes: {},
+    },
+    pdfViewer: {
+      open: false,
+      documentId: null,
+      page: null,
+      evidenceId: null,
+      fieldKey: null,
+      sourceSectionId: null,
+      mode: 'read',
+    },
+    evidenceReturn: null,
+    modelExploredSections: [],
+  };
+}
+
+export function applySolvedCaseState(caseData, nav = null) {
+  const solved = createHeladosBorealSolvedState();
+  const next = {
+    ...solved,
+    selectedCase: caseSelectionMeta(caseData) || solved.selectedCase,
+    teacherMode: state.teacherMode,
+    documentError: null,
+    currentView: nav?.currentView || state.currentView || 'dashboard',
+    currentStage: nav?.lastStage || 1,
+    modelExploredSections: nav?.exploredSections || [],
+    pdfViewer: {
+      ...state.pdfViewer,
+      page: nav?.pdfPage ?? state.pdfViewer.page,
+      evidenceId: nav?.lastEvidence ?? state.pdfViewer.evidenceId,
+      open: false,
+    },
+    lastCollectedKey: nav?.lastEvidence || solved.lastCollectedKey || solved.collectedData[0]?.key || null,
+    caseReading: {
+      introCompleted: true,
+      guidedStep: 1,
+      openedPdf: Boolean(nav?.pdfPage),
+      pageCount: null,
+      notes: {},
+    },
+  };
+  persistEnabled = false;
+  state = refreshDerived({ ...state, ...next });
+  persistEnabled = false;
+  notify({ persist: false });
+}
+
 export function selectWorkCase(caseId) {
   const caseData = getCaseById(caseId);
   if (!caseData) {
     return;
   }
 
+  const currentData = state.selectedCase?.id ? getCaseById(state.selectedCase.id) : null;
   const sameCase = state.selectedCase?.id === caseId;
-  setState({
-    selectedCase: {
-      id: caseData.id,
-      name: caseData.name,
-      kind: caseData.kind,
-      kindLabel: caseData.kindLabel,
-    },
-    collectedData: sameCase ? state.collectedData : [],
-    methodologyStatus: sameCase ? state.methodologyStatus : {},
-    lastCollectedKey: sameCase ? state.lastCollectedKey : null,
-    explorerSectionId: sameCase ? state.explorerSectionId : 'context',
-    analysis: sameCase
-      ? state.analysis
-      : {
-          understand: createUnderstandState(),
-          represent: createRepresentState(),
-          measure: createMeasureState(),
-          diagnose: createDiagnoseState(),
-          govern: createGovernState(),
-          decide: createDecideState(),
-          build: createBuildState(),
-          export: createExportState(),
-        },
-    metricEvidence: sameCase ? state.metricEvidence : [],
-    documentSections: sameCase ? state.documentSections : createDocumentBundle(),
-    completedStages: sameCase ? state.completedStages : [],
-    progress: sameCase ? state.progress : 0,
-    methodInfoKey: null,
-    mobileNavOpen: false,
-    documentError: null,
-    documentViewKey: null,
-    pdfViewer: sameCase
-      ? state.pdfViewer
-      : {
-          open: false,
-          documentId: null,
-          page: null,
-          evidenceId: null,
-          fieldKey: null,
-          sourceSectionId: null,
-          mode: 'read',
-        },
-    evidenceReturn: sameCase ? state.evidenceReturn : null,
-    caseReading: sameCase
-      ? state.caseReading
-      : {
-          introCompleted: false,
-          guidedStep: 1,
-          openedPdf: false,
-          pageCount: null,
-          notes: {},
-        },
-  });
+  const leavingStudent = isStudentWorkCase(currentData) && !sameCase;
+  const enteringModel = isModelSolvedCase(caseData);
+  const enteringStudent = isStudentWorkCase(caseData);
+
+  if (leavingStudent) {
+    studentWorkHold = snapshotStudentWork(state);
+    persistEnabled = true;
+    PersistenceService.saveState(state, { force: true, source: 'case-switch' });
+  }
+
+  saveLastSession(caseData.id, caseSelectionMeta(caseData)?.caseMode);
+
+  if (enteringModel) {
+    if (isModelSolvedCase(currentData) && sameCase) {
+      setState({ selectedCase: caseSelectionMeta(caseData) });
+      return;
+    }
+    if (isModelSolvedCase(currentData) && !sameCase) {
+      saveModelNavigation(currentData.id, navigationFromState(state));
+    }
+    applySolvedCaseState(caseData, loadModelNavigation(caseData.id));
+    return;
+  }
+
+  if (enteringStudent) {
+    if (isModelSolvedCase(currentData)) {
+      saveModelNavigation(currentData.id, navigationFromState(state));
+    }
+    persistEnabled = true;
+    if (sameCase) {
+      setState({ selectedCase: caseSelectionMeta(caseData) });
+      return;
+    }
+    if (studentWorkHold?.selectedCase?.id === caseId) {
+      state = refreshDerived({
+        ...state,
+        ...structuredClone(studentWorkHold),
+        selectedCase: caseSelectionMeta(caseData),
+        teacherMode: false,
+      });
+      notify({ persist: false });
+      return;
+    }
+    const loaded = PersistenceService.loadState();
+    if (loaded.payload?.meta?.caseId === caseId && isStudentWorkCase(getCaseById(caseId))) {
+      applyPersistedPayload(loaded.payload, { persist: false, keepView: true });
+      setState({ selectedCase: caseSelectionMeta(caseData) });
+      return;
+    }
+    setState(emptyStudentWork(caseData));
+  }
 }
 
 export function setExplorerSection(sectionId) {
@@ -338,6 +441,9 @@ export function confirmCollectEvidence(key = state.pendingCollectKey) {
 }
 
 export function addCollectedData(key) {
+  if (isModelSolvedCase(getCaseById(state.selectedCase?.id))) {
+    return;
+  }
   if (state.collectedData.some((item) => item.key === key)) {
     return;
   }
@@ -409,19 +515,13 @@ export function applyPersistedPayload(persisted, options = {}) {
   const currentStage = persisted.currentStage ?? 0;
   state = refreshDerived({
     ...state,
-    selectedCase: caseData
-      ? {
-          id: caseData.id,
-          name: caseData.name,
-          kind: caseData.kind,
-          kindLabel: caseData.kindLabel,
-        }
-      : persisted.selectedCase
+    selectedCase: caseData ? caseSelectionMeta(caseData) : persisted.selectedCase
         ? {
             id: persisted.selectedCase.id,
             name: persisted.selectedCase.name || persisted.selectedCase.id,
             kind: persisted.selectedCase.kind,
             kindLabel: persisted.selectedCase.kindLabel,
+            caseMode: persisted.selectedCase.caseMode,
           }
         : null,
     collectedData: persisted.collectedData ?? [],
@@ -495,8 +595,18 @@ export function hydrateFromStorage() {
     notify({ persist: false });
     return result;
   }
-  if (result.payload) {
-    applyPersistedPayload(result.payload, { persist: false, keepView: true });
+  const lastSession = loadLastSession();
+  const lastCase = lastSession?.caseId ? getCaseById(lastSession.caseId) : null;
+  if (isModelSolvedCase(lastCase)) {
+    applySolvedCaseState(lastCase, loadModelNavigation(lastCase.id));
+  } else if (result.payload) {
+    const caseId = result.payload.meta?.caseId ?? result.payload.selectedCase?.id ?? null;
+    const caseData = caseId ? getCaseById(caseId) : null;
+    if (isModelSolvedCase(caseData)) {
+      applySolvedCaseState(caseData, loadModelNavigation(caseId));
+    } else {
+      applyPersistedPayload(result.payload, { persist: false, keepView: true });
+    }
   }
   const meta = PersistenceService.getMeta();
   state = {
@@ -522,6 +632,13 @@ export function hydrateFromStorage() {
 }
 
 export function importProgressState(payload) {
+  const caseId = payload?.meta?.caseId ?? payload?.selectedCase?.id ?? null;
+  const caseData = caseId ? getCaseById(caseId) : null;
+  if (isModelSolvedCase(caseData)) {
+    applySolvedCaseState(caseData, loadModelNavigation(caseId));
+    saveLastSession(caseData.id, caseData.caseMode);
+    return true;
+  }
   PersistenceService.importState(payload);
   persistEnabled = true;
   const ok = applyPersistedPayload(payload, { persist: false });
@@ -579,6 +696,7 @@ export function pathFromStage(stageId) {
 export function resetWork() {
   persistEnabled = false;
   PersistenceService.clearState(state.selectedCase?.id);
+  clearLastSession();
   state = structuredClone(initialState);
   persistEnabled = true;
   notify({ persist: false });
@@ -590,8 +708,8 @@ export function isDirty() {
 
 export async function loadDemoProgress() {
   if (!debugMode) return false;
-  const mod = await import('../data/testing/completed-demo-state.json');
-  return importProgressState(mod.default);
+  const { enterTeacherMode } = await import('./teacherMode.js');
+  return enterTeacherMode();
 }
 
 export function getPreparedDocumentSections(collectedData = state.collectedData) {

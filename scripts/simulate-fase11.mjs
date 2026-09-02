@@ -53,6 +53,11 @@ const { GOVERN_STATUS } = await import('../src/data/methodology/govern.js');
 const { DECISION_STATUS } = await import('../src/data/methodology/decide.js');
 const { METRIC_STATUS } = await import('../src/data/methodology/measure.js');
 const { STORAGE_STATE_KEY, STORAGE_BACKUP_KEY } = await import('../src/state/persistence/storageAdapter.js');
+const { registerCaseForTests } = await import('../src/data/cases/index.js');
+const { createStudentWorkFixture } = await import('../src/data/testing/studentWorkFixture.js');
+registerCaseForTests(createStudentWorkFixture());
+
+const WORK_CASE_ID = 'fixture-equipo-trabajo';
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -71,13 +76,15 @@ function documented(text, extra = {}) {
 }
 
 function fillUntilMeasure() {
-  selectWorkCase('modelo-helados-boreal');
-  addCollectedData('periodHours');
-  addCollectedData('downtimeHours');
+  selectWorkCase(WORK_CASE_ID);
   patchState((prev) => ({
     ...prev,
     completedStages: [1, 2, 3],
     currentStage: 4,
+    collectedData: [
+      { key: 'periodHours', value: 2160, label: 'Periodo', page: 1, quote: 'fixture' },
+      { key: 'downtimeHours', value: 10.67, label: 'Caída', page: 1, quote: 'fixture' },
+    ],
     analysis: {
       ...prev.analysis,
       represent: {
@@ -232,25 +239,25 @@ caseRun('A nuevo usuario', () => {
 });
 
 caseRun('B autosave', () => {
-  selectWorkCase('modelo-helados-boreal');
+  selectWorkCase(WORK_CASE_ID);
   PersistenceService.flush();
   const raw = store.get(STORAGE_STATE_KEY);
   assert(raw, 'Debe existir estado guardado.');
   const parsed = JSON.parse(raw);
   assert(parsed.stateVersion === 1, 'stateVersion debe ser 1.');
-  assert(parsed.caseId === 'modelo-helados-boreal', 'Debe guardar el caseId.');
-  assert(parsed.payload.selectedCase.id === 'modelo-helados-boreal', 'Debe persistir el caso.');
+  assert(parsed.caseId === WORK_CASE_ID, 'Debe guardar el caseId.');
+  assert(parsed.payload.selectedCase.id === WORK_CASE_ID, 'Debe persistir el caso.');
 });
 
 caseRun('C recargar', () => {
   hydrateFromStorage();
-  assert(getState().selectedCase?.id === 'modelo-helados-boreal', 'Tras recargar debe conservar el caso.');
+  assert(getState().selectedCase?.id === WORK_CASE_ID, 'Tras recargar debe conservar el caso.');
 });
 
 caseRun('D cerrar y abrir', () => {
   PersistenceService.flush();
   hydrateFromStorage();
-  assert(getState().selectedCase?.id === 'modelo-helados-boreal', 'Al volver debe cargar el último autosave válido.');
+  assert(getState().selectedCase?.id === WORK_CASE_ID, 'Al volver debe cargar el último autosave válido.');
 });
 
 let exported;
@@ -260,7 +267,7 @@ caseRun('E exportar JSON', () => {
   assert(exported.format === 'InfraGuideProgress', 'El archivo debe usar el formato InfraGuideProgress.');
   assert(exported.stateVersion === 1, 'El archivo lleva stateVersion.');
   assert(exported.infraGuideVersion, 'El archivo lleva versión de InfraGuide.');
-  assert(exported.caseId === 'modelo-helados-boreal', 'El archivo lleva caseId.');
+  assert(exported.caseId === WORK_CASE_ID, 'El archivo lleva caseId.');
   assert(exported.state.analysis.represent.spof.records['fw-edge'], 'Incluye SPOF.');
   assert(progressFileName('Helados Boreal S.A.S.') === 'InfraGuide_Helados_Boreal_Progreso.json', 'Nombre de archivo esperado.');
 });
@@ -270,9 +277,9 @@ caseRun('F importar en estado limpio', () => {
   assert(!getState().selectedCase, 'Estado limpio.');
   const parsed = parseProgressFile(JSON.stringify(exported));
   assert(parsed.ok, parsed.errors?.join(' '));
-  assert(parsed.preview.caseName.includes('Helados Boreal'), 'Preview debe mostrar el caso.');
+  assert(parsed.preview.caseName.includes('trabajo'), 'Preview debe mostrar el caso.');
   importProgressState(parsed.payload);
-  assert(getState().selectedCase?.id === 'modelo-helados-boreal', 'Debe restaurar el caso.');
+  assert(getState().selectedCase?.id === WORK_CASE_ID, 'Debe restaurar el caso.');
   assert(getState().completedStages.includes(1), 'Debe restaurar etapas.');
   assert(getState().analysis.represent.spof.records['fw-edge'], 'Debe restaurar SPOF.');
   assert(getState().analysis.measure.availability.result === 98.33, 'Debe restaurar métricas.');
@@ -280,7 +287,7 @@ caseRun('F importar en estado limpio', () => {
 
 const beforeImportId = 'keep-me';
 caseRun('G importar sobre trabajo existente', () => {
-  selectWorkCase('modelo-helados-boreal');
+  selectWorkCase(WORK_CASE_ID);
   patchState((prev) => ({ ...prev, explorerSectionId: beforeImportId }));
   PersistenceService.flush();
   const parsed = parseProgressFile(JSON.stringify(exported));
@@ -315,7 +322,7 @@ caseRun('K versión superior', () => {
 });
 
 caseRun('L restaurar backup', () => {
-  selectWorkCase('modelo-helados-boreal');
+  selectWorkCase(WORK_CASE_ID);
   patchState((prev) => ({ ...prev, currentStage: 1 }));
   PersistenceService.flush();
   patchState((prev) => ({ ...prev, currentStage: 8 }));
@@ -362,7 +369,7 @@ caseRun('Portabilidad hasta MEDIR', () => {
   const parsed = parseProgressFile(JSON.stringify(file));
   importProgressState(parsed.payload);
   const state = getState();
-  assert(state.selectedCase?.id === 'modelo-helados-boreal', 'Caso reconstruido.');
+  assert(state.selectedCase?.id === WORK_CASE_ID, 'Caso reconstruido.');
   assert(state.completedStages.includes(2), 'Etapas reconstruidas.');
   assert(state.analysis.represent.asis.description.includes('AS-IS'), 'AS-IS reconstruido.');
   assert(state.analysis.represent.spof.records['fw-edge'], 'SPOF reconstruido.');

@@ -15,6 +15,7 @@ import {
   QUALITY_STATUS,
 } from './decideModel.js';
 import { computeProgress, getState, patchState, setState } from './appState.js';
+import { rejectIfStageLocked } from './stageGates.js';
 
 function decideFrom(state = getState()) {
   return state.analysis?.decide ?? createDecideState();
@@ -477,6 +478,11 @@ function saveSection(key, payload) {
 
 export function completeDecideStage() {
   const state = getState();
+  const locked = rejectIfStageLocked(state, 7);
+  if (locked) {
+    setState({ documentError: locked });
+    return false;
+  }
   const completion = getDecideCompletion(decideFrom(state), documentsFrom(state));
   if (!completion.ready) {
     setState({

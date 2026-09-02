@@ -1,9 +1,11 @@
 import { appCopy } from '../data/copy.js';
 import { consultingDocumentSections, DOCUMENT_SECTION_STATUS } from '../data/document/consultingSections.js';
-import { buildConsultingDocumentIndex, documentChainFor } from '../state/documentTrace.js';
+import { buildConsultingDocumentIndex } from '../state/documentTrace.js';
 import { formatTimestamp } from '../state/understandModel.js';
 import { HowObtainedButton } from './pedagogy/GuidedCalculator.js';
 import { escapeHtml } from '../utils/escape.js';
+import { isModelSolved } from '../state/caseMode.js';
+import { HowBuilt } from './model/HowBuilt.js';
 
 export function DocumentPanel({
   open,
@@ -39,7 +41,7 @@ export function DocumentPanel({
 
   const items = snapshot.items
     .map((section) => {
-      const extra = documentViewKey === section.key ? renderSectionDetail(section, measure, collectedData) : '';
+      const extra = documentViewKey === section.key ? renderSectionDetail(section, measure, collectedData, state && isModelSolved(state)) : '';
       const filled = section.status !== DOCUMENT_SECTION_STATUS.EMPTY;
       return `
         <li class="document-index__item${filled ? ' has-data' : ''}">
@@ -71,8 +73,8 @@ export function DocumentPanel({
     >
       <div class="document-panel__head">
         <div>
-          <h2 class="document-panel__title" id="document-panel-title">${escapeHtml(appCopy.document.title)}</h2>
-          <p class="document-panel__intro">${escapeHtml(appCopy.document.intro)}</p>
+          <h2 class="document-panel__title" id="document-panel-title">${state && isModelSolved(state) ? 'TU DOCUMENTO — INFORME MODELO' : escapeHtml(appCopy.document.title)}</h2>
+          <p class="document-panel__intro">${state && isModelSolved(state) ? 'Todas las secciones están resueltas. Ábrelas para consultar contenido, evidencia y VER CÓMO SE CONSTRUYÓ.' : escapeHtml(appCopy.document.intro)}</p>
           <p class="document-panel__readiness">Preparación del informe: ${snapshot.readiness} %.</p>
         </div>
         <button
@@ -85,8 +87,8 @@ export function DocumentPanel({
         </button>
       </div>
       <div class="document-panel__actions">
-        <a class="btn btn--small btn--primary" href="#/informe" data-nav="/informe">Vista previa del informe</a>
-        <a class="btn btn--small" href="#/informe/modelo" data-nav="/informe/modelo">Ver informe modelo</a>
+        <a class="btn btn--small btn--primary" href="#/informe" data-nav="/informe">${state && isModelSolved(state) ? 'VER INFORME FINAL MODELO' : 'Vista previa del informe'}</a>
+        ${state && isModelSolved(state) ? '<a class="btn btn--small" href="#/exportar" data-nav="/exportar">Exportar</a>' : `<a class="btn btn--small" href="#/informe/modelo" data-nav="/informe/modelo">${escapeHtml(appCopy.dashboard.modelReport)}</a>`}
       </div>
       <ol class="document-index">
         ${items}
@@ -95,9 +97,9 @@ export function DocumentPanel({
         readyToExport
           ? `
             <div class="document-panel__export">
-              <p><strong>EXPORTAR INFORME</strong> genera HTML, Word o PDF. <strong>GUARDAR PROGRESO</strong> conserva tu trabajo para continuar después.</p>
+              <p>${state && isModelSolved(state) ? 'El caso modelo ya está validado. Puedes descargar HTML, Word o imprimir/PDF desde el inicio.' : '<strong>EXPORTAR INFORME</strong> genera HTML, Word o PDF. <strong>GUARDAR PROGRESO</strong> conserva tu trabajo para continuar después.'}</p>
               <a class="btn btn--primary" href="#/exportar" data-nav="/exportar">${escapeHtml(appCopy.document.export)}</a>
-              <a class="btn" href="#/progreso" data-nav="/progreso">Guardar progreso</a>
+              ${state && isModelSolved(state) ? '' : '<a class="btn" href="#/progreso" data-nav="/progreso">Guardar progreso</a>'}
             </div>
           `
           : `
@@ -111,7 +113,7 @@ export function DocumentPanel({
   `;
 }
 
-function renderSectionDetail(section, measure, collectedData) {
+function renderSectionDetail(section, measure, collectedData, modelSolved = false) {
   const evidences = (section.evidenceIds ?? []).map((id) => `<li>${escapeHtml(id)}</li>`).join('');
   const calcs = (section.calculationIds ?? [])
     .map((id) => `<li>${escapeHtml(id)} ${HowObtainedButton({ metricId: id, open: false })}</li>`)
@@ -121,38 +123,28 @@ function renderSectionDetail(section, measure, collectedData) {
     .map((item) => `<li>${escapeHtml(item.label)}: ${escapeHtml(item.displayValue || '')} (p. ${item.page ?? '—'})</li>`)
     .join('');
   const missing = (section.missing ?? []).map((item) => `<li>${escapeHtml(item)}</li>`).join('');
-  const chain = documentChainFor(section)
-    .map((step) => `<li>${escapeHtml(step)}</li>`)
-    .join('');
+  const chainData = section.chain || { steps: [], empty: true, message: 'Esta trazabilidad se completará cuando desarrolles la actividad' };
 
   return `
     <div class="document-prepared">
       <p><strong>Estado:</strong> ${escapeHtml(section.status)}</p>
-      <p><strong>Actividad que la alimenta:</strong> ${escapeHtml(section.activityLabel)}</p>
+      ${modelSolved ? '' : `<p><strong>Actividad que la alimenta:</strong> ${escapeHtml(section.activityLabel)}</p>`}
       ${section.note ? `<p>${escapeHtml(section.note)}</p>` : ''}
-      <p><strong>Contenido incorporado:</strong> ${escapeHtml(section.content || 'Todavía no hay texto en esta sección.')}</p>
+      <p><strong>Contenido incorporado:</strong> ${escapeHtml(section.content || (modelSolved ? 'Contenido resuelto en el informe modelo.' : 'Todavía no hay texto en esta sección.'))}</p>
       ${collected ? `<p><strong>Datos recolectados relacionados</strong></p><ul>${collected}</ul>` : ''}
-      ${evidences ? `<p><strong>Evidencia utilizada</strong></p><ul>${evidences}</ul>` : '<p><strong>Evidencia utilizada:</strong> ninguna registrada todavía.</p>'}
+      ${evidences ? `<p><strong>Evidencia utilizada</strong></p><ul>${evidences}</ul>` : modelSolved ? '' : '<p><strong>Evidencia utilizada:</strong> ninguna registrada todavía.</p>'}
       ${calcs ? `<p><strong>Cálculos relacionados</strong></p><ul>${calcs}</ul>` : ''}
       ${
         section.lastUpdated
           ? `<p>Última actualización: ${escapeHtml(formatTimestamp(section.lastUpdated))}</p>`
-          : '<p>Última actualización: sin registrar.</p>'
+          : ''
       }
-      ${missing ? `<p><strong>Información faltante</strong></p><ul>${missing}</ul>` : ''}
+      ${modelSolved || !missing ? '' : `<p><strong>Información faltante</strong></p><ul>${missing}</ul>`}
       <p>
-        <a class="btn btn--small btn--primary" href="#${escapeHtml(section.activityPath)}" data-nav="${escapeHtml(section.activityPath)}">Continuar esta sección</a>
-        <a class="btn btn--small" href="#/informe" data-nav="/informe">Ver en la vista previa</a>
+        ${modelSolved ? '' : `<a class="btn btn--small btn--primary" href="#${escapeHtml(section.activityPath)}" data-nav="${escapeHtml(section.activityPath)}">Continuar esta sección</a>`}
+        <a class="btn btn--small" href="#/informe" data-nav="/informe">${modelSolved ? 'Abrir en vista previa' : 'Ver en la vista previa'}</a>
       </p>
-      <details class="contextual-help">
-        <summary>Ver de dónde salió esta sección</summary>
-        <ol class="document-chain">${chain}</ol>
-        <p>Etapa: ${escapeHtml(section.trace.stage)} · Actividad: ${escapeHtml(section.trace.activityId)}</p>
-        <p>Hallazgos: ${escapeHtml((section.findingIds || []).join(', ') || '—')}</p>
-        <p>Evidencias: ${escapeHtml((section.evidenceIds || []).join(', ') || '—')}</p>
-        <p>Cálculos: ${escapeHtml((section.calculationIds || []).join(', ') || '—')}</p>
-        <p>Decisiones: ${escapeHtml((section.decisionIds || []).join(', ') || '—')}</p>
-      </details>
+      ${HowBuilt({ steps: chainData.steps, title: modelSolved ? 'VER CÓMO SE CONSTRUYÓ' : 'Ver de dónde salió esta sección' })}
     </div>
   `;
 }

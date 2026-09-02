@@ -4,8 +4,10 @@ import { getEvidenceForSection, getPrimarySourceDocument, caseMapSections, getSo
 import { ContextualHelp } from '../pedagogy/ContextualHelp.js';
 import { EvidenceLink } from './EvidenceLink.js';
 import { CaseMap } from './CasePdfViewer.js';
+import { isModelSolved } from '../../state/caseMode.js';
 
 export function GuidedCaseReading({ state, caseData }) {
+  const model = isModelSolved(state);
   const stepId = Number(state.caseReading?.guidedStep) || 1;
   const step = guidedReadingSteps.find((item) => item.id === stepId) ?? guidedReadingSteps[0];
   const examples = getEvidenceForSection(caseData, step.sourceSectionId).slice(0, 4);
@@ -44,9 +46,9 @@ export function GuidedCaseReading({ state, caseData }) {
 
   return `
     <section class="guided-reading" aria-labelledby="guided-title">
-      <p class="guided-kicker">Lectura guiada</p>
-      <h1 id="guided-title">Localiza la información en el documento fuente</h1>
-      <p>Helados Boreal puede usarse como caso modelo, pero InfraGuide no entrega el análisis resuelto. Tú localizas, registras y explicas.</p>
+      <p class="guided-kicker">${model ? 'CASO MODELO RESUELTO' : 'Lectura guiada'}</p>
+      <h1 id="guided-title">${model ? 'Cómo se lee el PDF en el ejemplo resuelto' : 'Localiza la información en el documento fuente'}</h1>
+      <p>${model ? 'Este recorrido muestra de dónde sale cada dato. No debes registrar respuestas: el análisis ya está resuelto.' : 'Helados Boreal es el caso modelo de consulta. Los casos de trabajo del equipo se desarrollan con su propio documento.'}</p>
       <ol class="substage-nav">${nav}</ol>
       <article class="panel">
         <h2>Paso ${step.id} — ${escapeHtml(step.title)}</h2>
@@ -67,7 +69,16 @@ export function GuidedCaseReading({ state, caseData }) {
             <ul class="guided-examples">${exampleItems || '<li>No hay ejemplos de esta sección.</li>'}</ul>
           </section>
           <section class="panel">
-            <h3>Trabajo del estudiante</h3>
+            ${
+              model
+                ? `<h3>Consulta del ejemplo</h3>
+                   <ol>
+                     <li>Abre el PDF en la página indicada.</li>
+                     <li>Lee el fragmento verificado.</li>
+                     <li>Sigue la cadena PDF → evidencia → dato → interpretación → informe.</li>
+                   </ol>
+                   <p>No hay campos obligatorios. El caso modelo no se diligencia.</p>`
+                : `<h3>Trabajo del estudiante</h3>
             <ol>
               <li>Abre el PDF y busca la sección.</li>
               <li>Selecciona la evidencia subrayada.</li>
@@ -75,7 +86,8 @@ export function GuidedCaseReading({ state, caseData }) {
               <li>Explica por qué es relevante para el análisis.</li>
             </ol>
             <label for="guided-note">Por qué es relevante</label>
-            <textarea id="guided-note" rows="4" data-action-blur="guided-note" data-scope="case-reading" data-draft="notes.${step.id}">${escapeHtml(state.caseReading?.notes?.[step.id] || '')}</textarea>
+            <textarea id="guided-note" rows="4" data-action-blur="guided-note" data-scope="case-reading" data-draft="notes.${step.id}">${escapeHtml(state.caseReading?.notes?.[step.id] || '')}</textarea>`
+            }
           </section>
         </div>
         <div class="substage-footer">

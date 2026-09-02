@@ -39,9 +39,18 @@ import {
 } from '../components/represent/SpofTools.js';
 import { escapeHtml } from '../utils/escape.js';
 import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
+import { StageLockedView } from '../components/StageLockedView.js';
+import { canWorkStage } from '../state/stageGates.js';
+import { isModelSolved } from '../state/caseMode.js';
+import { SolvedStagePage } from '../components/model/SolvedStages.js';
 import { TermLink } from '../data/pedagogy/glossary.js';
 
 export function RepresentPage(state) {
+  if (isModelSolved(state)) {
+    const identify = Number(state.analysis?.represent?.currentSubstage) === 6;
+    return SolvedStagePage(state, identify ? 3 : 2);
+  }
+
   if (!state.selectedCase) {
     return `
       <div class="app-shell">
@@ -58,20 +67,8 @@ export function RepresentPage(state) {
     `;
   }
 
-  if (!state.completedStages.includes(1)) {
-    return `
-      <div class="app-shell">
-        ${AppHeader({ state })}
-        <main id="contenido" class="page">
-          <section class="panel">
-            <h1>REPRESENTAR</h1>
-            <p>Primero cierra COMPRENDER. El AS-IS se construye sobre los servicios críticos ya justificados.</p>
-            <a class="btn btn--primary" href="#/comprender" data-nav="/comprender">Ir a COMPRENDER</a>
-          </section>
-        </main>
-        ${SiteFooter()}
-      </div>
-    `;
+  if (!canWorkStage(state, 2)) {
+    return shell(state, StageLockedView({ state, stageId: 2 }));
   }
 
   const { represent, documents, completion } = getRepresentSnapshot(state);
@@ -105,6 +102,16 @@ export function RepresentPage(state) {
       </main>
       ${DocumentOverlay({ state, variant: 'overlay' })}
       ${CollectedOverlay({ state })}
+      ${SiteFooter()}
+    </div>
+  `;
+}
+
+function shell(state, inner) {
+  return `
+    <div class="app-shell">
+      ${AppHeader({ state })}
+      <main id="contenido" class="page"><section class="panel">${inner}</section></main>
       ${SiteFooter()}
     </div>
   `;

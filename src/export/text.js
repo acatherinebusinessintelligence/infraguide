@@ -76,3 +76,7 @@ export function exportBaseName(caseName) {
   const raw = sanitizePlain(caseName).replace(/S\.A\.S\.?/gi, '').trim() || 'Caso';
   return safeFileName(`Informe Tecnico Consultoria ${raw}`, '').replace(/\.$/, '');
 }
+
+export function modelConsultoriaBaseName() {
+  return 'Informe_Modelo_Consultoria_Helados_Boreal';
+}

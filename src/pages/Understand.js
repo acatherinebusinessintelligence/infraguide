@@ -44,8 +44,16 @@ import { EvidenceLink } from '../components/evidence/EvidenceLink.js';
 import { getSelectedCaseData } from '../state/appState.js';
 import { escapeHtml } from '../utils/escape.js';
 import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
+import { UnderstandChecklist } from '../components/StageLockedView.js';
+import { understandRequirementItems } from '../state/stageGates.js';
+import { isModelSolved } from '../state/caseMode.js';
+import { SolvedStagePage } from '../components/model/SolvedStages.js';
 
 export function UnderstandPage(state) {
+  if (isModelSolved(state)) {
+    return SolvedStagePage(state, 1);
+  }
+
   if (!state.selectedCase) {
     return `
       <div class="app-shell">
@@ -70,7 +78,7 @@ export function UnderstandPage(state) {
     <div class="app-shell">
       ${AppHeader({ state })}
       <main id="contenido" class="page understand-page">
-        ${renderProgress(understand.currentSubstage, substage)}
+        ${renderProgress(state, understand.currentSubstage, substage)}
         <p class="principle">Antes de analizar servidores, primero comprende qué necesita proteger la infraestructura.</p>
         ${ContextualHelp({
           termId: 'baseline',
@@ -84,7 +92,7 @@ export function UnderstandPage(state) {
           values: understandMethodValues[substage.id],
           topic: substage.title,
         })}
-        ${renderSubstage(substage.id, understand, documents, completion, error)}
+        ${renderSubstage(substage.id, understand, documents, completion, error, state)}
       </main>
       ${DocumentOverlay({ state, variant: 'overlay' })}
       ${CollectedOverlay({ state })}
@@ -93,7 +101,7 @@ export function UnderstandPage(state) {
   `;
 }
 
-function renderProgress(current, substage) {
+function renderProgress(state, current, substage) {
   const steps = understandSubstages
     .map(
       (item) => `
@@ -111,17 +119,24 @@ function renderProgress(current, substage) {
       <p class="understand-kicker">COMPRENDER</p>
       <h1>${current} de 6 · ${escapeHtml(substage.name)}</h1>
       <ol class="substage-nav">${steps}</ol>
+      ${UnderstandChecklist({ state })}
     </header>
   `;
 }
 
-function renderSubstage(id, understand, documents, completion, error) {
+function missingUnderstandLabels(state) {
+  return understandRequirementItems(state)
+    .filter((item) => !item.done)
+    .map((item) => item.label);
+}
+
+function renderSubstage(id, understand, documents, completion, error, state) {
   if (id === 1) return renderOrganization(understand, error);
   if (id === 2) return renderUsers(understand, error);
   if (id === 3) return renderServices(understand, error);
   if (id === 4) return renderCriticality(understand, error);
   if (id === 5) return renderConstraints(understand, error);
-  return renderReview(understand, documents, completion);
+  return renderReview(understand, documents, completion, state);
 }
 
 function navRow(prev, next) {
@@ -355,7 +370,7 @@ function renderConstraints(understand, error) {
   `;
 }
 
-function renderReview(understand, documents, completion) {
+function renderReview(understand, documents, completion, state) {
   const rows = [
     ['Contexto', completion.context],
     ['Usuarios y operación', completion.usersAndOperations],
@@ -422,7 +437,11 @@ function renderReview(understand, documents, completion) {
             <button class="btn btn--primary" type="button" data-action="complete-understand" ${completion.ready ? '' : 'disabled'}>
               Finalizar COMPRENDER
             </button>
-            ${completion.ready ? '' : '<p class="form-error">Faltan secciones o justificaciones para cerrar la etapa.</p>'}
+            ${
+              completion.ready
+                ? ''
+                : `<p class="form-error">No puedes finalizar COMPRENDER. Falta: ${escapeHtml(missingUnderstandLabels(state).join('; ') || 'completar los requisitos de la etapa')}.</p>`
+            }
           `
       }
       ${navRow(5, null)}
