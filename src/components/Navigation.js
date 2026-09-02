@@ -96,7 +96,8 @@ export function NavMenu({
           currentView === 'govern' ||
           currentView === 'decide' ||
           currentView === 'build' ||
-          currentView === 'export');
+          currentView === 'export' ||
+          currentView === 'reportPreview');
       const isActive = item.view === 'home'
         ? isHomeGroup
         : item.view === 'caseOverview'

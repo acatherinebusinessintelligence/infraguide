@@ -1,6 +1,7 @@
 import { AppHeader, SiteFooter, DocumentOverlay, CollectedOverlay } from '../components/Layout.js';
 import { GlossaryIndex } from '../components/pedagogy/ContextualGlossary.js';
 import { ConceptExplanationCard } from '../components/pedagogy/ConceptExplanationCard.js';
+import { CalculationDemo } from '../components/pedagogy/ContextualHelp.js';
 import { InsufficientMetricsPanel } from '../components/pedagogy/InsufficientMetrics.js';
 import { TermLink } from '../data/pedagogy/glossary.js';
 import { escapeHtml } from '../utils/escape.js';
@@ -58,6 +59,9 @@ export function LearnPage(state) {
                 `<a class="btn btn--small" href="#${item.path}" data-nav="${item.path}">${escapeHtml(item.label)}</a>`,
             ).join('')}
           </div>
+          ${CalculationDemo({ conceptId: 'availability' })}
+          ${CalculationDemo({ conceptId: 'mttr' })}
+          ${CalculationDemo({ conceptId: 'storage' })}
         </section>
 
         ${ConceptExplanationCard({ conceptId: 'availability', open: measure.availability?.conceptOpen !== false })}

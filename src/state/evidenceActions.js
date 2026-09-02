@@ -5,6 +5,7 @@ import {
   getEvidenceById,
   getEvidenceForField,
   getPrimarySourceDocument,
+  getSourceSection,
 } from '../data/evidence/index.js';
 
 let pendingScrollRestore = null;
@@ -63,7 +64,16 @@ export function openCasePdf({
     (evidenceId ? getEvidenceById(caseData, evidenceId) : null) ||
     (fieldKey ? getEvidenceForField(caseData, fieldKey) : null);
   const doc = getPrimarySourceDocument(caseData);
-  const targetPage = page || evidence?.page || null;
+  const section = sourceSectionId ? getSourceSection(caseData, sourceSectionId) : null;
+  const requested = Number(page);
+  const targetPage =
+    Number.isFinite(requested) && requested >= 1
+      ? requested
+      : Number(evidence?.page) >= 1
+        ? Number(evidence.page)
+        : Number(section?.page) >= 1
+          ? Number(section.page)
+          : null;
   const returnTo = asOverlay ? captureReturnContext({ fieldKey, evidenceId, component, activity }) : state.evidenceReturn;
 
   setState({

@@ -43,6 +43,7 @@ import { RestrictionClassifier, RestrictionBuilder } from '../components/underst
 import { EvidenceLink } from '../components/evidence/EvidenceLink.js';
 import { getSelectedCaseData } from '../state/appState.js';
 import { escapeHtml } from '../utils/escape.js';
+import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
 
 export function UnderstandPage(state) {
   if (!state.selectedCase) {
@@ -71,6 +72,13 @@ export function UnderstandPage(state) {
       <main id="contenido" class="page understand-page">
         ${renderProgress(understand.currentSubstage, substage)}
         <p class="principle">Antes de analizar servidores, primero comprende qué necesita proteger la infraestructura.</p>
+        ${ContextualHelp({
+          termId: 'baseline',
+          why: 'Sin contexto, usuarios y restricciones no puedes justificar criticidad ni alcance.',
+          where: 'PDF, páginas 2, 3 y 9.',
+          usedFor: 'Alimentar el alcance, el dictamen y el registro de evidencias.',
+          documentTarget: 'Alcance, método y limitaciones.',
+        })}
         ${MethodCard({
           steps: understandMethodSteps,
           values: understandMethodValues[substage.id],

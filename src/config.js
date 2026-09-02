@@ -1,5 +1,5 @@
 export const APP_NAME = 'InfraGuide';
-export const APP_VERSION = '1.3.0';
+export const APP_VERSION = '1.4.0';
 export const STATE_VERSION = 1;
 export const PERSISTENCE_VERSION = STATE_VERSION;
 export const STORAGE_PREFIX = 'infraguide:v1';

@@ -26,7 +26,14 @@ export function ExportPage(state, route = {}) {
       `
         <h1>Centro de exportación</h1>
         <p class="form-error" role="status">${escapeHtml(exportCopy.notReady)}</p>
-        <a class="btn btn--primary" href="#/construir" data-nav="/construir">${escapeHtml(exportCopy.review)}</a>
+        <p>La exportación definitiva permanece bloqueada. La vista previa y el informe modelo sí están disponibles.</p>
+        <p><strong>EXPORTAR INFORME</strong> genera el documento profesional. <strong>GUARDAR PROGRESO</strong> conserva tu trabajo.</p>
+        <div class="export-actions">
+          <a class="btn btn--primary" href="#/informe" data-nav="/informe">Vista previa del informe</a>
+          <a class="btn" href="#/informe/modelo" data-nav="/informe/modelo">Ver informe modelo</a>
+          <a class="btn" href="#/construir" data-nav="/construir">${escapeHtml(exportCopy.review)}</a>
+          <a class="btn" href="#/progreso" data-nav="/progreso">Guardar progreso</a>
+        </div>
       `,
     );
   }

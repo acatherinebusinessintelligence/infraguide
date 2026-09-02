@@ -37,6 +37,7 @@ import {
 } from '../components/decide/DecisionBuilders.js';
 import { escapeHtml } from '../utils/escape.js';
 import { TermLink } from '../data/pedagogy/glossary.js';
+import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
 
 export function DecidePage(state) {
   if (!state.selectedCase) {
@@ -60,6 +61,13 @@ export function DecidePage(state) {
       <main id="contenido" class="page decide-page">
         ${renderProgress(decide.currentSubstage, substage)}
         <p class="principle">No empieces por la tecnología.</p>
+        ${ContextualHelp({
+          termId: 'criterio-aceptacion',
+          why: 'Una decisión sin hallazgo, alternativa y criterio no se puede defender.',
+          where: 'Hallazgos, restricciones de la página 9 y costos de referencia del caso.',
+          usedFor: 'Comparar alternativas y formular el programa recomendado.',
+          documentTarget: 'Arquitectura objetivo, alternativas, programa e inversión.',
+        })}
         <aside class="panel warning-panel">
           <p><strong>INCORRECTO:</strong> “Usar cloud porque es moderno.”</p>
           <p><strong>CORRECTO:</strong> “El servicio presenta picos de demanda y degradación; se comparan alternativas para mejorar capacidad y elasticidad.”</p>

@@ -21,6 +21,7 @@ import { FindingBuilder, MissingEvidenceFinding } from '../components/diagnose/F
 import { DiagnosticMatrix, CoveragePanel, DiagnoseSummary } from '../components/diagnose/DiagnosticMatrix.js';
 import { escapeHtml } from '../utils/escape.js';
 import { TermLink } from '../data/pedagogy/glossary.js';
+import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
 
 export function DiagnosePage(state) {
   if (!state.selectedCase) {
@@ -43,6 +44,13 @@ export function DiagnosePage(state) {
       <main id="contenido" class="page diagnose-page">
         ${renderProgress(diagnose.currentSubstage, substage)}
         <p class="principle">Un hallazgo no es una opinión. Es una conclusión que puedes rastrear hasta la evidencia. ${TermLink({ termId: 'riesgo' })} se ancla al hallazgo, no a un adjetivo vacío.</p>
+        ${ContextualHelp({
+          termId: 'riesgo',
+          why: 'El informe no puede listar números sueltos: necesita condiciones, evidencia e impacto.',
+          where: 'PDF y cálculos de MEDIR que ya sustentaste.',
+          usedFor: 'Convertir evidencia y métricas en hallazgos de ingeniería.',
+          documentTarget: 'Hallazgos de ingeniería.',
+        })}
         <aside class="panel warning-panel">
           <p><strong>DATO ≠ HALLAZGO.</strong> “CPU pico 92 %” es un dato. “Existe degradación de rendimiento durante periodos de alta demanda” puede ser un hallazgo si está sustentado.</p>
           <p>DATO → EVIDENCIA → INTERPRETACIÓN → HALLAZGO → IMPACTO → CRITICIDAD</p>

@@ -83,6 +83,18 @@ export function parseRoute(path) {
     };
   }
 
+  if (path === '/informe/modelo/imprimir') {
+    return { view: 'reportPreview', model: true, print: true };
+  }
+
+  if (path === '/informe/modelo' || path.startsWith('/informe/modelo')) {
+    return { view: 'reportPreview', model: true, print: false };
+  }
+
+  if (path === '/informe' || path.startsWith('/informe/')) {
+    return { view: 'reportPreview', model: false, print: false };
+  }
+
   if (path === '/exportar/imprimir') {
     return { view: 'export', print: true };
   }

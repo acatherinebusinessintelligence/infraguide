@@ -24,6 +24,7 @@ import {
 } from '../components/build/DocumentAssembler.js';
 import { ConclusionsBuilder, DocumentPreview } from '../components/build/DocumentPreview.js';
 import { escapeHtml } from '../utils/escape.js';
+import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
 
 export function BuildPage(state) {
   if (!state.selectedCase) {
@@ -50,6 +51,13 @@ export function BuildPage(state) {
       <main id="contenido" class="page build-page">
         ${renderProgress(build.currentSubstage, substage)}
         <p class="principle">Ensamblar, orientar y validar. No generar análisis que no hayas construido.</p>
+        ${ContextualHelp({
+          termId: 'criterio-aceptacion',
+          why: 'CONSTRUIR ensambla el informe de consultoría; no inventa evidencia nueva.',
+          where: 'Todas las evidencias y decisiones ya registradas.',
+          usedFor: 'Cerrar dictamen, limitaciones y anexos.',
+          documentTarget: 'Dictamen técnico, recomendación de cierre y anexos.',
+        })}
         ${
           build.returnSection
             ? `<p class="consultant-tip">Editaste una sección del informe. <button class="btn btn--small" type="button" data-action="return-to-preview">Volver a la vista previa</button></p>`

@@ -60,6 +60,7 @@ const initialState = {
   documentError: null,
   glossaryTerm: null,
   howObtainedMetric: null,
+  pendingCollectKey: null,
   pedagogyNotice: null,
   persistence: createPersistenceUi(),
   pdfViewer: {
@@ -320,6 +321,22 @@ export function closeMethodInfo() {
   setState({ methodInfoKey: null });
 }
 
+export function requestCollectEvidence(key) {
+  if (!key) return;
+  setState({ pendingCollectKey: key });
+}
+
+export function cancelCollectEvidence() {
+  setState({ pendingCollectKey: null });
+}
+
+export function confirmCollectEvidence(key = state.pendingCollectKey) {
+  if (key) {
+    addCollectedData(key);
+  }
+  setState({ pendingCollectKey: null, collectedPanelOpen: true });
+}
+
 export function addCollectedData(key) {
   if (state.collectedData.some((item) => item.key === key)) {
     return;
@@ -332,15 +349,23 @@ export function addCollectedData(key) {
   }
 
   const meta = dataMap[key] ?? {};
+  const source = located.field.source && typeof located.field.source === 'object' ? located.field.source : {};
   const item = {
     key,
     value: located.field.value,
     unit: located.field.unit ?? '',
     label: located.field.label,
     displayValue: formatFieldValue(located.field),
-    sourceSectionId: located.section.sectionId,
-    sourceLabel: located.section.sectionTitle,
+    sourceSectionId: source.sourceSectionId || located.section.sectionId,
+    sourceLabel: source.section || located.section.sectionTitle,
     documentSectionId: meta.documentSectionId ?? null,
+    evidenceId: source.evidenceId || `HB-${located.section.sectionId}-${key}`,
+    documentId: source.documentId || null,
+    page: Number.isFinite(Number(source.page)) ? Number(source.page) : null,
+    quote: source.quote || '',
+    verificationStatus: source.verified === true && source.quote ? 'VERIFICADA' : 'PENDIENTE_DE_VERIFICAR',
+    selectedAt: new Date().toISOString(),
+    usedIn: meta.usedIn ?? [],
   };
 
   setState({

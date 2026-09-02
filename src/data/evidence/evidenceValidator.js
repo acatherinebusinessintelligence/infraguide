@@ -5,6 +5,7 @@ import {
   getPrimarySourceDocument,
   getSourceDocuments,
   getSourceDocumentById,
+  canonicalSourceSections,
 } from './registry.js';
 import { calculatedMetrics } from './calculated.js';
 import { EVIDENCE_ORIGIN, resolveEvidenceStatus, EVIDENCE_STATUS } from './status.js';
@@ -34,6 +35,14 @@ export function EvidenceValidator(caseData) {
   }
 
   const sectionIds = new Set((caseData?.sections ?? []).map((item) => item.sectionId));
+  canonicalSourceSections(caseData).forEach((item) => {
+    if (item.sourceSectionId) sectionIds.add(item.sourceSectionId);
+  });
+  getSourceDocuments(caseData).forEach((doc) => {
+    (doc.sections ?? []).forEach((item) => {
+      if (item.sourceSectionId || item.id) sectionIds.add(item.sourceSectionId || item.id);
+    });
+  });
   const pageCount = getPrimarySourceDocument(caseData)?.pages;
 
   registry.forEach((item) => {
@@ -56,7 +65,7 @@ export function EvidenceValidator(caseData) {
       errors.push(`${item.evidenceId}: no puede marcarse verificada sin página.`);
     }
     if (item.verified === true && !item.quote && !item.text && !item.extract) {
-      warnings.push(`${item.evidenceId}: verificada sin fragmento textual.`);
+      errors.push(`${item.evidenceId}: no puede marcarse verificada sin fragmento.`);
     }
     if (resolveEvidenceStatus(item) === EVIDENCE_STATUS.VERIFIED && doc?.linked === false) {
       errors.push(`${item.evidenceId}: no marcar verificada mientras el PDF original no esté vinculado.`);

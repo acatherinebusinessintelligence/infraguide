@@ -13,6 +13,8 @@ export {
   getEvidenceForField,
   getEvidenceForSection,
   caseMapSections,
+  canonicalSourceSections,
+  getSourceSection,
   getCalculatedSourceBundle,
 } from './registry.js';
 export { EvidenceValidator, probeSourcePdf } from './evidenceValidator.js';

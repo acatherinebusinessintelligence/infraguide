@@ -38,6 +38,7 @@ import {
   firewallPedagogy,
 } from '../components/represent/SpofTools.js';
 import { escapeHtml } from '../utils/escape.js';
+import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
 import { TermLink } from '../data/pedagogy/glossary.js';
 
 export function RepresentPage(state) {
@@ -84,6 +85,13 @@ export function RepresentPage(state) {
       <main id="contenido" class="page represent-page">
         ${renderProgress(represent.currentSubstage, substage)}
         <p class="principle">AS-IS significa cómo funciona actualmente la infraestructura.</p>
+        ${ContextualHelp({
+          termId: 'spof',
+          why: 'El diagrama y el SPOF explican dependencias antes de calcular o recomendar.',
+          where: 'PDF, páginas 4 a 6 y 8.',
+          usedFor: 'Sustentar arquitectura, resiliencia y riesgos.',
+          documentTarget: 'Arquitectura y resiliencia.',
+        })}
         <aside class="panel warning-panel">
           <p><strong>NO dibujes todavía cómo debería quedar.</strong></p>
           <p><strong>AS-IS</strong> = estado actual. <strong>TO-BE</strong> = estado futuro. En esta etapa solo se construye AS-IS.</p>

@@ -57,6 +57,7 @@ export function GuidedCalculator({ metricId, facts, slot = {}, calculatorHtml = 
       ${levelNav(metricId, level)}
       ${pipelineLegend(level)}
       ${level >= 1 ? ConceptExplanationCard({ conceptId: metricId, open: slot.conceptOpen !== false }) : ''}
+      ${CalculationWalkthrough({ concept, facts })}
       ${
         level === 1
           ? `<p><button class="btn btn--primary" type="button" data-action="pedagogy-level" data-metric-id="${escapeHtml(metricId)}" data-level="2">Continuar a aplicar el cálculo</button></p>`
@@ -75,22 +76,60 @@ export function GuidedCalculator({ metricId, facts, slot = {}, calculatorHtml = 
 
 function pipelineLegend(level) {
   const steps = [
-    '1 Comprender el indicador',
-    '2 Identificar datos',
-    '3 Validar',
-    '4 Fórmula',
-    '5 Sustituir',
-    '6 Resolver',
-    '7 Resultado',
-    '8 Interpretar',
-    '9 Hallazgo',
-    '10 Incorporar al informe',
+    '1 Qué es',
+    '2 Para qué sirve',
+    '3 Datos necesarios',
+    '4 Evidencia en el PDF',
+    '5 Validación de unidades',
+    '6 Fórmula',
+    '7 Sustitución',
+    '8 Operaciones',
+    '9 Resultado',
+    '10 Interpretación',
+    '11 Limitación',
+    '12 Hallazgo posible',
+    '13 Destino en el informe',
   ];
-  const activeFrom = level === 1 ? 0 : level === 2 ? 1 : 7;
+  const activeFrom = level === 1 ? 0 : level === 2 ? 2 : 9;
+  const span = level === 1 ? 1 : level === 2 ? 6 : 4;
   const items = steps
-    .map((label, index) => `<li class="${index >= activeFrom && index <= activeFrom + (level === 1 ? 0 : level === 2 ? 6 : 2) ? 'is-current' : ''}">${escapeHtml(label)}</li>`)
+    .map((label, index) => `<li class="${index >= activeFrom && index <= activeFrom + span ? 'is-current' : ''}">${escapeHtml(label)}</li>`)
     .join('');
   return `<ol class="pipeline-legend" aria-label="Cadena de razonamiento">${items}</ol>`;
+}
+
+function CalculationWalkthrough({ concept, facts }) {
+  if (!concept) return '';
+  const caseData = getSelectedCaseData();
+  const dataRows = (concept.variables ?? [])
+    .map((variable) => {
+      const fact = variable.key ? getFact(facts, variable.key) : null;
+      const evidence = variable.key ? getEvidenceForField(caseData, variable.key) : null;
+      return `<li>${escapeHtml(variable.name)}: ${escapeHtml(String(fact?.displayValue ?? evidence?.value ?? '—'))} ${
+        evidence?.page ? `· ${EvidenceLink({ caseData, fieldKey: variable.key, component: 'guided-calc' })}` : ''
+      }</li>`;
+    })
+    .join('');
+  return `
+    <details class="contextual-help">
+      <summary>Pasos 1 a 13 del cálculo guiado</summary>
+      <ol class="calc-walkthrough">
+        <li><strong>Qué es.</strong> ${escapeHtml(concept.what || '')}</li>
+        <li><strong>Para qué sirve.</strong> ${escapeHtml(concept.whatFor || '')}</li>
+        <li><strong>Datos necesarios.</strong><ul>${dataRows || '<li>Sin variables definidas.</li>'}</ul></li>
+        <li><strong>Evidencia en el PDF.</strong> Usa los vínculos de cada variable. Un cálculo no se cita como texto literal.</li>
+        <li><strong>Validación de unidades.</strong> ${escapeHtml(concept.unit || 'Coincide el periodo y la unidad de cada variable.')}</li>
+        <li><strong>Fórmula.</strong> ${escapeHtml(concept.formula || '')}</li>
+        <li><strong>Sustitución.</strong> ${escapeHtml(concept.workedExample?.[0]?.body || concept.formulaPlain || '')}</li>
+        <li><strong>Operaciones.</strong> ${escapeHtml(concept.workedExample?.[0]?.body || 'Aplica la fórmula con los valores recolectados.')}</li>
+        <li><strong>Resultado.</strong> ${escapeHtml(concept.workedExample?.[1]?.body || 'El resultado aparece al calcular con tus datos.')}</li>
+        <li><strong>Interpretación.</strong> ${escapeHtml(concept.interpretation || '')}</li>
+        <li><strong>Limitación.</strong> ${escapeHtml(concept.limitation || '')}</li>
+        <li><strong>Hallazgo posible.</strong> ${escapeHtml(concept.possibleDecision || '')}</li>
+        <li><strong>Destino en el informe.</strong> Desempeño y capacidad; si se convierte en hallazgo, también hallazgos de ingeniería.</li>
+      </ol>
+    </details>
+  `;
 }
 
 function levelNav(metricId, level) {

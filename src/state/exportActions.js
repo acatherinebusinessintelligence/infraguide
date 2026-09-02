@@ -218,4 +218,32 @@ export function clearExportError() {
   patchExport({ lastError: '', status: getState().analysis?.build?.readyToExport ? EXPORT_STATUS.READY : EXPORT_STATUS.NOT_READY });
 }
 
+export function exportSnapshotHtml(snapshot) {
+  const model = buildExportModel(snapshot);
+  const { html, fileName, mime } = HtmlExporter(model);
+  downloadBlob(new Blob([html], { type: mime }), fileName);
+  return true;
+}
+
+export async function exportSnapshotDocx(snapshot) {
+  const { packDocx, docxFileName, DOCX_MIME } = await import('../export/docxExporter.js');
+  const model = buildExportModel(snapshot);
+  const packed = await packDocx(model);
+  const blob = packed instanceof Blob ? packed : new Blob([packed], { type: DOCX_MIME });
+  downloadBlob(blob, docxFileName(model));
+  return true;
+}
+
+export function openSnapshotPrint(snapshot) {
+  const model = buildExportModel(snapshot);
+  const { html } = HtmlExporter(model);
+  const win = typeof window !== 'undefined' ? window.open('', '_blank') : null;
+  if (!win) return false;
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  win.print();
+  return true;
+}
+
 export { exportCopy };

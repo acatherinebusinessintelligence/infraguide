@@ -30,6 +30,7 @@ import { GlossaryIndex } from '../components/pedagogy/ContextualGlossary.js';
 import { InsufficientMetricsPanel } from '../components/pedagogy/InsufficientMetrics.js';
 import { TermLink } from '../data/pedagogy/glossary.js';
 import { escapeHtml } from '../utils/escape.js';
+import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
 
 export function MeasurePage(state) {
   if (!state.selectedCase) {
@@ -52,6 +53,13 @@ export function MeasurePage(state) {
       <main id="contenido" class="page measure-page">
         ${renderProgress(measure.currentSubstage, substage)}
         <p class="principle">Calcular no es diagnosticar. Primero se comprende el indicador, luego se aplica, después se interpreta.</p>
+        ${ContextualHelp({
+          termId: 'kpi',
+          why: 'Un número sin fuente, fórmula e interpretación no es evidencia.',
+          where: 'PDF, páginas 6 a 8 para almacenamiento, rendimiento e incidentes.',
+          usedFor: 'Convertir datos verificados en métricas del informe.',
+          documentTarget: 'Desempeño y capacidad.',
+        })}
         <aside class="panel warning-panel">
           <p>Una métrica se convierte en evidencia cuando puedes explicar: de dónde salió, cómo se calculó y qué significa.</p>
           <p class="consultant-tip">Un resultado sin fuente es solo un número.</p>

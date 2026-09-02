@@ -3,6 +3,7 @@ import {
   getPrimarySourceDocument,
   getEvidenceById,
   getEvidenceForField,
+  getEvidenceForSection,
   caseMapSections,
   formatAcademicCitation,
   resolveEvidenceStatus,
@@ -17,8 +18,11 @@ export function CasePdfViewer({ state, caseData }) {
   const doc = getPrimarySourceDocument(caseData);
   const evidence =
     (viewer.evidenceId ? getEvidenceById(caseData, viewer.evidenceId) : null) ||
-    (viewer.fieldKey ? getEvidenceForField(caseData, viewer.fieldKey) : null);
-  const pageHint = evidence?.page || viewer.page || 1;
+    (viewer.fieldKey ? getEvidenceForField(caseData, viewer.fieldKey) : null) ||
+    (viewer.sourceSectionId
+      ? getEvidenceForSection(caseData, viewer.sourceSectionId).find((item) => item.quote)
+      : null);
+  const pageHint = Number(viewer.page) >= 1 ? Number(viewer.page) : evidence?.page || 1;
   const fallbackHref = doc?.file ? pdfPageHref(doc.file, evidence?.page || viewer.page) : '';
   const map = caseMapSections(caseData);
 
@@ -96,13 +100,13 @@ function renderEvidenceCard(caseData, evidence, viewer, map) {
     `;
   }
 
-  const section = evidence?.section || map.find((item) => item.sourceSectionId === viewer.sourceSectionId)?.title || '';
-  const status = evidence ? resolveEvidenceStatus(evidence) : 'PENDIENTE_DE_VERIFICAR';
-  const pageText = evidence?.page
-    ? `Página ${evidence.page}${section ? ` – ${section}` : ''}`
-    : section
-      ? `Sección JSON “${section}” — página en el PDF original pendiente de verificar`
-      : 'Página pendiente de verificar';
+  const mapped = map.find((item) => item.sourceSectionId === viewer.sourceSectionId);
+  const section = evidence?.section || mapped?.title || '';
+  const shownPage = Number(viewer.page) >= 1 ? Number(viewer.page) : evidence?.page || mapped?.page;
+  const status = evidence ? resolveEvidenceStatus(evidence) : mapped?.verified ? 'VERIFICADA' : 'PENDIENTE_DE_VERIFICAR';
+  const pageText = shownPage
+    ? `Página ${shownPage}${section ? ` – ${section}` : ''}`
+    : 'Página pendiente de verificar';
   const used = (evidence?.usedBy ?? []).map((item) => `<li>${escapeHtml(String(item))}</li>`).join('');
 
   return `
@@ -116,8 +120,15 @@ function renderEvidenceCard(caseData, evidence, viewer, map) {
     <p><strong>Fragmento:</strong> ${
       evidence?.quote
         ? `“${escapeHtml(evidence.quote)}”`
-        : 'No se transcribe un fragmento porque aún no ha sido localizado en el PDF original.'
+        : shownPage
+          ? 'Esta apertura muestra la sección del documento. Abre un dato subrayado para ver su fragmento verificado.'
+          : 'No se transcribe un fragmento porque aún no ha sido localizado en el PDF original.'
     }</p>
+    ${
+      evidence?.fieldKey
+        ? `<button class="btn btn--small btn--primary" type="button" data-action="collect-evidence" data-field-key="${escapeHtml(evidence.fieldKey)}">Agregar a mis datos</button>`
+        : ''
+    }
     ${
       evidence?.origin === EVIDENCE_ORIGIN.CALCULATED
         ? '<p class="consultant-tip">Este valor es un resultado calculado. No aparece literalmente en el PDF.</p>'
@@ -132,7 +143,11 @@ function renderEvidenceCard(caseData, evidence, viewer, map) {
 export function CaseMap({ sections = [], compact = false }) {
   const items = sections
     .map((item) => {
-      const page = item.verified && item.page ? ` — página ${item.page}` : ' — página pendiente de verificar';
+      const page = item.page
+        ? item.verified
+          ? ` — página ${item.page}`
+          : ` — página ${item.page} (pendiente de verificar)`
+        : ' — página pendiente de verificar';
       return `
         <li>
           <button
@@ -152,7 +167,7 @@ export function CaseMap({ sections = [], compact = false }) {
   return `
     <nav class="case-map${compact ? ' case-map--compact' : ''}" aria-label="Mapa del caso">
       <h3>Mapa del caso</h3>
-      <p>Índice de navegación de InfraGuide. Las páginas se publicarán solo cuando se verifiquen en el PDF original.</p>
+      <p>${sections.some((item) => item.page) ? 'Las páginas indicadas corresponden al documento fuente verificado.' : 'Las páginas se publicarán solo cuando se verifiquen en el PDF original.'}</p>
       <ol>${items}</ol>
     </nav>
   `;

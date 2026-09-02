@@ -17,6 +17,7 @@ import { CollectedDataPanel } from '../components/CollectedDataPanel.js';
 import { CollectedOverlay } from '../components/Layout.js';
 import { MethodDataInfo } from '../components/MethodDataInfo.js';
 import { escapeHtml } from '../utils/escape.js';
+import { CalculationDemo } from '../components/pedagogy/ContextualHelp.js';
 
 export function DashboardPage(state) {
   const caseLabel = state.selectedCase?.name ?? appCopy.dashboard.noCase;
@@ -144,6 +145,15 @@ export function DashboardPage(state) {
             }
 
             ${state.selectedCase ? SourceFinder({ finder: sourceFinders[0] }) : ''}
+            ${
+              state.selectedCase
+                ? `<section class="panel" aria-labelledby="calc-demo-heading">
+                    <h2 id="calc-demo-heading">Demostración de cálculo</h2>
+                    <p>Puedes ver cómo funcionará MEDIR sin adelantar el cálculo con tus datos.</p>
+                    ${CalculationDemo({ conceptId: 'availability' })}
+                  </section>`
+                : ''
+            }
 
             ${
               state.selectedCase
@@ -184,6 +194,7 @@ export function DashboardPage(state) {
 
           ${DocumentPanel({
             open: state.documentPanelOpen,
+            state,
             collectedData: state.collectedData,
             methodologyStatus: state.methodologyStatus,
             documentEntries: state.documentSections,

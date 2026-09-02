@@ -10,6 +10,7 @@ import { getCaseById } from '../data/cases/index.js';
 import { SaveIndicator } from './progress/SaveIndicator.js';
 import { ProgressOverlays } from './progress/ProgressOverlays.js';
 import { GlossaryDrawer } from './pedagogy/ContextualGlossary.js';
+import { CollectEvidenceDialog } from './evidence/CollectEvidenceDialog.js';
 
 export function SkipLink() {
   return `<a class="skip-link" href="#contenido">${escapeHtml(appCopy.skipLink)}</a>`;
@@ -27,6 +28,7 @@ export function SiteFooter() {
 export function DocumentOverlay({ state, variant = 'overlay' }) {
   const panel = DocumentPanel({
     open: state.documentPanelOpen,
+    state,
     collectedData: state.collectedData,
     methodologyStatus: state.methodologyStatus,
     documentEntries: state.documentSections,
@@ -109,5 +111,6 @@ export function AppHeader({ state }) {
         ? `<div class="source-bar-wrap">${CaseSourceBar({ caseData: getCaseById(state.selectedCase.id) })}</div>`
         : ''
     }
+    ${CollectEvidenceDialog({ pendingCollectKey: state.pendingCollectKey })}
   `;
 }

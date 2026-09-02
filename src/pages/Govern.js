@@ -33,6 +33,7 @@ import {
   GovernTables,
 } from '../components/govern/FrameworkBuilders.js';
 import { escapeHtml } from '../utils/escape.js';
+import { ContextualHelp } from '../components/pedagogy/ContextualHelp.js';
 
 export function GovernPage(state) {
   if (!state.selectedCase) {
@@ -55,6 +56,13 @@ export function GovernPage(state) {
       <main id="contenido" class="page govern-page">
         ${renderProgress(govern.currentSubstage, substage)}
         <p class="principle">ITIL, COBIT e ISO 27001 no son respuestas intercambiables.</p>
+        ${ContextualHelp({
+          termId: 'criterio-aceptacion',
+          why: 'Los marcos se aplican a hallazgos, no se copian como capítulos teóricos.',
+          where: 'Hallazgos documentados y evidencias de gobierno, identidad e incidentes (páginas 8 y 9).',
+          usedFor: 'Identificar brechas de control y criterios de aceptación.',
+          documentTarget: 'Riesgos y brechas de control; gobierno y criterios de aceptación.',
+        })}
         ${FrameworkIntroCards()}
         <p class="consultant-tip">No preguntes primero qué marco usar. Pregunta qué problema necesitas analizar.</p>
         ${MethodCard({

@@ -1,6 +1,7 @@
 import { escapeHtml } from '../../utils/escape.js';
 import { guidedReadingSteps } from '../../data/evidence/guidedReading.js';
-import { getEvidenceForSection, getPrimarySourceDocument, caseMapSections } from '../../data/evidence/index.js';
+import { getEvidenceForSection, getPrimarySourceDocument, caseMapSections, getSourceSection } from '../../data/evidence/index.js';
+import { ContextualHelp } from '../pedagogy/ContextualHelp.js';
 import { EvidenceLink } from './EvidenceLink.js';
 import { CaseMap } from './CasePdfViewer.js';
 
@@ -25,6 +26,7 @@ export function GuidedCaseReading({ state, caseData }) {
     .join('');
 
   const look = step.lookFor.map((item) => `<li>${escapeHtml(item)}</li>`).join('');
+  const sectionMeta = getSourceSection(caseData, step.sourceSectionId);
   const extra = step.extraSectionId
     ? getEvidenceForSection(caseData, step.extraSectionId).slice(0, 2)
     : [];
@@ -51,6 +53,13 @@ export function GuidedCaseReading({ state, caseData }) {
         <p><strong>Busca en el PDF</strong>${doc?.linked === false ? ' (cuando el documento original esté vinculado)' : ''}:</p>
         <ul>${look}</ul>
         <p>${escapeHtml(step.why)}</p>
+        ${ContextualHelp({
+          termId: step.id === 6 ? 'incidente' : step.id === 4 ? 'spof' : 'baseline',
+          why: step.why,
+          where: sectionMeta?.page ? `PDF, página ${sectionMeta.page}, ${sectionMeta.title}` : 'Documento fuente',
+          usedFor: 'Recolectar evidencia antes de calcular o diagnosticar.',
+          documentTarget: 'Registro de evidencias y secciones de consultoría que use este dato.',
+        })}
         <div class="guided-split">
           <section class="example-box">
             <h3>Ejemplo guiado</h3>
@@ -75,7 +84,7 @@ export function GuidedCaseReading({ state, caseData }) {
               ? `<button class="btn btn--ghost-dark" type="button" data-action="guided-step" data-step="${step.id - 1}">Anterior</button>`
               : '<span></span>'
           }
-          <button class="btn btn--primary" type="button" data-action="open-case-pdf" data-section-id="${escapeHtml(step.sourceSectionId)}">Abrir esta sección en el PDF</button>
+          <button class="btn btn--primary" type="button" data-action="open-case-section" data-section-id="${escapeHtml(step.sourceSectionId)}" ${sectionMeta?.page ? `data-page="${sectionMeta.page}"` : ''}>Abrir esta sección en el PDF</button>
           ${
             step.id < guidedReadingSteps.length
               ? `<button class="btn btn--primary" type="button" data-action="guided-step" data-step="${step.id + 1}">Siguiente</button>`

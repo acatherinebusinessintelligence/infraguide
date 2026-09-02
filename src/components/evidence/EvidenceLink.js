@@ -53,6 +53,7 @@ export function EvidenceLink({
       data-field-key="${escapeHtml(fieldKey || evidence?.fieldKey || '')}"
       data-evidence-id="${escapeHtml(evidenceId || evidence?.evidenceId || '')}"
       data-section-id="${escapeHtml(sourceSectionId || evidence?.sourceSectionId || '')}"
+      ${evidence?.page ? `data-page="${escapeHtml(String(evidence.page))}"` : ''}
       data-component="${escapeHtml(component)}"
       data-activity="${escapeHtml(activity)}"
       aria-label="${escapeHtml(aria)}"

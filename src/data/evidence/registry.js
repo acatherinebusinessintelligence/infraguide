@@ -111,6 +111,8 @@ export function getEvidenceById(caseData, evidenceId) {
 
 export function getEvidenceForField(caseData, fieldKey) {
   if (!caseData || !fieldKey) return null;
+  const fromRegistry = buildEvidenceRegistry(caseData).find((item) => item.fieldKey === fieldKey);
+  if (fromRegistry) return fromRegistry;
   const located = getCaseField(caseData, fieldKey);
   if (!located) return null;
   return entryFromField(caseData, located);
@@ -120,23 +122,48 @@ export function getEvidenceForSection(caseData, sourceSectionId) {
   return buildEvidenceRegistry(caseData).filter((item) => item.sourceSectionId === sourceSectionId);
 }
 
-export function caseMapSections(caseData) {
+export function canonicalSourceSections(caseData) {
   const doc = getPrimarySourceDocument(caseData);
   const declared = Array.isArray(doc?.sections) ? doc.sections : [];
-  const byId = new Map(declared.map((item) => [item.sourceSectionId || item.id, item]));
-
-  return (caseData?.sections ?? []).map((section) => {
-    const extra = byId.get(section.sectionId) || {};
-    const page = Number.isFinite(Number(extra.page)) ? Number(extra.page) : null;
-    return {
-      id: section.sectionId,
-      sourceSectionId: section.sectionId,
-      title: extra.title || section.sectionTitle,
-      summary: extra.summary || section.summary || '',
+  const seen = new Set();
+  const unique = [];
+  declared.forEach((item) => {
+    const page = Number.isFinite(Number(item.page)) ? Number(item.page) : null;
+    const title = String(item.title || '').trim();
+    const key = page != null ? `p:${page}` : `t:${title.toLowerCase()}`;
+    if (!title || seen.has(key)) return;
+    seen.add(key);
+    unique.push({
+      id: item.sourceSectionId || item.id,
+      sourceSectionId: item.sourceSectionId || item.id,
+      title,
+      summary: item.summary || '',
       page,
-      verified: extra.verified === true && page != null,
-    };
+      verified: item.verified === true && page != null,
+    });
   });
+  return unique;
+}
+
+export function getSourceSection(caseData, sourceSectionId) {
+  if (!sourceSectionId) return null;
+  const doc = getPrimarySourceDocument(caseData);
+  const match = (doc?.sections ?? []).find((item) => (item.sourceSectionId || item.id) === sourceSectionId);
+  if (!match) {
+    return canonicalSourceSections(caseData).find((item) => item.sourceSectionId === sourceSectionId) ?? null;
+  }
+  const page = Number.isFinite(Number(match.page)) ? Number(match.page) : null;
+  return {
+    id: match.sourceSectionId || match.id,
+    sourceSectionId: match.sourceSectionId || match.id,
+    title: match.title,
+    page,
+    verified: match.verified === true && page != null,
+  };
+}
+
+export function caseMapSections(caseData) {
+  return canonicalSourceSections(caseData);
 }
 
 export function getCalculatedSourceBundle(caseData, metricId) {

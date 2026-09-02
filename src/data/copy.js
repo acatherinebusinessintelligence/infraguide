@@ -34,7 +34,8 @@ export const appCopy = {
     stagesHeading: 'Ruta de análisis',
     stagesIntro: 'Completa las etapas en orden. COMPRENDER, REPRESENTAR y MEDIR construyen evidencia. DIAGNOSTICAR se habilita al cerrar MEDIR.',
     methodHeading: 'Ficha metodológica (demostración)',
-    methodIntro: 'Este ejemplo valida el componente. No realiza cálculos ni completa el documento.',
+    methodIntro:
+      'Esta demostración te permite comprender cómo un dato del caso se transforma en cálculo, interpretación y contenido del informe. Tus resultados se generarán cuando completes las actividades correspondientes.',
     blockedHint: 'Esta etapa estará disponible cuando se complete la anterior.',
     stagePreviewNote: 'El contenido de esta etapa se desarrollará en una fase posterior.',
     workCaseHeading: 'Caso de trabajo',
@@ -46,7 +47,8 @@ export const appCopy = {
     close: 'Cerrar panel del documento',
     open: 'Abrir Tu documento',
     emptyStatus: 'Pendiente',
-    intro: 'Las etapas irán incorporando contenido a cada sección. Las secciones de COMPRENDER muestran texto, fuentes y última actualización.',
+    intro:
+      'Cada apartado del informe de consultoría muestra qué actividad lo alimenta, qué ya incorporaste, qué evidencia usa y qué falta. ITIL, COBIT e ISO 27001 nutren riesgos y gobierno; no son capítulos teóricos separados.',
     preparedHeading: 'Datos preparados',
     readyToProcess: 'Listo para calcular',
     waitingData: 'En espera de datos',

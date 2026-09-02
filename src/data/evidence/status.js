@@ -15,18 +15,22 @@ export const EVIDENCE_ORIGIN = {
   CALCULATED: 'CALCULATED',
 };
 
+function quoteOf(entry) {
+  return String(entry?.quote || entry?.extract || entry?.text || '').trim();
+}
+
 export function resolveEvidenceStatus(entry) {
   if (!entry) return EVIDENCE_STATUS.NOT_FOUND;
   if (entry.origin === EVIDENCE_ORIGIN.CALCULATED) {
     return EVIDENCE_STATUS.PENDING;
   }
-  if (entry.verified === true && Number.isFinite(Number(entry.page)) && Number(entry.page) >= 1) {
+  const page = Number(entry.page);
+  const hasPage = Number.isFinite(page) && page >= 1;
+  const hasQuote = quoteOf(entry).length > 0;
+  if (entry.verified === true && hasPage && hasQuote) {
     return EVIDENCE_STATUS.VERIFIED;
   }
-  if (entry.verificationStatus && EVIDENCE_STATUS_LABEL[entry.verificationStatus]) {
-    return entry.verificationStatus;
-  }
-  if (Number.isFinite(Number(entry.page)) && Number(entry.page) >= 1) {
+  if (hasPage) {
     return EVIDENCE_STATUS.PENDING;
   }
   return EVIDENCE_STATUS.NOT_FOUND;

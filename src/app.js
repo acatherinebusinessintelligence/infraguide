@@ -13,6 +13,7 @@ import { GovernPage } from './pages/Govern.js';
 import { DecidePage } from './pages/Decide.js';
 import { BuildPage } from './pages/Build.js';
 import { ExportPage } from './pages/Export.js';
+import { ReportPreviewPage } from './pages/ReportPreview.js';
 import { ProgressPage } from './pages/Progress.js';
 import { RecoveryScreen } from './components/progress/RecoveryScreen.js';
 import {
@@ -26,6 +27,9 @@ import {
   closeMethodInfo,
   selectWorkCase,
   addCollectedData,
+  requestCollectEvidence,
+  confirmCollectEvidence,
+  cancelCollectEvidence,
   removeCollectedData,
   markDataFound,
   answerActivity,
@@ -240,7 +244,11 @@ import {
   exportDocx,
   startPrintExport,
   finishPrintExport,
+  exportSnapshotHtml,
+  exportSnapshotDocx,
+  openSnapshotPrint,
 } from './state/exportActions.js';
+import { createModelReportState } from './data/testing/modelReportState.js';
 import { contextTemplate } from './data/methodology/understand.js';
 import { asIsTemplate } from './data/methodology/represent.js';
 import { getPathFromHash, parseRoute, navigate } from './utils/router.js';
@@ -299,6 +307,7 @@ function render(state) {
     decide: DecidePage,
     build: BuildPage,
     export: ExportPage,
+    reportPreview: ReportPreviewPage,
   };
 
   const route = parseRoute(getPathFromHash());
@@ -394,9 +403,9 @@ function syncPdfPortal(state) {
     (state.pdfViewer.evidenceId ? getEvidenceById(caseData, state.pdfViewer.evidenceId) : null) ||
     (state.pdfViewer.fieldKey ? getEvidenceForField(caseData, state.pdfViewer.fieldKey) : null);
   mount.setAttribute('data-pdf-mounted', signature);
-  mountPdfRuntime(mount, {
+    mountPdfRuntime(mount, {
     url: sourcePdfAsset(doc.file),
-    page: state.pdfViewer.page || 1,
+    page: Number(state.pdfViewer.page) >= 1 ? Number(state.pdfViewer.page) : evidence?.page || 1,
     quote: evidence?.quote || evidence?.extract || '',
   }).then(() => {
     const runtime = pdfRuntimeState();
@@ -522,6 +531,7 @@ function handleClick(event) {
       evidenceId: actionTarget.getAttribute('data-evidence-id') || null,
       fieldKey: actionTarget.getAttribute('data-field-key') || null,
       sourceSectionId: actionTarget.getAttribute('data-section-id') || null,
+      page: actionTarget.getAttribute('data-page') ? Number(actionTarget.getAttribute('data-page')) : null,
       component: actionTarget.getAttribute('data-component') || '',
       activity: actionTarget.getAttribute('data-activity') || '',
       asOverlay: true,
@@ -530,13 +540,12 @@ function handleClick(event) {
   }
 
   if (action === 'open-case-pdf') {
+    event.preventDefault();
     openCasePdf({
       sourceSectionId: actionTarget.getAttribute('data-section-id') || null,
-      asOverlay: getState().currentView !== 'caseIntro' && getState().currentView !== 'caseGuided',
+      page: actionTarget.getAttribute('data-page') ? Number(actionTarget.getAttribute('data-page')) : null,
+      asOverlay: true,
     });
-    if (getState().currentView === 'caseIntro' || getState().currentView === 'caseGuided') {
-      navigate('/caso/documento');
-    }
     return;
   }
 
@@ -576,6 +585,21 @@ function handleClick(event) {
 
   if (action === 'add-data') {
     addCollectedData(actionTarget.getAttribute('data-data-key'));
+    return;
+  }
+
+  if (action === 'collect-evidence') {
+    requestCollectEvidence(actionTarget.getAttribute('data-field-key'));
+    return;
+  }
+
+  if (action === 'confirm-collect-evidence') {
+    confirmCollectEvidence(actionTarget.getAttribute('data-field-key'));
+    return;
+  }
+
+  if (action === 'cancel-collect-evidence') {
+    cancelCollectEvidence();
     return;
   }
 
@@ -1192,6 +1216,18 @@ function handleClick(event) {
     if (startPrintExport({ auto: true })) {
       navigate('/exportar/imprimir');
     }
+    return;
+  }
+  if (action === 'export-model-html') {
+    exportSnapshotHtml(createModelReportState());
+    return;
+  }
+  if (action === 'export-model-docx') {
+    exportSnapshotDocx(createModelReportState());
+    return;
+  }
+  if (action === 'export-model-print') {
+    openSnapshotPrint(createModelReportState());
     return;
   }
   if (action === 'do-print') {

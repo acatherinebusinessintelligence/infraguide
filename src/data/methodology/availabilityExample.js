@@ -1,7 +1,7 @@
 export const availabilityExample = {
   topic: 'Disponibilidad',
   disclaimer:
-    'Este es únicamente un ejemplo para validar el diseño. No es una calculadora ni un resultado del caso.',
+    'Esta demostración te permite comprender cómo un dato del caso se transforma en cálculo, interpretación y contenido del informe. Tus resultados se generarán cuando completes las actividades correspondientes.',
   steps: {
     search: 'Información operacional disponible y registro de incidentes',
     extract: 'Periodo: 90 días (2.160 h)\nIndisponibilidad: suma de duraciones = 10 h 40 min',
